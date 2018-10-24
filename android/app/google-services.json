@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "844637961414",
+    "firebase_url": "https://success-hunter-db.firebaseio.com",
+    "project_id": "success-hunter-db",
+    "storage_bucket": "success-hunter-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844637961414:android:f83564314317664a",
+        "android_client_info": {
+          "package_name": "com.hoxuandung.successhunter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844637961414-icssgeboonr1kejm2c6so8e17pna6jt3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hoxuandung.successhunter",
+            "certificate_hash": "0f668755b783a93a488fb528af17f40d9fa8c5e8"
+          }
+        },
+        {
+          "client_id": "844637961414-9mjs7avr9qbvk2putvmv83gj2n5npn06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDskbRTC7SR38igVT7hhZwiXSA8lUYAvCI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844637961414-9mjs7avr9qbvk2putvmv83gj2n5npn06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
