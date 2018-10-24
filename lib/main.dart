@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'ui/login_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -13,15 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Success Hunter',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(),
+      home: LoginPage(),
     );
   }
 }
 
+/*
 class MyHomePage extends StatefulWidget {
   @override
   MyHomePageState createState() {
@@ -108,3 +112,4 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/

@@ -100,6 +100,13 @@
             </list>
           </value>
         </entry>
+        <entry key="font_awesome_flutter">
+          <value>
+            <list>
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="front_end">
           <value>
             <list>
@@ -423,6 +430,7 @@
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.6.2+1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_login-1.1.1/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.1.0/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.4/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/glob-1.1.7/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-3.2.2/lib" />
