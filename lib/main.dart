@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'ui/login_page.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 
 void main() => runApp(new MyApp());
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
-final FacebookLogin facebookLogin = FacebookLogin();
 
 class MyApp extends StatelessWidget {
   @override
