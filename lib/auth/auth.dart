@@ -1,5 +1,6 @@
 // Login package
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -30,7 +31,22 @@ class Auth {
     }
   }
 
-  Future<FirebaseUser> signIn() async {
+  Future<FirebaseUser> createNewUser({@required String email, @required String password, @required String displayName}) async {
+    final FirebaseUser user = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+    userUpdateInfo.displayName = displayName;
+    user.updateProfile(userUpdateInfo);
+    user.sendEmailVerification();
+    return user;
+  }
+
+  Future<FirebaseUser> signInWithEmail({@required String email, @required String password}) async {
+    final FirebaseUser user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+    return user;
+  }
+
+  Future<FirebaseUser> signInWithGoogle() async {
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
 
@@ -43,8 +59,8 @@ class Auth {
     return user;
   }
 
-  void signOut() {
-    googleSignIn.signOut();
+  Future<Null> signOut() async {
+    await _auth.signOut();
     print('User signed out');
   }
 }

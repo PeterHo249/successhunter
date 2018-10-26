@@ -5,7 +5,6 @@ import 'package:successhunter/utils/bubble_indication_painter.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 
 import 'package:successhunter/auth/auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final Auth _auth = Auth();
@@ -321,21 +320,28 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "LOGIN",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () => showInSnackBar("Login button pressed")),
+                  ),
+                  onPressed: () => _auth
+                      .signInWithEmail(
+                        email: loginEmailController.text,
+                        password: loginPasswordController.text,
+                      )
+                      .then((FirebaseUser user) => print(user))
+                      .catchError((e) => showInSnackBar(e.message)),
+                ),
               ),
             ],
           ),
@@ -425,7 +431,7 @@ class _LoginPageState extends State<LoginPage>
                 padding: EdgeInsets.only(top: 10.0),
                 child: GestureDetector(
                   onTap: () => _auth
-                      .signIn()
+                      .signInWithGoogle()
                       .then((FirebaseUser user) => print(user))
                       .catchError((e) => print(e)),
                   child: Container(
@@ -622,21 +628,29 @@ class _LoginPageState extends State<LoginPage>
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    highlightColor: Colors.transparent,
-                    splashColor: Theme.Colors.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "SIGN UP",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
-                      ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Theme.Colors.loginGradientEnd,
+                  //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 42.0),
+                    child: Text(
+                      "SIGN UP",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontFamily: "WorkSansBold"),
                     ),
-                    onPressed: () => showInSnackBar("SignUp button pressed")),
+                  ),
+                  onPressed: () => _auth
+                      .createNewUser(
+                        email: signupEmailController.text,
+                        password: signupPasswordController.text,
+                        displayName: signupNameController.text,
+                      )
+                      .then((user) => showInSnackBar(user.displayName))
+                      .catchError((e) => showInSnackBar(e.message)),
+                ),
               ),
             ],
           ),
