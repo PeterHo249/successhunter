@@ -29,8 +29,9 @@ class MyApp extends StatelessWidget {
           return SplashPage();
         } else {
           if (snapshot.hasData) {
+            print('this in handlecurrentscreen');
             print(snapshot.data);
-            return MainPage();
+            return MainPage(user: snapshot.data,);
           }
           return LoginPage();
         }

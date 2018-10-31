@@ -8,6 +8,7 @@ class Colors {
 
   static const Color loginGradientStart = const Color(0xFFfbab66);
   static const Color loginGradientEnd = const Color(0xFFf7418c);
+  static const Color tabItemSelected = const Color(0xff18e86c);
 
   static const primaryGradient = const LinearGradient(
     colors: const [loginGradientStart, loginGradientEnd],
