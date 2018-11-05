@@ -17,3 +17,7 @@ class Colors {
     end: Alignment.bottomCenter,
   );
 }
+
+class Fonts {
+  const Fonts();
+}

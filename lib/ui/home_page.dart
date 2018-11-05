@@ -11,13 +11,13 @@ class HomePage extends StatelessWidget {
     Goal(
       title: 'First goal',
       startDate: DateTime.now(),
-      endDate: DateTime.parse('20181106'),
+      targetDate: DateTime.parse('20181106'),
       donePercent: 0.75,
     ),
     Goal(
       title: 'Second goal',
       startDate: DateTime.now(),
-      endDate: DateTime.parse('20181206'),
+      targetDate: DateTime.parse('20181206'),
       donePercent: 0.3,
     ),
   ];
@@ -299,7 +299,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(fontSize: 16.0),
                     ),
                     Text(
-                      'End Date: ${_getDateString(goalItem.endDate)}',
+                      'End Date: ${_getDateString(goalItem.targetDate)}',
                       style: TextStyle(fontSize: 16.0),
                     ),
                   ],

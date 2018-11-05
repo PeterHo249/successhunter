@@ -6,13 +6,13 @@ final goals = <Goal>[
   Goal(
     title: 'First goal',
     startDate: DateTime.now(),
-    endDate: DateTime.parse('20181106'),
+    targetDate: DateTime.parse('20181106'),
     donePercent: 0.75,
   ),
   Goal(
     title: 'Second goal',
     startDate: DateTime.now(),
-    endDate: DateTime.parse('20181206'),
+    targetDate: DateTime.parse('20181206'),
     donePercent: 0.3,
   ),
 ];

@@ -8,6 +8,7 @@ import 'package:successhunter/ui/home_page.dart';
 import 'package:successhunter/ui/goal_page.dart';
 import 'package:successhunter/ui/habit_page.dart';
 import 'package:successhunter/ui/diary_page.dart';
+import 'package:successhunter/ui/goal_form.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -198,6 +199,12 @@ class _MainPageState extends State<MainPage>
 
   void _handlePopupMenuChoice(String choice) {
     // TODO: Implement here
+    if (choice == PopupChoice.addGoal) {
+      Navigator.push(this.context, MaterialPageRoute(builder: (context) => GoalForm()));
+    } else {
+
+    }
+
     print(choice);
   }
 }
