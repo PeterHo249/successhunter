@@ -23,8 +23,13 @@ class HomePage extends StatelessWidget {
   ];
 
   final habits = <Habit>[
-    Habit(title: 'First task'),
-    Habit(title: 'Second task'),
+    Habit(
+      title: 'First task',
+    ),
+    Habit(
+      title: 'Second task',
+      isYesNoTask: false,
+    ),
   ];
 
   @override
@@ -289,8 +294,14 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Start Date: ${_getDateString(goalItem.startDate)}', style: TextStyle(fontSize: 16.0),),
-                    Text('End Date: ${_getDateString(goalItem.endDate)}', style: TextStyle(fontSize: 16.0),),
+                    Text(
+                      'Start Date: ${_getDateString(goalItem.startDate)}',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    Text(
+                      'End Date: ${_getDateString(goalItem.endDate)}',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
                   ],
                 ),
               ),
@@ -313,6 +324,58 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildTaskItem(BuildContext context, Habit taskItem) {
+    Widget secondRow;
+
+    if (taskItem.isYesNoTask) {
+      secondRow = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Due time: 19:00',
+            style: TextStyle(fontSize: 16.0),
+          ),
+          Container(
+            width: 30.0,
+            height: 30.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.amber,
+            ),
+          ),
+        ],
+      );
+    } else {
+      secondRow = Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Due time: 19:00',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              Text(
+                '8/10 times',
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ],
+          ),
+          Slider(
+            value: 8.0,
+            onChanged: null,
+            divisions: 10,
+            min: 0.0,
+            max: 10.0,
+            activeColor: Colors.blue[500],
+          ),
+        ],
+      );
+    }
+
     return Container(
       height: 190.0,
       width: 300.0,
@@ -330,21 +393,7 @@ class HomePage extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Due time: 19:00', style: TextStyle(fontSize: 16.0),),
-                Container(
-                  width: 30.0,
-                  height: 30.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.amber,
-                  ),
-                ),
-              ],
-            )
+            secondRow,
           ],
         ),
       ),
