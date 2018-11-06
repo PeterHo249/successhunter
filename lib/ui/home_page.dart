@@ -4,7 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'dart:core';
-import 'package:intl/intl.dart';
+import 'package:successhunter/utils/formatter.dart';
 
 class HomePage extends StatelessWidget {
   final goals = <Goal>[
@@ -12,13 +12,11 @@ class HomePage extends StatelessWidget {
       title: 'First goal',
       startDate: DateTime.now(),
       targetDate: DateTime.parse('20181106'),
-      donePercent: 0.75,
     ),
     Goal(
       title: 'Second goal',
       startDate: DateTime.now(),
       targetDate: DateTime.parse('20181206'),
-      donePercent: 0.3,
     ),
   ];
 
@@ -295,11 +293,11 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Start Date: ${_getDateString(goalItem.startDate)}',
+                      'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
                       style: TextStyle(fontSize: 16.0),
                     ),
                     Text(
-                      'End Date: ${_getDateString(goalItem.targetDate)}',
+                      'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
                       style: TextStyle(fontSize: 16.0),
                     ),
                   ],
@@ -308,13 +306,13 @@ class HomePage extends StatelessWidget {
               CircularPercentIndicator(
                 radius: 100.0,
                 lineWidth: 10.0,
-                percent: goalItem.donePercent,
+                percent: goalItem.getDonePercent(),
                 circularStrokeCap: CircularStrokeCap.round,
                 backgroundColor: Colors.grey[300],
                 progressColor: Colors.blue[500],
                 animation: true,
                 animationDuration: 1500,
-                center: Text('${goalItem.donePercent * 100} %'),
+                center: Text('${goalItem.getDonePercent() * 100} %'),
               ),
             ],
           ),
@@ -400,8 +398,4 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  String _getDateString(DateTime date) {
-    var formatter = DateFormat('dd-MM-yyyy');
-    return formatter.format(date);
-  }
 }

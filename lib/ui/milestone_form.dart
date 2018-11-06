@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
-import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/style/theme.dart' as Theme;
 
-class GoalForm extends StatefulWidget {
-  final Goal item;
+class MilestoneForm extends StatefulWidget {
+  final Milestone item;
 
-  GoalForm({this.item});
+  MilestoneForm({this.item});
 
   @override
-  _GoalFormState createState() => _GoalFormState();
+  _MilestoneFormState createState() => _MilestoneFormState();
 }
 
-class _GoalFormState extends State<GoalForm> {
+class _MilestoneFormState extends State<MilestoneForm> {
   final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
 
@@ -68,7 +67,7 @@ class _GoalFormState extends State<GoalForm> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty)
-                      return 'Title of goal is required.';
+                      return 'Title of milestone is required.';
 
                     return null;
                   },
@@ -78,33 +77,16 @@ class _GoalFormState extends State<GoalForm> {
                   initialValue: widget.item == null ? null : widget.item.description,
                 ),
                 CardSettingsHeader(
-                  label: 'Properties',
-                ),
-                CardSettingsListPicker(
-                  label: 'Goal Type',
-                  options: GoalTypeEnum.types,
-                  initialValue: widget.item == null ? null : widget.item.type,
-                ),
-                CardSettingsDatePicker(
-                  label: 'Target Date',
-                  initialValue: widget.item == null ? null : widget.item.targetDate,
-                ),
-                CardSettingsHeader(
-                  label: 'Measure',
+                  label: 'Target',
                 ),
                 CardSettingsInt(
-                  label: 'Target Value',
+                  label: 'Value',
                   initialValue: widget.item == null ? 0 : widget.item.targetValue,
                 ),
-                CardSettingsInt(
-                  label: 'Starting Value',
-                  initialValue: widget.item == null ? 0 : widget.item.startValue,
+                CardSettingsDatePicker(
+                  label: 'Date',
+                  initialValue: widget.item == null ? null : widget.item.targetDate,
                 ),
-                CardSettingsText(
-                  label: 'Unit',
-                  hintText: 'Enter your goal unit',
-                  initialValue: widget.item == null ? null : widget.item.unit,
-                )
               ],
             ),
           ),

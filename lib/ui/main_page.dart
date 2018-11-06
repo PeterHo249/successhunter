@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:successhunter/auth/auth.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:successhunter/ui/home_page.dart';
 import 'package:successhunter/ui/goal_page.dart';
 import 'package:successhunter/ui/habit_page.dart';
 import 'package:successhunter/ui/diary_page.dart';
 import 'package:successhunter/ui/goal_form.dart';
+
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -101,7 +102,10 @@ class _MainPageState extends State<MainPage>
                       height: 100.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.blue,
+                        image: DecorationImage(
+                          image: NetworkImage(widget.user.photoUrl),
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                   ),
@@ -145,7 +149,7 @@ class _MainPageState extends State<MainPage>
       onSelected: _handlePopupMenuChoice,
       icon: Icon(Icons.add),
       itemBuilder: (BuildContext context) {
-        return PopupChoice.choices.map((String choice) {
+        return MainPagePopupChoiceEnum.choices.map((String choice) {
           return PopupMenuItem<String>(
             value: choice,
             child: Text(choice),
@@ -153,6 +157,16 @@ class _MainPageState extends State<MainPage>
         }).toList();
       },
     );
+  }
+
+  void _handlePopupMenuChoice(String choice) {
+    // TODO: Implement here
+    if (choice == MainPagePopupChoiceEnum.addGoal) {
+      Navigator.push(
+          this.context, MaterialPageRoute(builder: (context) => GoalForm()));
+    } else {}
+
+    print(choice);
   }
 
   Widget _buildActionButton(BuildContext context, TabChoice choice) {
@@ -169,7 +183,8 @@ class _MainPageState extends State<MainPage>
             Icons.add,
             color: Colors.white,
           ),
-          onPressed: null,
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => GoalForm())),
         );
         break;
       case 2:
@@ -196,40 +211,6 @@ class _MainPageState extends State<MainPage>
 
     return result;
   }
-
-  void _handlePopupMenuChoice(String choice) {
-    // TODO: Implement here
-    if (choice == PopupChoice.addGoal) {
-      Navigator.push(this.context, MaterialPageRoute(builder: (context) => GoalForm()));
-    } else {
-
-    }
-
-    print(choice);
-  }
 }
 
-class TabChoice {
-  final String title;
-  final Icon icon;
-  final Widget action;
 
-  const TabChoice({this.title, this.icon, this.action});
-}
-
-const List<TabChoice> choices = const <TabChoice>[
-  const TabChoice(title: 'Home', icon: Icon(Icons.home)),
-  const TabChoice(title: 'Goal', icon: Icon(FontAwesomeIcons.bullseye)),
-  const TabChoice(title: 'Habit', icon: Icon(Icons.calendar_today)),
-  const TabChoice(title: 'Diary', icon: Icon(FontAwesomeIcons.journalWhills)),
-];
-
-class PopupChoice {
-  static const String addGoal = 'Add Goal';
-  static const String addHabit = 'Add Habit';
-
-  static const List<String> choices = <String>[
-    addGoal,
-    addHabit,
-  ];
-}
