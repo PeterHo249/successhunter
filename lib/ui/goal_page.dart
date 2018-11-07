@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -7,6 +10,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/utils/formatter.dart';
 import 'package:successhunter/ui/goal_form.dart';
 import 'package:successhunter/ui/goal_detail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GoalPage extends StatefulWidget {
   @override
@@ -16,7 +20,8 @@ class GoalPage extends StatefulWidget {
 }
 
 class GoalPageState extends State<GoalPage> {
-  final goals = <Goal>[
+  var documentIds = <String>[];
+  var goals = <Goal>[
     Goal(
       title: 'First goal',
       startDate: DateTime.now(),
@@ -34,6 +39,24 @@ class GoalPageState extends State<GoalPage> {
       currentValue: 40,
       unit: 'USD',
       type: GoalTypeEnum.finance,
+      milestones: <Milestone>[
+        Milestone(
+          title: 'First milestone',
+          targetValue: 20,
+          targetDate: DateTime.parse('20181108'),
+          isDone: true,
+        ),
+        Milestone(
+          title: 'Second milestone',
+          targetValue: 20,
+          targetDate: DateTime.parse('20181110'),
+        ),
+        Milestone(
+          title: 'Third milestone',
+          targetValue: 20,
+          targetDate: DateTime.parse('20181112'),
+        ),
+      ],
     ),
   ];
 
@@ -42,11 +65,27 @@ class GoalPageState extends State<GoalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: Theme.Colors.primaryGradient,
-      ),
-      child: _buildSlidableList(context),
+    return StreamBuilder(
+      stream: DataFeeder.instance.getGoalList(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        goals = snapshot.data.documents
+            .map((documentSnapshot) =>
+                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
+            .toList();
+
+        documentIds = snapshot.data.documents
+            .map((documentSnapshot) => documentSnapshot.documentID)
+            .toList();
+
+        return Container(
+          decoration: BoxDecoration(
+            gradient: Theme.Colors.primaryGradient,
+          ),
+          child: _buildSlidableList(context),
+        );
+      },
     );
   }
 
@@ -56,7 +95,7 @@ class GoalPageState extends State<GoalPage> {
       onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GoalDetail(item: item),
+              builder: (context) => GoalDetail(documentId: documentIds[index],),
             ),
           ),
       child: Card(
@@ -131,7 +170,9 @@ class GoalPageState extends State<GoalPage> {
           SlideActionType.primary: 1.0,
         },
         onDismissed: (actionType) {
-          print(actionType == SlideActionType.primary ? 'Edit' : 'Delete');
+          if (actionType == SlideActionType.secondary) {
+            DataFeeder.instance.deleteGoal(documentIds[index]);
+          }
         },
       ),
       actions: <Widget>[
@@ -142,7 +183,7 @@ class GoalPageState extends State<GoalPage> {
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GoalForm(item: goals[index]),
+                  builder: (context) => GoalForm(documentId: documentIds[index],),
                 ),
               ),
         ),
@@ -166,5 +207,4 @@ class GoalPageState extends State<GoalPage> {
       },
     );
   }
-
 }

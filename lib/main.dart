@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
 import 'package:successhunter/ui/main_page.dart';
+import 'package:successhunter/model/data_feeder.dart';
 
 
 
@@ -30,8 +31,18 @@ class MyApp extends StatelessWidget {
           return SplashPage();
         } else {
           if (snapshot.hasData) {
+            // Log
             print('this in handlecurrentscreen');
             print(snapshot.data);
+
+            DataFeeder.instance.setCollectionId(snapshot.data.uid);
+            var metadata = snapshot.data.metadata;
+            if (metadata.creationTimestamp == metadata.lastSignInTimestamp) {
+              print('New User');
+              DataFeeder.instance.initializeDatabase();
+            } else {
+              print('Old User');
+            }
             return MainPage(user: snapshot.data,);
           }
           return LoginPage();

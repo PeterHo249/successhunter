@@ -6,8 +6,15 @@ import 'package:successhunter/model/habit.dart';
 import 'dart:core';
 import 'package:successhunter/utils/formatter.dart';
 
-class HomePage extends StatelessWidget {
-  final goals = <Goal>[
+class HomePage extends StatefulWidget {
+  @override
+  HomePageState createState() {
+    return new HomePageState();
+  }
+}
+
+class HomePageState extends State<HomePage> {
+  var goals = <Goal>[
     Goal(
       title: 'First goal',
       startDate: DateTime.now(),
@@ -225,49 +232,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTaskCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-      child: Card(
-        elevation: 5.0,
-        child: Container(
-          height: 250.0,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Today Task',
-                  style: TextStyle(
-                    fontFamily: 'WorkSansBold',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    height: 190.0,
-                    child: PageView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: habits.length,
-                      controller: PageController(viewportFraction: 1.0),
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildTaskItem(context, habits[index]);
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildGoalItem(BuildContext context, Goal goalItem) {
     return Container(
       child: Column(
@@ -317,6 +281,49 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTaskCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+      child: Card(
+        elevation: 5.0,
+        child: Container(
+          height: 250.0,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Today Task',
+                  style: TextStyle(
+                    fontFamily: 'WorkSansBold',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Container(
+                    height: 190.0,
+                    child: PageView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: habits.length,
+                      controller: PageController(viewportFraction: 1.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        return _buildTaskItem(context, habits[index]);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -397,5 +404,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }
