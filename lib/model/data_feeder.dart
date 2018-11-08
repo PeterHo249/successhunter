@@ -83,6 +83,33 @@ class DataFeeder {
     );
   }
 
+  overwriteGoal(String documentId, Goal item) async {
+    final TransactionHandler createTransaction =
+        (Transaction transaction) async {
+      final DocumentSnapshot documentSnapshot = await transaction.get(Firestore
+          .instance
+          .collection(mainCollectionId)
+          .document('goals')
+          .collection('goals')
+          .document(documentId));
+
+      var initGoal = item;
+
+      print('${json.decode(json.encode(initGoal))}');
+      await transaction.set(
+          documentSnapshot.reference, json.decode(json.encode(initGoal)));
+
+      return initGoal.toJson();
+    };
+
+    return Firestore.instance.runTransaction(createTransaction).catchError(
+          (error) {
+        print('error: $error');
+        return null;
+      },
+    );
+  }
+
   Stream<QuerySnapshot> getGoalList({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = Firestore.instance
         .collection(mainCollectionId)

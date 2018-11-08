@@ -154,10 +154,12 @@ class _GoalDetailState extends State<GoalDetail> {
       case GoalDetailPopupChoiceEnum.addMilestone:
         Navigator.push(
           this.context,
-          MaterialPageRoute(builder: (context) => MilestoneForm()),
+          MaterialPageRoute(builder: (context) => MilestoneForm(documentId: widget.documentId,)),
         );
         break;
       case GoalDetailPopupChoiceEnum.completeGoal:
+        item.isDone = true;
+        DataFeeder.instance.overwriteGoal(widget.documentId, item);
         break;
       case GoalDetailPopupChoiceEnum.editGoal:
         Navigator.push(

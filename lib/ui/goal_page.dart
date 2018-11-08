@@ -193,7 +193,7 @@ class GoalPageState extends State<GoalPage> {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => print('deleted'),
+          onTap: () => DataFeeder.instance.deleteGoal(documentIds[index]),
         ),
       ],
     );

@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/ui/goal_detail.dart';
 import 'dart:core';
 import 'package:successhunter/utils/formatter.dart';
 
@@ -14,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  var documentIds = <String>[];
   var goals = <Goal>[
     Goal(
       title: 'First goal',
@@ -190,97 +196,121 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildGoalCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-      child: Card(
-        elevation: 5.0,
-        child: Container(
-          height: 250.0,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Your Goals',
-                  style: TextStyle(
-                    fontFamily: 'WorkSansBold',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    height: 190.0,
-                    child: PageView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: goals.length,
-                      controller: PageController(viewportFraction: 1.0),
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildGoalItem(context, goals[index]);
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+    return StreamBuilder(
+      stream: DataFeeder.instance.getGoalList(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
 
-  Widget _buildGoalItem(BuildContext context, Goal goalItem) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            width: 300.0,
-            child: Text(
-              goalItem.title,
-              style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                width: 250.0,
-                height: 100.0,
+        goals = snapshot.data.documents
+            .map((documentSnapshot) =>
+            Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
+            .toList();
+
+        documentIds = snapshot.data.documents
+            .map((documentSnapshot) => documentSnapshot.documentID)
+            .toList();
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+          child: Card(
+            elevation: 5.0,
+            child: Container(
+              height: 250.0,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
-                      style: TextStyle(fontSize: 16.0),
+                      'Your Goals',
+                      style: TextStyle(
+                        fontFamily: 'WorkSansBold',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
                     ),
-                    Text(
-                      'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Container(
+                        height: 190.0,
+                        child: PageView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: goals.length,
+                          controller: PageController(viewportFraction: 1.0),
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildGoalItem(context, goals[index], documentIds[index]);
+                          },
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
-              CircularPercentIndicator(
-                radius: 100.0,
-                lineWidth: 10.0,
-                percent: goalItem.getDonePercent(),
-                circularStrokeCap: CircularStrokeCap.round,
-                backgroundColor: Colors.grey[300],
-                progressColor: Colors.blue[500],
-                animation: true,
-                animationDuration: 1500,
-                center: Text('${goalItem.getDonePercent() * 100} %'),
-              ),
-            ],
+            ),
           ),
-        ],
+        );
+      },
+    );
+  }
+
+  Widget _buildGoalItem(BuildContext context, Goal goalItem, String documentId) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GoalDetail(documentId: documentId,),
+        ),
+      ),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 300.0,
+              child: Text(
+                goalItem.title,
+                style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(
+                  width: 250.0,
+                  height: 100.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Text(
+                        'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                CircularPercentIndicator(
+                  radius: 100.0,
+                  lineWidth: 10.0,
+                  percent: goalItem.getDonePercent(),
+                  circularStrokeCap: CircularStrokeCap.round,
+                  backgroundColor: Colors.grey[300],
+                  progressColor: Colors.blue[500],
+                  animation: true,
+                  animationDuration: 1500,
+                  center: Text('${goalItem.getDonePercent() * 100} %'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
