@@ -18,10 +18,13 @@ class GoalForm extends StatefulWidget {
 }
 
 class _GoalFormState extends State<GoalForm> {
+
+  /// Variable
   final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
   Goal item;
 
+  /// Business process
   Future _savePressed() async {
     final form = _goalFormKey.currentState;
     if (form.validate()) {
@@ -37,6 +40,7 @@ class _GoalFormState extends State<GoalForm> {
     }
   }
 
+  /// Build layout
   @override
   Widget build(BuildContext context) {
     if (widget.documentId == null) {

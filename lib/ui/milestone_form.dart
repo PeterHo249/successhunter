@@ -18,11 +18,13 @@ class MilestoneForm extends StatefulWidget {
 }
 
 class _MilestoneFormState extends State<MilestoneForm> {
+  /// Variable
   final GlobalKey<FormState> _milestoneFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
   Goal goalItem;
   Milestone milestoneItem;
 
+  /// Business process
   Future _savePressed() async {
     final form = _milestoneFormKey.currentState;
     if (form.validate()) {
@@ -37,6 +39,29 @@ class _MilestoneFormState extends State<MilestoneForm> {
     } else {
       _isAutoValidate = true;
     }
+  }
+
+
+  /// Build layout
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: DataFeeder.instance.getGoal(widget.documentId),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+
+        if (widget.index == null) {
+          milestoneItem = Milestone();
+        } else {
+          milestoneItem = goalItem.milestones[widget.index];
+        }
+
+        return _buildForm();
+      },
+    );
   }
 
   Widget _buildForm() {
@@ -112,28 +137,5 @@ class _MilestoneFormState extends State<MilestoneForm> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
 
-      return StreamBuilder(
-        stream: DataFeeder.instance.getGoal(widget.documentId),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-
-          goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
-
-          if (widget.index == null) {
-            milestoneItem = Milestone();
-          } else {
-            milestoneItem = goalItem.milestones[widget.index];
-          }
-
-          return _buildForm();
-        },
-      );
-
-
-
-  }
 }

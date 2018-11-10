@@ -20,49 +20,15 @@ class GoalPage extends StatefulWidget {
 }
 
 class GoalPageState extends State<GoalPage> {
-  var documentIds = <String>[];
-  var goals = <Goal>[
-    Goal(
-      title: 'First goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181106'),
-    ),
-    Goal(
-      title: 'Second goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181206'),
-    ),
-    Goal(
-      title: 'Third goal',
-      targetDate: DateTime.parse('20190112'),
-      targetValue: 300,
-      currentValue: 40,
-      unit: 'USD',
-      type: GoalTypeEnum.finance,
-      milestones: <Milestone>[
-        Milestone(
-          title: 'First milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181108'),
-          isDone: true,
-        ),
-        Milestone(
-          title: 'Second milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181110'),
-        ),
-        Milestone(
-          title: 'Third milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181112'),
-        ),
-      ],
-    ),
-  ];
 
-  // Slidable controller
+  /// Variable
+  var documentIds = <String>[];
+  var goals = <Goal>[];
   final SlidableController slidableController = SlidableController();
 
+  /// Business process
+
+  /// Build layout
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(

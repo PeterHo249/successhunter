@@ -19,19 +19,10 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+
+  /// Variable
   var documentIds = <String>[];
-  var goals = <Goal>[
-    Goal(
-      title: 'First goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181106'),
-    ),
-    Goal(
-      title: 'Second goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181206'),
-    ),
-  ];
+  var goals = <Goal>[];
 
   final habits = <Habit>[
     Habit(
@@ -43,6 +34,10 @@ class HomePageState extends State<HomePage> {
     ),
   ];
 
+  /// Business process
+
+
+  /// Build layout
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -21,8 +21,37 @@ class GoalDetail extends StatefulWidget {
 }
 
 class _GoalDetailState extends State<GoalDetail> {
+  /// Variable
   Goal item;
 
+  /// Business process
+  void _handlePopupMenuChoice(String choice) {
+    // TODO: Implement here
+    switch (choice) {
+      case GoalDetailPopupChoiceEnum.addMilestone:
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => MilestoneForm(documentId: widget.documentId,)),
+        );
+        break;
+      case GoalDetailPopupChoiceEnum.completeGoal:
+        item.isDone = true;
+        DataFeeder.instance.overwriteGoal(widget.documentId, item);
+        break;
+      case GoalDetailPopupChoiceEnum.editGoal:
+        Navigator.push(
+          this.context,
+          MaterialPageRoute(builder: (context) => GoalForm(documentId: widget.documentId,)),
+        );
+        break;
+      case GoalDetailPopupChoiceEnum.shareGoal:
+        break;
+    }
+
+    print(choice);
+  }
+
+  /// Build Layout
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -146,32 +175,6 @@ class _GoalDetailState extends State<GoalDetail> {
         }).toList();
       },
     );
-  }
-
-  void _handlePopupMenuChoice(String choice) {
-    // TODO: Implement here
-    switch (choice) {
-      case GoalDetailPopupChoiceEnum.addMilestone:
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => MilestoneForm(documentId: widget.documentId,)),
-        );
-        break;
-      case GoalDetailPopupChoiceEnum.completeGoal:
-        item.isDone = true;
-        DataFeeder.instance.overwriteGoal(widget.documentId, item);
-        break;
-      case GoalDetailPopupChoiceEnum.editGoal:
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(builder: (context) => GoalForm(documentId: widget.documentId,)),
-        );
-        break;
-      case GoalDetailPopupChoiceEnum.shareGoal:
-        break;
-    }
-
-    print(choice);
   }
 
   List<Widget> _buildMilestoneList() {
