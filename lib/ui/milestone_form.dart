@@ -18,11 +18,13 @@ class MilestoneForm extends StatefulWidget {
 }
 
 class _MilestoneFormState extends State<MilestoneForm> {
+  /// Variable
   final GlobalKey<FormState> _milestoneFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
   Goal goalItem;
   Milestone milestoneItem;
 
+  /// Business process
   Future _savePressed() async {
     final form = _milestoneFormKey.currentState;
     if (form.validate()) {
@@ -37,6 +39,33 @@ class _MilestoneFormState extends State<MilestoneForm> {
     } else {
       _isAutoValidate = true;
     }
+  }
+
+  /// Build layout
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: DataFeeder.instance.getGoal(widget.documentId),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+
+        goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+
+        if (widget.index == null) {
+          milestoneItem = Milestone();
+        } else {
+          milestoneItem = goalItem.milestones[widget.index];
+        }
+
+        return _buildForm();
+      },
+    );
   }
 
   Widget _buildForm() {
@@ -73,7 +102,8 @@ class _MilestoneFormState extends State<MilestoneForm> {
                   label: 'Title',
                   hintText: 'Enter your goal title',
                   autovalidate: _isAutoValidate,
-                  initialValue: milestoneItem == null ? null : milestoneItem.title,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.title,
                   requiredIndicator: Text(
                     '*',
                     style: TextStyle(color: Colors.red),
@@ -88,7 +118,8 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsParagraph(
                   label: 'Description',
-                  initialValue: milestoneItem == null ? null : milestoneItem.description,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.description,
                   onSaved: (value) => milestoneItem.description = value,
                 ),
                 CardSettingsHeader(
@@ -96,12 +127,14 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsInt(
                   label: 'Value',
-                  initialValue: milestoneItem == null ? 0 : milestoneItem.targetValue,
+                  initialValue:
+                      milestoneItem == null ? 0 : milestoneItem.targetValue,
                   onSaved: (value) => milestoneItem.targetValue = value,
                 ),
                 CardSettingsDatePicker(
                   label: 'Date',
-                  initialValue: milestoneItem == null ? null : milestoneItem.targetDate,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.targetDate,
                   onSaved: (value) => milestoneItem.targetDate = value,
                 ),
               ],
@@ -110,30 +143,5 @@ class _MilestoneFormState extends State<MilestoneForm> {
         ],
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-      return StreamBuilder(
-        stream: DataFeeder.instance.getGoal(widget.documentId),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-
-          goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
-
-          if (widget.index == null) {
-            milestoneItem = Milestone();
-          } else {
-            milestoneItem = goalItem.milestones[widget.index];
-          }
-
-          return _buildForm();
-        },
-      );
-
-
-
   }
 }

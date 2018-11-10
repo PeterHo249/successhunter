@@ -39,11 +39,25 @@ class _MainPageState extends State<MainPage>
     super.dispose();
   }
 
+  /// Business process
+
   void _handleSelectedTab() {
     setState(() {
       _choice = choices[_tabController.index];
     });
   }
+
+  void _handlePopupMenuChoice(String choice) {
+    // TODO: Implement here
+    if (choice == MainPagePopupChoiceEnum.addGoal) {
+      Navigator.push(
+          this.context, MaterialPageRoute(builder: (context) => GoalForm()));
+    } else {}
+
+    print(choice);
+  }
+
+  /// Build layout
 
   @override
   Widget build(BuildContext context) {
@@ -157,16 +171,6 @@ class _MainPageState extends State<MainPage>
         }).toList();
       },
     );
-  }
-
-  void _handlePopupMenuChoice(String choice) {
-    // TODO: Implement here
-    if (choice == MainPagePopupChoiceEnum.addGoal) {
-      Navigator.push(
-          this.context, MaterialPageRoute(builder: (context) => GoalForm()));
-    } else {}
-
-    print(choice);
   }
 
   Widget _buildActionButton(BuildContext context, TabChoice choice) {

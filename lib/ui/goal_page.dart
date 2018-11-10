@@ -20,55 +20,27 @@ class GoalPage extends StatefulWidget {
 }
 
 class GoalPageState extends State<GoalPage> {
+  /// Variable
   var documentIds = <String>[];
-  var goals = <Goal>[
-    Goal(
-      title: 'First goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181106'),
-    ),
-    Goal(
-      title: 'Second goal',
-      startDate: DateTime.now(),
-      targetDate: DateTime.parse('20181206'),
-    ),
-    Goal(
-      title: 'Third goal',
-      targetDate: DateTime.parse('20190112'),
-      targetValue: 300,
-      currentValue: 40,
-      unit: 'USD',
-      type: GoalTypeEnum.finance,
-      milestones: <Milestone>[
-        Milestone(
-          title: 'First milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181108'),
-          isDone: true,
-        ),
-        Milestone(
-          title: 'Second milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181110'),
-        ),
-        Milestone(
-          title: 'Third milestone',
-          targetValue: 20,
-          targetDate: DateTime.parse('20181112'),
-        ),
-      ],
-    ),
-  ];
-
-  // Slidable controller
+  var goals = <Goal>[];
   final SlidableController slidableController = SlidableController();
+  double screenWidth = 0.0;
+  double screenHeight = 0.0;
 
+  /// Business process
+
+  /// Build layout
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: DataFeeder.instance.getGoalList(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
         goals = snapshot.data.documents
             .map((documentSnapshot) =>
@@ -91,11 +63,16 @@ class GoalPageState extends State<GoalPage> {
 
   Widget _buildItemTile(BuildContext context, int index) {
     Goal item = goals[index];
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GoalDetail(documentId: documentIds[index],),
+              builder: (context) => GoalDetail(
+                    documentId: documentIds[index],
+                  ),
             ),
           ),
       child: Card(
@@ -116,29 +93,36 @@ class GoalPageState extends State<GoalPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         child: Text(
                           item.title,
-                          style: TextStyle(
-                              fontFamily: 'WorkSansBold', fontSize: 18.0),
+                          style: Theme.header4Style,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Container(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text('${item.targetValue} ${item.unit}'),
                             Text(
-                                '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain'),
-                            Text('${Formatter.getDateString(item.targetDate)}'),
+                              '${item.targetValue} ${item.unit}',
+                              style: Theme.contentStyle,
+                            ),
+                            Text(
+                              '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',
+                              style: Theme.contentStyle,
+                            ),
+                            Text(
+                              '${Formatter.getDateString(item.targetDate)}',
+                              style: Theme.contentStyle,
+                            ),
                           ],
                         ),
                       ),
                       LinearPercentIndicator(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         percent: item.getDonePercent(),
                         backgroundColor: Colors.grey[300],
                         progressColor: TypeDecorationEnum
@@ -183,7 +167,9 @@ class GoalPageState extends State<GoalPage> {
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GoalForm(documentId: documentIds[index],),
+                  builder: (context) => GoalForm(
+                        documentId: documentIds[index],
+                      ),
                 ),
               ),
         ),
