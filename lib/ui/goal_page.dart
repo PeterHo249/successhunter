@@ -96,8 +96,7 @@ class GoalPageState extends State<GoalPage> {
                         width: screenWidth - 130.0,
                         child: Text(
                           item.title,
-                          style: TextStyle(
-                              fontFamily: 'WorkSansBold', fontSize: 18.0),
+                          style: Theme.header4Style,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -107,10 +106,18 @@ class GoalPageState extends State<GoalPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text('${item.targetValue} ${item.unit}'),
                             Text(
-                                '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain'),
-                            Text('${Formatter.getDateString(item.targetDate)}'),
+                              '${item.targetValue} ${item.unit}',
+                              style: Theme.contentStyle,
+                            ),
+                            Text(
+                              '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',
+                              style: Theme.contentStyle,
+                            ),
+                            Text(
+                              '${Formatter.getDateString(item.targetDate)}',
+                              style: Theme.contentStyle,
+                            ),
                           ],
                         ),
                       ),

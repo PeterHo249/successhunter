@@ -87,11 +87,7 @@ class HomePageState extends State<HomePage> {
                         child: Text(
                           'Display name',
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'WorkSansBold',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25.0,
-                          ),
+                          style: Theme.header1Style,
                         ),
                       ),
                     ),
@@ -104,17 +100,11 @@ class HomePageState extends State<HomePage> {
                           children: <Widget>[
                             Text(
                               'Lv: 13',
-                              style: TextStyle(
-                                fontFamily: 'WorkSansBold',
-                                fontSize: 18.0,
-                              ),
+                              style: Theme.header4Style,
                             ),
                             Text(
                               'Gold: 1300',
-                              style: TextStyle(
-                                fontFamily: 'WorkSansBold',
-                                fontSize: 18.0,
-                              ),
+                              style: Theme.header4Style,
                             ),
                           ],
                         ),
@@ -129,17 +119,11 @@ class HomePageState extends State<HomePage> {
                           children: <Widget>[
                             Text(
                               'Exp',
-                              style: TextStyle(
-                                fontFamily: 'WorkSansBold',
-                                fontSize: 18.0,
-                              ),
+                              style: Theme.header4Style,
                             ),
                             Text(
                               '80/150',
-                              style: TextStyle(
-                                fontFamily: 'WorkSansBold',
-                                fontSize: 18.0,
-                              ),
+                              style: Theme.header4Style,
                             ),
                           ],
                         ),
@@ -227,11 +211,7 @@ class HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Text(
                       'Your Goals',
-                      style: TextStyle(
-                        fontFamily: 'WorkSansBold',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      ),
+                      style: Theme.header2Style,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
@@ -278,7 +258,7 @@ class HomePageState extends State<HomePage> {
               width: screenWidth - 30.0,
               child: Text(
                 goalItem.title,
-                style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),
+                style: Theme.header4Style,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -294,11 +274,11 @@ class HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Text(
                         'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
-                        style: TextStyle(fontSize: 16.0),
+                        style: Theme.contentStyle,
                       ),
                       Text(
                         'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
-                        style: TextStyle(fontSize: 16.0),
+                        style: Theme.contentStyle,
                       ),
                     ],
                   ),
@@ -337,11 +317,7 @@ class HomePageState extends State<HomePage> {
               children: <Widget>[
                 Text(
                   'Today Task',
-                  style: TextStyle(
-                    fontFamily: 'WorkSansBold',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                  ),
+                  style: Theme.header2Style,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
@@ -375,7 +351,7 @@ class HomePageState extends State<HomePage> {
         children: <Widget>[
           Text(
             'Due time: 19:00',
-            style: TextStyle(fontSize: 16.0),
+            style: Theme.contentStyle,
           ),
           Container(
             width: 30.0,
@@ -398,11 +374,11 @@ class HomePageState extends State<HomePage> {
             children: <Widget>[
               Text(
                 'Due time: 19:00',
-                style: TextStyle(fontSize: 16.0),
+                style: Theme.contentStyle,
               ),
               Text(
                 '8/10 times',
-                style: TextStyle(fontSize: 16.0),
+                style: Theme.contentStyle,
               ),
             ],
           ),
@@ -431,7 +407,7 @@ class HomePageState extends State<HomePage> {
               width: screenWidth - 30.0,
               child: Text(
                 taskItem.title,
-                style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),
+                style: Theme.header4Style,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

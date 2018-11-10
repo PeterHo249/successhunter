@@ -121,9 +121,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                     width: screenWidth - 130.0,
                                     child: Text(
                                       item.title,
-                                      style: TextStyle(
-                                          fontFamily: 'WorkSansBold',
-                                          fontSize: 18.0),
+                                      style: Theme.header2Style,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -136,11 +134,17 @@ class _GoalDetailState extends State<GoalDetail> {
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
-                                            '${item.targetValue} ${item.unit}'),
+                                          '${item.targetValue} ${item.unit}',
+                                          style: Theme.contentStyle,
+                                        ),
                                         Text(
-                                            '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain'),
+                                          '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',
+                                          style: Theme.contentStyle,
+                                        ),
                                         Text(
-                                            '${Formatter.getDateString(item.targetDate)}'),
+                                          '${Formatter.getDateString(item.targetDate)}',
+                                          style: Theme.contentStyle,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -242,8 +246,7 @@ class _GoalDetailState extends State<GoalDetail> {
                     width: screenWidth - 130.0,
                     child: Text(
                       milestones[i].title,
-                      style:
-                          TextStyle(fontFamily: 'WorkSansBold', fontSize: 15.0),
+                      style: Theme.header4Style,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -251,8 +254,14 @@ class _GoalDetailState extends State<GoalDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text('${milestones[i].targetValue} ${item.unit}'),
-                      Text(Formatter.getDateString(milestones[i].targetDate)),
+                      Text(
+                        '${milestones[i].targetValue} ${item.unit}',
+                        style: Theme.contentStyle,
+                      ),
+                      Text(
+                        Formatter.getDateString(milestones[i].targetDate),
+                        style: Theme.contentStyle,
+                      ),
                     ],
                   ),
                 ],
@@ -313,8 +322,7 @@ class _GoalDetailState extends State<GoalDetail> {
                   width: screenWidth - 130.0,
                   child: Text(
                     'Start Goal',
-                    style:
-                        TextStyle(fontFamily: 'WorkSansBold', fontSize: 15.0),
+                    style: Theme.header4Style,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -323,7 +331,10 @@ class _GoalDetailState extends State<GoalDetail> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(),
-                    Text(Formatter.getDateString(item.startDate)),
+                    Text(
+                      Formatter.getDateString(item.startDate),
+                      style: Theme.contentStyle,
+                    ),
                   ],
                 ),
               ],
