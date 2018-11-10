@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   /// Variable
   var documentIds = <String>[];
   var goals = <Goal>[];
@@ -33,13 +32,17 @@ class HomePageState extends State<HomePage> {
       isYesNoTask: false,
     ),
   ];
+  double screenWidth = 0.0;
+  double screenHeight = 0.0;
 
   /// Business process
-
 
   /// Build layout
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       decoration: BoxDecoration(
         gradient: Theme.Colors.primaryGradient,
@@ -80,7 +83,7 @@ class HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 30.0),
                       child: SizedBox(
-                        width: 190.0,
+                        width: screenWidth - 220.0,
                         child: Text(
                           'Display name',
                           overflow: TextOverflow.ellipsis,
@@ -95,7 +98,7 @@ class HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15.0),
                       child: SizedBox(
-                        width: 190.0,
+                        width: screenWidth - 220.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -120,7 +123,7 @@ class HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5.0),
                       child: SizedBox(
-                        width: 190.0,
+                        width: screenWidth - 220.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -143,7 +146,7 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                     LinearPercentIndicator(
-                      width: 190.0,
+                      width: screenWidth - 220.0,
                       lineHeight: 10.0,
                       percent: 0.52,
                       animation: true,
@@ -194,11 +197,16 @@ class HomePageState extends State<HomePage> {
     return StreamBuilder(
       stream: DataFeeder.instance.getGoalList(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
         goals = snapshot.data.documents
             .map((documentSnapshot) =>
-            Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
+                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
             .toList();
 
         documentIds = snapshot.data.documents
@@ -234,7 +242,8 @@ class HomePageState extends State<HomePage> {
                           itemCount: goals.length,
                           controller: PageController(viewportFraction: 1.0),
                           itemBuilder: (BuildContext context, int index) {
-                            return _buildGoalItem(context, goals[index], documentIds[index]);
+                            return _buildGoalItem(
+                                context, goals[index], documentIds[index]);
                           },
                         ),
                       ),
@@ -249,21 +258,24 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGoalItem(BuildContext context, Goal goalItem, String documentId) {
+  Widget _buildGoalItem(
+      BuildContext context, Goal goalItem, String documentId) {
     return InkWell(
       onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GoalDetail(documentId: documentId,),
-        ),
-      ),
+            context,
+            MaterialPageRoute(
+              builder: (context) => GoalDetail(
+                    documentId: documentId,
+                  ),
+            ),
+          ),
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              width: 300.0,
+              width: screenWidth - 30.0,
               child: Text(
                 goalItem.title,
                 style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),
@@ -274,7 +286,7 @@ class HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 SizedBox(
-                  width: 250.0,
+                  width: screenWidth - 160.0,
                   height: 100.0,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -316,7 +328,7 @@ class HomePageState extends State<HomePage> {
       child: Card(
         elevation: 5.0,
         child: Container(
-          height: 250.0,
+          height: screenWidth - 160.0,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -408,7 +420,7 @@ class HomePageState extends State<HomePage> {
 
     return Container(
       height: 190.0,
-      width: 300.0,
+      width: screenWidth - 30.0,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -416,7 +428,7 @@ class HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              width: 300.0,
+              width: screenWidth - 30.0,
               child: Text(
                 taskItem.title,
                 style: TextStyle(fontFamily: 'WorkSansBold', fontSize: 18.0),

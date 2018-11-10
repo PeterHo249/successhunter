@@ -18,7 +18,6 @@ class GoalForm extends StatefulWidget {
 }
 
 class _GoalFormState extends State<GoalForm> {
-
   /// Variable
   final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
@@ -51,7 +50,12 @@ class _GoalFormState extends State<GoalForm> {
         stream: DataFeeder.instance.getGoal(widget.documentId),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
+          if (!snapshot.hasData)
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
 
           item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
 

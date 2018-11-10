@@ -20,11 +20,12 @@ class GoalPage extends StatefulWidget {
 }
 
 class GoalPageState extends State<GoalPage> {
-
   /// Variable
   var documentIds = <String>[];
   var goals = <Goal>[];
   final SlidableController slidableController = SlidableController();
+  double screenWidth = 0.0;
+  double screenHeight = 0.0;
 
   /// Business process
 
@@ -34,7 +35,12 @@ class GoalPageState extends State<GoalPage> {
     return StreamBuilder(
       stream: DataFeeder.instance.getGoalList(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
         goals = snapshot.data.documents
             .map((documentSnapshot) =>
@@ -57,11 +63,16 @@ class GoalPageState extends State<GoalPage> {
 
   Widget _buildItemTile(BuildContext context, int index) {
     Goal item = goals[index];
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GoalDetail(documentId: documentIds[index],),
+              builder: (context) => GoalDetail(
+                    documentId: documentIds[index],
+                  ),
             ),
           ),
       child: Card(
@@ -82,7 +93,7 @@ class GoalPageState extends State<GoalPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         child: Text(
                           item.title,
                           style: TextStyle(
@@ -91,7 +102,7 @@ class GoalPageState extends State<GoalPage> {
                         ),
                       ),
                       Container(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +115,7 @@ class GoalPageState extends State<GoalPage> {
                         ),
                       ),
                       LinearPercentIndicator(
-                        width: 280.0,
+                        width: screenWidth - 130.0,
                         percent: item.getDonePercent(),
                         backgroundColor: Colors.grey[300],
                         progressColor: TypeDecorationEnum
@@ -149,7 +160,9 @@ class GoalPageState extends State<GoalPage> {
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GoalForm(documentId: documentIds[index],),
+                  builder: (context) => GoalForm(
+                        documentId: documentIds[index],
+                      ),
                 ),
               ),
         ),

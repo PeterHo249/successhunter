@@ -23,6 +23,8 @@ class GoalDetail extends StatefulWidget {
 class _GoalDetailState extends State<GoalDetail> {
   /// Variable
   Goal item;
+  double screenWidth = 0.0;
+  double screenHeight = 0.0;
 
   /// Business process
   void _handlePopupMenuChoice(String choice) {
@@ -31,7 +33,10 @@ class _GoalDetailState extends State<GoalDetail> {
       case GoalDetailPopupChoiceEnum.addMilestone:
         Navigator.push(
           this.context,
-          MaterialPageRoute(builder: (context) => MilestoneForm(documentId: widget.documentId,)),
+          MaterialPageRoute(
+              builder: (context) => MilestoneForm(
+                    documentId: widget.documentId,
+                  )),
         );
         break;
       case GoalDetailPopupChoiceEnum.completeGoal:
@@ -41,7 +46,10 @@ class _GoalDetailState extends State<GoalDetail> {
       case GoalDetailPopupChoiceEnum.editGoal:
         Navigator.push(
           this.context,
-          MaterialPageRoute(builder: (context) => GoalForm(documentId: widget.documentId,)),
+          MaterialPageRoute(
+              builder: (context) => GoalForm(
+                    documentId: widget.documentId,
+                  )),
         );
         break;
       case GoalDetailPopupChoiceEnum.shareGoal:
@@ -54,11 +62,19 @@ class _GoalDetailState extends State<GoalDetail> {
   /// Build Layout
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return StreamBuilder(
       stream: DataFeeder.instance.getGoal(widget.documentId),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
         item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
 
@@ -102,7 +118,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(
-                                    width: 280.0,
+                                    width: screenWidth - 130.0,
                                     child: Text(
                                       item.title,
                                       style: TextStyle(
@@ -112,7 +128,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                     ),
                                   ),
                                   Container(
-                                    width: 280.0,
+                                    width: screenWidth - 130.0,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -129,7 +145,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                     ),
                                   ),
                                   LinearPercentIndicator(
-                                    width: 280.0,
+                                    width: screenWidth - 130.0,
                                     percent: item.getDonePercent(),
                                     backgroundColor: Colors.grey[300],
                                     progressColor: TypeDecorationEnum
@@ -147,7 +163,7 @@ class _GoalDetailState extends State<GoalDetail> {
                       ),
                     ),
                     Container(
-                      height: 540.0,
+                      height: screenHeight - 220.0,
                       child: ListView(
                         children: _buildMilestoneList(),
                       ),
@@ -217,13 +233,13 @@ class _GoalDetailState extends State<GoalDetail> {
               ),
             ),
             Container(
-              width: 280.0,
+              width: screenWidth - 130.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    width: 280.0,
+                    width: screenWidth - 130.0,
                     child: Text(
                       milestones[i].title,
                       style:
@@ -288,13 +304,13 @@ class _GoalDetailState extends State<GoalDetail> {
             ),
           ),
           Container(
-            width: 280.0,
+            width: screenWidth - 130.0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  width: 280.0,
+                  width: screenWidth - 130.0,
                   child: Text(
                     'Start Goal',
                     style:

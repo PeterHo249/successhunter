@@ -41,7 +41,6 @@ class _MilestoneFormState extends State<MilestoneForm> {
     }
   }
 
-
   /// Build layout
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,12 @@ class _MilestoneFormState extends State<MilestoneForm> {
       stream: DataFeeder.instance.getGoal(widget.documentId),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData)
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
 
         goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
 
@@ -98,7 +102,8 @@ class _MilestoneFormState extends State<MilestoneForm> {
                   label: 'Title',
                   hintText: 'Enter your goal title',
                   autovalidate: _isAutoValidate,
-                  initialValue: milestoneItem == null ? null : milestoneItem.title,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.title,
                   requiredIndicator: Text(
                     '*',
                     style: TextStyle(color: Colors.red),
@@ -113,7 +118,8 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsParagraph(
                   label: 'Description',
-                  initialValue: milestoneItem == null ? null : milestoneItem.description,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.description,
                   onSaved: (value) => milestoneItem.description = value,
                 ),
                 CardSettingsHeader(
@@ -121,12 +127,14 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsInt(
                   label: 'Value',
-                  initialValue: milestoneItem == null ? 0 : milestoneItem.targetValue,
+                  initialValue:
+                      milestoneItem == null ? 0 : milestoneItem.targetValue,
                   onSaved: (value) => milestoneItem.targetValue = value,
                 ),
                 CardSettingsDatePicker(
                   label: 'Date',
-                  initialValue: milestoneItem == null ? null : milestoneItem.targetDate,
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.targetDate,
                   onSaved: (value) => milestoneItem.targetDate = value,
                 ),
               ],
@@ -136,6 +144,4 @@ class _MilestoneFormState extends State<MilestoneForm> {
       ),
     );
   }
-
-
 }
