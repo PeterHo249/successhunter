@@ -65,84 +65,87 @@ class HomePageState extends State<HomePage> {
         elevation: 5.0,
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 180.0,
-                    width: 180.0,
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      height: (screenWidth - 40) * 0.3,
+                      width: (screenWidth - 40) * 0.3,
+                      decoration: BoxDecoration(
+                        color: Colors.yellow,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30.0),
-                      child: SizedBox(
-                        width: screenWidth - 220.0,
-                        child: Text(
-                          'Display name',
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.header1Style,
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        child: SizedBox(
+                          width: (screenWidth - 40) * 0.7,
+                          child: Text(
+                            'Display name',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.header1Style,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: SizedBox(
-                        width: screenWidth - 220.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Lv: 13',
-                              style: Theme.header4Style,
-                            ),
-                            Text(
-                              'Gold: 1300',
-                              style: Theme.header4Style,
-                            ),
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: SizedBox(
+                          width: (screenWidth - 40) * 0.7,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Lv: 13',
+                                style: Theme.header4Style,
+                              ),
+                              Text(
+                                'Gold: 1300',
+                                style: Theme.header4Style,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: SizedBox(
-                        width: screenWidth - 220.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Exp',
-                              style: Theme.header4Style,
-                            ),
-                            Text(
-                              '80/150',
-                              style: Theme.header4Style,
-                            ),
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: SizedBox(
+                          width: (screenWidth - 40) * 0.7,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Exp',
+                                style: Theme.header4Style,
+                              ),
+                              Text(
+                                '80/150',
+                                style: Theme.header4Style,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    LinearPercentIndicator(
-                      width: screenWidth - 220.0,
-                      lineHeight: 10.0,
-                      percent: 0.52,
-                      animation: true,
-                      animationDuration: 1000,
-                      linearStrokeCap: LinearStrokeCap.roundAll,
-                      backgroundColor: Colors.grey[300],
-                      progressColor: Theme.Colors.loginGradientEnd,
-                    ),
-                  ],
-                ),
-              ],
+                      LinearPercentIndicator(
+                        width: (screenWidth - 40) * 0.7,
+                        lineHeight: 10.0,
+                        percent: 0.52,
+                        animation: true,
+                        animationDuration: 1000,
+                        linearStrokeCap: LinearStrokeCap.roundAll,
+                        backgroundColor: Colors.grey[300],
+                        progressColor: Theme.Colors.loginGradientEnd,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -212,12 +215,15 @@ class HomePageState extends State<HomePage> {
                           top: 10.0,
                         ),
                         child: InkWell(
-                          onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GoalForm(),
-                                ),
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GoalForm(),
                               ),
+                            );
+                            setState(() {});
+                          },
                           child: Container(
                             height: 190.0,
                             width: screenWidth,
@@ -229,7 +235,7 @@ class HomePageState extends State<HomePage> {
                                   padding: EdgeInsets.all(15.0),
                                   child: Icon(
                                     Icons.add,
-                                    size: 30.0,
+                                    size: 60.0,
                                     color: Colors.black45,
                                   ),
                                 ),
@@ -348,7 +354,7 @@ class HomePageState extends State<HomePage> {
       child: Card(
         elevation: 5.0,
         child: Container(
-          height: screenWidth - 160.0,
+          height: 250.0,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(

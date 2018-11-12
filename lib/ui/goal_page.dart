@@ -143,7 +143,7 @@ class GoalPageState extends State<GoalPage> {
   }
 
   Widget _buildSlidableTile(BuildContext context, int index) {
-    return Slidable(
+    return Slidable.builder(
       key: Key(goals[index].title),
       delegate: SlidableDrawerDelegate(),
       controller: slidableController,
@@ -159,29 +159,39 @@ class GoalPageState extends State<GoalPage> {
           }
         },
       ),
-      actions: <Widget>[
-        IconSlideAction(
-          caption: 'Edit',
-          color: Colors.blue,
-          icon: Icons.edit,
-          onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GoalForm(
-                        documentId: documentIds[index],
-                      ),
+      actionDelegate: SlideActionBuilderDelegate(
+        builder: (context, index, animation, renderingMode) {
+          return IconSlideAction(
+            caption: 'Edit',
+            color: Colors.blue,
+            icon: Icons.edit,
+            onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GoalForm(
+                          documentId: documentIds[index],
+                        ),
+                  ),
                 ),
-              ),
-        ),
-      ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Delete',
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: () => DataFeeder.instance.deleteGoal(documentIds[index]),
-        ),
-      ],
+          );
+        },
+        actionCount: 1,
+      ),
+      secondaryActionDelegate: SlideActionBuilderDelegate(
+        builder: (context, index, animation, renderingMode) {
+          return IconSlideAction(
+            caption: 'Delete',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () {
+              var state = Slidable.of(context);
+              state.dismiss();
+              DataFeeder.instance.deleteGoal(documentIds[index]);
+            },
+          );
+        },
+        actionCount: 1,
+      ),
     );
   }
 

@@ -40,7 +40,7 @@ class _GoalDetailState extends State<GoalDetail> {
         );
         break;
       case GoalDetailPopupChoiceEnum.completeGoal:
-        item.isDone = true;
+        item.state = ActivityState.done;
         DataFeeder.instance.overwriteGoal(widget.documentId, item);
         break;
       case GoalDetailPopupChoiceEnum.editGoal:

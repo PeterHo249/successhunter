@@ -21,7 +21,7 @@ Goal _$GoalFromJson(Map<String, dynamic> json) {
       targetValue: json['targetValue'] as int,
       unit: json['unit'] as String,
       type: json['type'] as String,
-      isDone: json['isDone'] as bool,
+      state: json['state'] as int,
       doneDate: json['doneDate'] == null
           ? null
           : DateTime.parse(json['doneDate'] as String),
@@ -41,7 +41,7 @@ Map<String, dynamic> _$GoalToJson(Goal instance) => <String, dynamic>{
       'targetValue': instance.targetValue,
       'unit': instance.unit,
       'type': instance.type,
-      'isDone': instance.isDone,
+      'state': instance.state,
       'doneDate': instance.doneDate?.toIso8601String(),
       'milestones': instance.milestones
     };

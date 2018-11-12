@@ -127,3 +127,9 @@ class TypeDecoration {
 
   const TypeDecoration({this.icon, this.color, this.backgroundColor});
 }
+
+class ActivityState {
+  static const int doing = 0;
+  static const int done = 1;
+  static const int failed = 2;
+}

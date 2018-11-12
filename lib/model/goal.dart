@@ -17,7 +17,7 @@ class Goal {
   int targetValue;
   String unit;
   String type;
-  bool isDone;
+  int state;
   DateTime doneDate;
   List<Milestone> milestones;
 
@@ -31,7 +31,7 @@ class Goal {
     this.targetValue = 100,
     this.unit = '%',
     this.type = GoalTypeEnum.career,
-    this.isDone = false,
+    this.state = ActivityState.doing,
     this.doneDate,
     this.milestones,
   }) {
