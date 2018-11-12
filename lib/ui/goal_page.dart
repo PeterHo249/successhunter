@@ -32,39 +32,79 @@ class GoalPageState extends State<GoalPage> {
   /// Build layout
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: DataFeeder.instance.getGoalList(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return Container(
-            child: Center(
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: Theme.Colors.primaryGradient,
+      ),
+      child: StreamBuilder(
+        stream: DataFeeder.instance.getGoalList(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
               child: CircularProgressIndicator(),
-            ),
-          );
+            );
 
-        goals = snapshot.data.documents
-            .map((documentSnapshot) =>
-                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
-            .toList();
+          if (snapshot.data.documents.length == 0) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: screenHeight * 0.3,
+              ),
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GoalForm(),
+                    ),
+                  );
+                  setState(() {});
+                },
+                child: Card(
+                  elevation: 5.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Icon(
+                          Icons.add,
+                          size: 60.0,
+                          color: Colors.black45,
+                        ),
+                      ),
+                      Text(
+                        'Plan a new goal!',
+                        style: Theme.contentStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
 
-        documentIds = snapshot.data.documents
-            .map((documentSnapshot) => documentSnapshot.documentID)
-            .toList();
+          goals = snapshot.data.documents
+              .map((documentSnapshot) => Goal.fromJson(
+                  json.decode(json.encode(documentSnapshot.data))))
+              .toList();
 
-        return Container(
-          decoration: BoxDecoration(
-            gradient: Theme.Colors.primaryGradient,
-          ),
-          child: _buildSlidableList(context),
-        );
-      },
+          documentIds = snapshot.data.documents
+              .map((documentSnapshot) => documentSnapshot.documentID)
+              .toList();
+
+          return _buildSlidableList(context);
+        },
+      ),
     );
   }
 
   Widget _buildItemTile(BuildContext context, int index) {
     Goal item = goals[index];
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
 
     return InkWell(
       onTap: () => Navigator.push(
@@ -106,9 +146,13 @@ class GoalPageState extends State<GoalPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              '${item.targetValue} ${item.unit}',
-                              style: Theme.contentStyle,
+                            SizedBox(
+                              width: 50.0,
+                              child: Text(
+                                '${item.targetValue} ${item.unit}',
+                                style: Theme.contentStyle,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             Text(
                               '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',

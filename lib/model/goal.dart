@@ -6,7 +6,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'goal.g.dart';
 
 @JsonSerializable()
-
 class Goal {
   String title;
   String description;
@@ -72,27 +71,38 @@ class Goal {
       ),
     );
   }
+
+  void completeMilestone(int index) {
+    milestones[index].state = ActivityState.done;
+    currentValue = currentValue + milestones[index].targetValue > targetValue
+        ? targetValue
+        : currentValue + milestones[index].targetValue;
+    if (currentValue == targetValue)
+      state = ActivityState.done;
+  }
 }
+
 @JsonSerializable()
 class Milestone {
   String title;
   String description;
   int targetValue;
   DateTime targetDate;
-  bool isDone;
+  int state;
 
   Milestone({
     this.title,
     this.description,
     this.targetValue = 0,
     this.targetDate,
-    this.isDone = false,
+    this.state = 0,
   }) {
     if (description == null) description = '';
     if (targetDate == null) targetDate = DateTime.now();
   }
 
-  factory Milestone.fromJson(Map<String, dynamic> json) => _$MilestoneFromJson(json);
+  factory Milestone.fromJson(Map<String, dynamic> json) =>
+      _$MilestoneFromJson(json);
 
   Map<String, dynamic> toJson() => _$MilestoneToJson(this);
 }

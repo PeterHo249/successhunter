@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
@@ -59,6 +60,28 @@ class _GoalDetailState extends State<GoalDetail> {
     print(choice);
   }
 
+  Color _getStateColor(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Colors.green;
+      case ActivityState.doing:
+        return Colors.amber;
+      case ActivityState.failed:
+        return Colors.red;
+    }
+  }
+
+  IconData _getStateIcon(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Icons.check;
+      case ActivityState.doing:
+        return Icons.flag;
+      case ActivityState.failed:
+        return Icons.clear;
+    }
+  }
+
   /// Build Layout
   @override
   Widget build(BuildContext context) {
@@ -71,12 +94,18 @@ class _GoalDetailState extends State<GoalDetail> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (!snapshot.hasData)
           return Container(
+            decoration: BoxDecoration(
+              gradient: Theme.Colors.primaryGradient,
+            ),
             child: Center(
               child: CircularProgressIndicator(),
             ),
           );
 
         item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+        item.milestones.sort((Milestone a, Milestone b) {
+          return a.targetDate.compareTo(b.targetDate);
+        });
 
         return Scaffold(
           appBar: AppBar(
@@ -133,9 +162,13 @@ class _GoalDetailState extends State<GoalDetail> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Text(
-                                          '${item.targetValue} ${item.unit}',
-                                          style: Theme.contentStyle,
+                                        SizedBox(
+                                          width: 50.0,
+                                          child: Text(
+                                            '${item.targetValue} ${item.unit}',
+                                            style: Theme.contentStyle,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                         Text(
                                           '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',
@@ -203,71 +236,118 @@ class _GoalDetailState extends State<GoalDetail> {
     List<Widget> milestoneTiles = <Widget>[];
 
     for (int i = milestones.length - 1; i >= 0; i--) {
-      Widget tile = Container(
-        height: 100.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 100.0,
-              child: Center(
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
+      Widget tile = Slidable.builder(
+        key: Key(milestones[i].title),
+        delegate: SlidableDrawerDelegate(),
+        controller: SlidableController(),
+        actionExtentRatio: 0.25,
+        slideToDismissDelegate: SlideToDismissDrawerDelegate(
+          dismissThresholds: <SlideActionType, double>{
+            SlideActionType.primary: 1.0,
+          },
+          onDismissed: (actionType) {
+            if (actionType == SlideActionType.secondary) {
+              item.milestones.removeAt(i);
+              DataFeeder.instance.overwriteGoal(widget.documentId, item);
+            }
+          },
+        ),
+        actionDelegate: SlideActionBuilderDelegate(
+          builder: (context, index, animation, renderingMode) {
+            return IconSlideAction(
+              caption: 'Complete',
+              color: Colors.green,
+              icon: Icons.check,
+              onTap: () {
+                item.completeMilestone(i);
+                DataFeeder.instance.overwriteGoal(widget.documentId, item);
+              },
+            );
+          },
+          actionCount: milestones[i].state != ActivityState.doing ? 0 : 1,
+        ),
+        secondaryActionDelegate: SlideActionBuilderDelegate(
+          builder: (context, index, animation, renderingMode) {
+            return IconSlideAction(
+              caption: 'Delete',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: () {
+                var state = Slidable.of(context);
+                state.dismiss();
+                item.milestones.removeAt(i);
+                DataFeeder.instance.overwriteGoal(widget.documentId, item);
+              },
+            );
+          },
+          actionCount: milestones[i].state != ActivityState.doing ? 0 : 1,
+        ),
+        child: Container(
+          height: 100.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 100.0,
+                child: Center(
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: <Widget>[
+                      Container(
+                        width: 5.0,
+                        color: Colors.grey,
+                      ),
+                      Container(
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color:
+                              _getStateColor(milestones[i].state),
+                        ),
+                        child: Icon(
+                          _getStateIcon(milestones[i].state),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                width: screenWidth - 130.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      width: 5.0,
-                      color: Colors.grey,
+                    SizedBox(
+                      width: screenWidth - 130.0,
+                      child: Text(
+                        milestones[i].title,
+                        style: Theme.header4Style,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    Container(
-                      width: 30.0,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color:
-                            milestones[i].isDone ? Colors.green : Colors.amber,
-                      ),
-                      child: Icon(
-                        milestones[i].isDone ? Icons.check : Icons.flag,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '${milestones[i].targetValue} ${item.unit}',
+                          style: Theme.contentStyle,
+                        ),
+                        Text(
+                          Formatter.getDateString(milestones[i].targetDate),
+                          style: Theme.contentStyle,
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-            Container(
-              width: screenWidth - 130.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    width: screenWidth - 130.0,
-                    child: Text(
-                      milestones[i].title,
-                      style: Theme.header4Style,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '${milestones[i].targetValue} ${item.unit}',
-                        style: Theme.contentStyle,
-                      ),
-                      Text(
-                        Formatter.getDateString(milestones[i].targetDate),
-                        style: Theme.contentStyle,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
       milestoneTiles.add(tile);

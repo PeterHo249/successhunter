@@ -54,7 +54,7 @@ Milestone _$MilestoneFromJson(Map<String, dynamic> json) {
       targetDate: json['targetDate'] == null
           ? null
           : DateTime.parse(json['targetDate'] as String),
-      isDone: json['isDone'] as bool);
+      state: json['state'] as int);
 }
 
 Map<String, dynamic> _$MilestoneToJson(Milestone instance) => <String, dynamic>{
@@ -62,5 +62,5 @@ Map<String, dynamic> _$MilestoneToJson(Milestone instance) => <String, dynamic>{
       'description': instance.description,
       'targetValue': instance.targetValue,
       'targetDate': instance.targetDate?.toIso8601String(),
-      'isDone': instance.isDone
+      'state': instance.state
     };
