@@ -136,6 +136,18 @@ class _MilestoneFormState extends State<MilestoneForm> {
                   initialValue:
                       milestoneItem == null ? null : milestoneItem.targetDate,
                   onSaved: (value) => milestoneItem.targetDate = value,
+                  autovalidate: true,
+                  validator: (DateTime value) {
+                    if (value.isBefore(goalItem.startDate)) {
+                      return 'This has to be greater than goal\'s start date.';
+                    }
+
+                    if (value.isAfter(goalItem.targetDate)) {
+                      return 'This has to be less than goal\'s target date.';
+                    }
+
+                    return null;
+                  },
                 ),
               ],
             ),

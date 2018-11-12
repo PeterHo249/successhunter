@@ -28,6 +28,18 @@ class GoalPageState extends State<GoalPage> {
   double screenHeight = 0.0;
 
   /// Business process
+  Color _getGoalStateColor(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Colors.green[50];
+      case ActivityState.doing:
+        return Colors.white;
+      case ActivityState.failed:
+        return Colors.red[50];
+    }
+
+    return Colors.amber;
+  }
 
   /// Build layout
   @override
@@ -107,15 +119,19 @@ class GoalPageState extends State<GoalPage> {
     Goal item = goals[index];
 
     return InkWell(
-      onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GoalDetail(
-                    documentId: documentIds[index],
-                  ),
-            ),
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoalDetail(
+                  documentId: documentIds[index],
+                ),
           ),
+        );
+        setState(() {});
+      },
       child: Card(
+        color: _getGoalStateColor(item.state),
         elevation: 5.0,
         child: Container(
           height: 130.0,

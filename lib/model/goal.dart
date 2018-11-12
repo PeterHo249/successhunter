@@ -77,8 +77,10 @@ class Goal {
     currentValue = currentValue + milestones[index].targetValue > targetValue
         ? targetValue
         : currentValue + milestones[index].targetValue;
-    if (currentValue == targetValue)
+    if (currentValue == targetValue) {
       state = ActivityState.done;
+      doneDate = DateTime.now();
+    }
   }
 }
 

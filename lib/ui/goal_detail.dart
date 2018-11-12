@@ -69,6 +69,8 @@ class _GoalDetailState extends State<GoalDetail> {
       case ActivityState.failed:
         return Colors.red;
     }
+
+    return Colors.amber;
   }
 
   IconData _getStateIcon(int state) {
@@ -80,6 +82,21 @@ class _GoalDetailState extends State<GoalDetail> {
       case ActivityState.failed:
         return Icons.clear;
     }
+
+    return Icons.flag;
+  }
+
+  Color _getGoalStateColor(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Colors.green[50];
+      case ActivityState.doing:
+        return Colors.white;
+      case ActivityState.failed:
+        return Colors.red[50];
+    }
+
+    return Colors.amber;
   }
 
   /// Build Layout
@@ -124,6 +141,7 @@ class _GoalDetailState extends State<GoalDetail> {
                 ),
               ),
               Card(
+                color: _getGoalStateColor(item.state),
                 elevation: 5.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -261,6 +279,7 @@ class _GoalDetailState extends State<GoalDetail> {
               onTap: () {
                 item.completeMilestone(i);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);
+                setState(() {});
               },
             );
           },
@@ -303,8 +322,7 @@ class _GoalDetailState extends State<GoalDetail> {
                         height: 30.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color:
-                              _getStateColor(milestones[i].state),
+                          color: _getStateColor(milestones[i].state),
                         ),
                         child: Icon(
                           _getStateIcon(milestones[i].state),

@@ -7,10 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44533baa-c0d9-4987-a8ec-c72dbf43e63e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/model/goal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/goal.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/goal.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/goal.g.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/goal_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/goal_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/goal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/goal_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -28,11 +25,10 @@
       <file leaf-file-name="goal_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/goal_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="153" column="64" lean-forward="true" selection-start-line="153" selection-start-column="64" selection-end-line="153" selection-end-column="64" />
+            <state relative-caret-position="2397">
+              <caret line="153" column="64" selection-start-line="153" selection-start-column="64" selection-end-line="153" selection-end-column="64" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
-                <element signature="e#6679#6849#0" />
               </folding>
             </state>
           </provider>
@@ -41,11 +37,10 @@
       <file leaf-file-name="goal_detail.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/goal_detail.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="261" column="42" lean-forward="true" selection-start-line="261" selection-start-column="42" selection-end-line="261" selection-end-column="42" />
+            <state relative-caret-position="4233">
+              <caret line="261" column="42" selection-start-line="261" selection-start-column="42" selection-end-line="261" selection-end-column="42" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
-                <element signature="e#7068#7446#0" />
               </folding>
             </state>
           </provider>
@@ -66,14 +61,13 @@
       <file leaf-file-name="home_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/home_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
+            <state relative-caret-position="1360">
               <caret line="217" column="33" selection-start-line="217" selection-start-column="33" selection-end-line="225" selection-end-column="27" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
                 <element signature="e#1103#1512#0" />
                 <element signature="e#1560#6102#0" />
                 <element signature="e#10254#12388#0" />
-                <element signature="e#9763#11027#0" />
               </folding>
             </state>
           </provider>
@@ -82,8 +76,8 @@
       <file leaf-file-name="enum_dictionary.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/utils/enum_dictionary.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="132" column="28" lean-forward="true" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="28" />
+            <state relative-caret-position="2227">
+              <caret line="132" column="28" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="28" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -94,8 +88,8 @@
       <file leaf-file-name="goal.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/model/goal.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="80" column="33" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
+            <state relative-caret-position="176">
+              <caret line="73" selection-start-line="73" selection-end-line="73" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -106,7 +100,7 @@
       <file leaf-file-name="goal.g.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/model/goal.g.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
+            <state relative-caret-position="765">
               <caret line="45" column="39" selection-start-line="45" selection-start-column="39" selection-end-line="45" selection-end-column="39" />
             </state>
           </provider>
@@ -115,8 +109,8 @@
       <file leaf-file-name="main_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-104">
-              <caret line="50" column="27" lean-forward="true" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
+            <state relative-caret-position="595">
+              <caret line="50" column="27" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
                 <element signature="e#548#696#0" />
@@ -221,8 +215,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -275,6 +267,8 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -371,31 +365,28 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="2" y="5" width="995" height="730" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50214136" side_tool="true" weight="0.3293919" />
-      <window_info anchor="bottom" id="Dart Analysis" order="9" weight="0.3293919" />
-      <window_info anchor="right" id="Flutter Outline" order="3" weight="0.37860963" />
-      <window_info anchor="bottom" id="Logcat" order="12" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24919786" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3293919" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50214136" side_tool="true" weight="0.3293919" />
+      <window_info anchor="bottom" id="Dart Analysis" order="9" weight="0.3293919" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49785867" weight="0.3293919" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3293919" />
-      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49785867" visible="true" weight="0.3293919" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3412162" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3412162" />
+      <window_info anchor="right" id="Flutter Outline" order="3" weight="0.37860963" />
+      <window_info anchor="bottom" id="Logcat" order="12" />
       <window_info id="Captures" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17326203" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293919" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17326203" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="3" weight="0.32941177" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.27702704" />
@@ -404,6 +395,8 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24919786" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3293919" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -439,21 +432,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7395">
           <caret line="444" column="39" lean-forward="true" selection-start-line="444" selection-start-column="39" selection-end-line="444" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#1749#1865#0" />
-            <element signature="e#1897#2014#0" />
-            <element signature="e#2038#2115#0" />
-            <element signature="e#2140#2219#0" />
-            <element signature="e#2251#2344#0" />
-            <element signature="e#2414#5094#0" />
-            <element signature="e#5125#5281#0" />
-            <element signature="e#5314#5510#0" />
-            <element signature="e#5548#6024#0" />
-            <element signature="e#6071#7551#0" />
-            <element signature="e#7597#17363#0" />
-            <element signature="e#17409#26322#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -593,21 +571,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="625">
           <caret line="487" column="44" selection-start-line="487" selection-start-column="44" selection-end-line="487" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <element signature="e#1749#1865#0" />
-            <element signature="e#1897#2014#0" />
-            <element signature="e#2038#2115#0" />
-            <element signature="e#2140#2219#0" />
-            <element signature="e#2251#2344#0" />
-            <element signature="e#2414#5094#0" />
-            <element signature="e#5125#5281#0" />
-            <element signature="e#5314#5510#0" />
-            <element signature="e#5548#6024#0" />
-            <element signature="e#6071#7551#0" />
-            <element signature="e#7597#17363#0" />
-            <element signature="e#17409#26322#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -615,10 +578,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#389#2098#0" />
-            <element signature="e#2154#2671#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -626,10 +585,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-53">
           <caret line="55" column="12" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-            <element signature="e#781#1205#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -744,8 +699,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-104">
-          <caret line="50" column="27" lean-forward="true" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
+        <state relative-caret-position="595">
+          <caret line="50" column="27" selection-start-line="50" selection-start-column="27" selection-end-line="50" selection-end-column="27" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
             <element signature="e#548#696#0" />
@@ -761,7 +716,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/model/goal.g.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
+        <state relative-caret-position="765">
           <caret line="45" column="39" selection-start-line="45" selection-start-column="39" selection-end-line="45" selection-end-column="39" />
         </state>
       </provider>
@@ -782,33 +737,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/home_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
+        <state relative-caret-position="1360">
           <caret line="217" column="33" selection-start-line="217" selection-start-column="33" selection-end-line="225" selection-end-column="27" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
             <element signature="e#1103#1512#0" />
             <element signature="e#1560#6102#0" />
             <element signature="e#10254#12388#0" />
-            <element signature="e#9763#11027#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/goal_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="153" column="64" lean-forward="true" selection-start-line="153" selection-start-column="64" selection-end-line="153" selection-end-column="64" />
+        <state relative-caret-position="2397">
+          <caret line="153" column="64" selection-start-line="153" selection-start-column="64" selection-end-line="153" selection-end-column="64" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
-            <element signature="e#6679#6849#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/utils/enum_dictionary.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="132" column="28" lean-forward="true" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="28" />
+        <state relative-caret-position="2227">
+          <caret line="132" column="28" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="28" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -817,19 +770,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/goal_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="261" column="42" lean-forward="true" selection-start-line="261" selection-start-column="42" selection-end-line="261" selection-end-column="42" />
+        <state relative-caret-position="4233">
+          <caret line="261" column="42" selection-start-line="261" selection-start-column="42" selection-end-line="261" selection-end-column="42" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
-            <element signature="e#7068#7446#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/model/goal.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="80" column="33" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
+        <state relative-caret-position="176">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
