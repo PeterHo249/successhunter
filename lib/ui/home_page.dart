@@ -8,6 +8,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/ui/goal_detail.dart';
+import 'package:successhunter/ui/goal_form.dart';
 import 'dart:core';
 import 'package:successhunter/utils/formatter.dart';
 
@@ -178,42 +179,81 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildGoalCard(BuildContext context) {
-    return StreamBuilder(
-      stream: DataFeeder.instance.getGoalList(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+      child: Card(
+        elevation: 5.0,
+        child: Container(
+          height: 250.0,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Your Goals',
+                  style: Theme.header2Style,
+                ),
+                StreamBuilder(
+                  stream: DataFeeder.instance.getGoalList(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData)
+                      return Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
 
-        goals = snapshot.data.documents
-            .map((documentSnapshot) =>
-                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
-            .toList();
+                    if (snapshot.data.documents.length == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10.0,
+                        ),
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GoalForm(),
+                                ),
+                              ),
+                          child: Container(
+                            height: 190.0,
+                            width: screenWidth,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 30.0,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                                Text(
+                                  'Plan a new goal!',
+                                  style: Theme.contentStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
 
-        documentIds = snapshot.data.documents
-            .map((documentSnapshot) => documentSnapshot.documentID)
-            .toList();
+                    goals = snapshot.data.documents
+                        .map((documentSnapshot) => Goal.fromJson(
+                            json.decode(json.encode(documentSnapshot.data))))
+                        .toList();
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-          child: Card(
-            elevation: 5.0,
-            child: Container(
-              height: 250.0,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Your Goals',
-                      style: Theme.header2Style,
-                    ),
-                    Padding(
+                    documentIds = snapshot.data.documents
+                        .map((documentSnapshot) => documentSnapshot.documentID)
+                        .toList();
+
+                    return Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Container(
                         height: 190.0,
@@ -227,14 +267,14 @@ class HomePageState extends State<HomePage> {
                           },
                         ),
                       ),
-                    )
-                  ],
+                    );
+                  },
                 ),
-              ),
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
