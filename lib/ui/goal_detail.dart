@@ -209,7 +209,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                     backgroundColor: Colors.grey[300],
                                     progressColor: TypeDecorationEnum
                                         .typeDecorations[
-                                            GoalTypeEnum.getIndex(item.type)]
+                                            ActivityTypeEnum.getIndex(item.type)]
                                         .backgroundColor,
                                     animation: true,
                                     animationDuration: 1000,

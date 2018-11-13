@@ -30,7 +30,7 @@ class DataFeeder {
         title: 'Sample goal',
         targetDate: DateTime.parse('20190112'),
         currentValue: 40,
-        type: GoalTypeEnum.career,
+        type: ActivityTypeEnum.career,
         milestones: <Milestone>[
           Milestone(
             title: 'First milestone',

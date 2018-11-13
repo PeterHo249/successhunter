@@ -29,7 +29,7 @@ class Goal {
     this.currentValue,
     this.targetValue = 100,
     this.unit = '%',
-    this.type = GoalTypeEnum.career,
+    this.type = ActivityTypeEnum.career,
     this.state = ActivityState.doing,
     this.doneDate,
     this.milestones,
@@ -56,7 +56,7 @@ class Goal {
   Map<String, dynamic> toJson() => _$GoalToJson(this);
 
   Widget buildCircularIcon() {
-    var data = TypeDecorationEnum.typeDecorations[GoalTypeEnum.getIndex(type)];
+    var data = TypeDecorationEnum.typeDecorations[ActivityTypeEnum.getIndex(type)];
     return Container(
       height: 80.0,
       width: 80.0,

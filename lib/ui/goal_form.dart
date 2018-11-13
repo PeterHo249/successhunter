@@ -68,7 +68,7 @@ class _GoalFormState extends State<GoalForm> {
   Widget _buildForm() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Goal'),
+        title: Text('Goal'),
         elevation: 0.0,
         backgroundColor: Theme.Colors.loginGradientStart,
         actions: <Widget>[
@@ -122,7 +122,7 @@ class _GoalFormState extends State<GoalForm> {
                 ),
                 CardSettingsListPicker(
                   label: 'Goal Type',
-                  options: GoalTypeEnum.types,
+                  options: ActivityTypeEnum.types,
                   initialValue: item == null ? null : item.type,
                   onSaved: (value) => item.type = value,
                 ),

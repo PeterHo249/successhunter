@@ -40,7 +40,7 @@ class GoalDetailPopupChoiceEnum {
   ];
 }
 
-class GoalTypeEnum {
+class ActivityTypeEnum {
   static const String career = 'Career';
   static const String health = 'Health';
   static const String relationship = 'Relationship';
@@ -132,4 +132,21 @@ class ActivityState {
   static const int doing = 0;
   static const int done = 1;
   static const int failed = 2;
+}
+
+class RepetationTypeEnum {
+  static const String everyDay = 'Every day';
+  static const String dayOfWeek = 'Day of Week';
+  static const String period = 'Period';
+
+
+  static const List<String> types = <String>[
+    everyDay,
+    dayOfWeek,
+    period,
+  ];
+
+  static int getIndex(String type) {
+    return types.indexOf(type);
+  }
 }

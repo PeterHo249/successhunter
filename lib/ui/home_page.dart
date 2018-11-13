@@ -296,53 +296,56 @@ class HomePageState extends State<HomePage> {
             ),
           ),
       child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: screenWidth - 30.0,
-              child: Text(
-                goalItem.title,
-                style: Theme.header4Style,
-                overflow: TextOverflow.ellipsis,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                width: screenWidth - 30.0,
+                child: Text(
+                  goalItem.title,
+                  style: Theme.header4Style,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  width: screenWidth - 160.0,
-                  height: 100.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
-                        style: Theme.contentStyle,
-                      ),
-                      Text(
-                        'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
-                        style: Theme.contentStyle,
-                      ),
-                    ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                    width: screenWidth - 160.0,
+                    height: 100.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Start Date: ${Formatter.getDateString(goalItem.startDate)}',
+                          style: Theme.contentStyle,
+                        ),
+                        Text(
+                          'End Date: ${Formatter.getDateString(goalItem.targetDate)}',
+                          style: Theme.contentStyle,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                CircularPercentIndicator(
-                  radius: 100.0,
-                  lineWidth: 10.0,
-                  percent: goalItem.getDonePercent(),
-                  circularStrokeCap: CircularStrokeCap.round,
-                  backgroundColor: Colors.grey[300],
-                  progressColor: Colors.blue[500],
-                  animation: true,
-                  animationDuration: 1500,
-                  center: Text('${goalItem.getDonePercent() * 100} %'),
-                ),
-              ],
-            ),
-          ],
+                  CircularPercentIndicator(
+                    radius: 100.0,
+                    lineWidth: 10.0,
+                    percent: goalItem.getDonePercent(),
+                    circularStrokeCap: CircularStrokeCap.round,
+                    backgroundColor: Colors.grey[300],
+                    progressColor: Colors.blue[500],
+                    animation: true,
+                    animationDuration: 1500,
+                    center: Text('${goalItem.getDonePercent() * 100} %'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:successhunter/auth/auth.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/habit_form.dart';
 
 import 'package:successhunter/ui/home_page.dart';
 import 'package:successhunter/ui/goal_page.dart';
@@ -52,7 +53,10 @@ class _MainPageState extends State<MainPage>
     if (choice == MainPagePopupChoiceEnum.addGoal) {
       Navigator.push(
           this.context, MaterialPageRoute(builder: (context) => GoalForm()));
-    } else {}
+    } else {
+      Navigator.push(
+          this.context, MaterialPageRoute(builder: (context) => HabitForm()));
+    }
 
     print(choice);
   }
@@ -198,7 +202,8 @@ class _MainPageState extends State<MainPage>
             color: Colors.white,
           ),
           color: Colors.white,
-          onPressed: null,
+          onPressed: () => Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm())),
         );
         break;
       case 3:
@@ -216,5 +221,3 @@ class _MainPageState extends State<MainPage>
     return result;
   }
 }
-
-

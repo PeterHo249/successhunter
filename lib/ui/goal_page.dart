@@ -186,7 +186,7 @@ class GoalPageState extends State<GoalPage> {
                         percent: item.getDonePercent(),
                         backgroundColor: Colors.grey[300],
                         progressColor: TypeDecorationEnum
-                            .typeDecorations[GoalTypeEnum.getIndex(item.type)]
+                            .typeDecorations[ActivityTypeEnum.getIndex(item.type)]
                             .backgroundColor,
                         animation: true,
                         animationDuration: 1000,
