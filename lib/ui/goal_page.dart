@@ -31,11 +31,11 @@ class GoalPageState extends State<GoalPage> {
   Color _getGoalStateColor(int state) {
     switch (state) {
       case ActivityState.done:
-        return Colors.green[50];
+        return Colors.green[200];
       case ActivityState.doing:
         return Colors.white;
       case ActivityState.failed:
-        return Colors.red[50];
+        return Colors.red[100];
     }
 
     return Colors.amber;
