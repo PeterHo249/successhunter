@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
 import 'package:successhunter/ui/main_page.dart';
+import 'package:successhunter/model/data_feeder.dart';
 
 
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Success Hunter',
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -29,8 +31,7 @@ class MyApp extends StatelessWidget {
           return SplashPage();
         } else {
           if (snapshot.hasData) {
-            print('this in handlecurrentscreen');
-            print(snapshot.data);
+            DataFeeder.instance.setCollectionId(snapshot.data.uid);
             return MainPage(user: snapshot.data,);
           }
           return LoginPage();

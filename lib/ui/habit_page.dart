@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 
 class HabitPage extends StatelessWidget {
+  /// Variable
+
+  /// Business process
+
+  /// Build layout
   @override
   Widget build(BuildContext context) {
     return Container(
