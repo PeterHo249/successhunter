@@ -109,11 +109,28 @@ class DataFeeder {
     );
   }
 
+  Stream<QuerySnapshot> getDoingGoalList({int offset, int limit}) {
+    Stream<QuerySnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('goals')
+        .collection('goals')
+        .where('state', isEqualTo: 0)
+        .snapshots();
+    if (offset != null) {
+      snapshots = snapshots.skip(offset);
+    }
+    if (limit != null) {
+      snapshots = snapshots.take(limit);
+    }
+    return snapshots;
+  }
+
   Stream<QuerySnapshot> getGoalList({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = Firestore.instance
         .collection(mainCollectionId)
         .document('goals')
         .collection('goals')
+        .orderBy('state')
         .snapshots();
     if (offset != null) {
       snapshots = snapshots.skip(offset);

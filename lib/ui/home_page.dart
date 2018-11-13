@@ -199,7 +199,7 @@ class HomePageState extends State<HomePage> {
                   style: Theme.header2Style,
                 ),
                 StreamBuilder(
-                  stream: DataFeeder.instance.getGoalList(),
+                  stream: DataFeeder.instance.getDoingGoalList(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData)

@@ -11,6 +11,7 @@ import 'package:successhunter/ui/milestone_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/utils/formatter.dart';
+import 'package:share/share.dart';
 
 class GoalDetail extends StatefulWidget {
   final String documentId;
@@ -54,6 +55,9 @@ class _GoalDetailState extends State<GoalDetail> {
         );
         break;
       case GoalDetailPopupChoiceEnum.shareGoal:
+        Share.share(
+          'I\'m try to attain goal ${item.title} before ${Formatter.getDateString(item.targetDate)}. Do you want take it with me?',
+        );
         break;
     }
 
