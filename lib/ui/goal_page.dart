@@ -60,40 +60,40 @@ class GoalPageState extends State<GoalPage> {
             );
 
           if (snapshot.data.documents.length == 0) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: screenHeight * 0.3,
-              ),
-              child: InkWell(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GoalForm(),
-                    ),
-                  );
-                  setState(() {});
-                },
-                child: Card(
-                  elevation: 5.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Icon(
-                          Icons.add,
-                          size: 60.0,
-                          color: Colors.black45,
+            return InkWell(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GoalForm(),
+                  ),
+                );
+                setState(() {});
+              },
+              child: Center(
+                child: Container(
+                  height: 150.0,
+                  width: screenWidth - 20,
+                  child: Card(
+                    elevation: 5.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Icon(
+                            Icons.add,
+                            size: 60.0,
+                            color: Colors.black45,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Plan a new goal!',
-                        style: Theme.contentStyle,
-                      ),
-                    ],
+                        Text(
+                          'Plan a new goal!',
+                          style: Theme.contentStyle,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
