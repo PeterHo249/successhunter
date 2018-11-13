@@ -1,6 +1,8 @@
 import 'dart:core';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'habit.g.dart';
+
 @JsonSerializable()
 class Habit {
   final String title;

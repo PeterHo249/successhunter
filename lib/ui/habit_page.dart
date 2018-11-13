@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/data_feeder.dart';
 
 class HabitPage extends StatelessWidget {
   /// Variable
