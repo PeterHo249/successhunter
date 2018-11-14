@@ -139,7 +139,6 @@ class RepetationTypeEnum {
   static const String dayOfWeek = 'Day of Week';
   static const String period = 'Period';
 
-
   static const List<String> types = <String>[
     everyDay,
     dayOfWeek,
@@ -149,4 +148,24 @@ class RepetationTypeEnum {
   static int getIndex(String type) {
     return types.indexOf(type);
   }
+}
+
+class DayOfWeekEnum {
+  static const String monday = 'Monday';
+  static const String tuesday = 'Tuesday';
+  static const String wednesday = 'Wednesday';
+  static const String thursday = 'Thursday';
+  static const String friday = 'Friday';
+  static const String saturday = 'Saturday';
+  static const String sunday = 'Sunday';
+
+  static const List<String> days = <String>[
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  ];
 }

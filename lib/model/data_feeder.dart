@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 
 class DataFeeder {
@@ -55,6 +56,7 @@ class DataFeeder {
     );
   }
 
+  /// Goal Section
   addNewGoal(Goal item) async {
     final TransactionHandler createTransaction =
         (Transaction transaction) async {
@@ -102,7 +104,7 @@ class DataFeeder {
     };
 
     return Firestore.instance.runTransaction(createTransaction).catchError(
-          (error) {
+      (error) {
         print('error: $error');
         return null;
       },
@@ -171,5 +173,65 @@ class DataFeeder {
         return false;
       },
     );
+  }
+
+  /// Habit section
+  void addNewHabit(Habit item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .document();
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  void overwriteHabit(String documentId, Habit item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .document(documentId);
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  Stream<QuerySnapshot> getTodayHabitList() {}
+
+  Stream<QuerySnapshot> getHabitList() {
+    Stream<QuerySnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .orderBy('state')
+        .snapshots();
+    return snapshots;
+  }
+
+  Stream<DocumentSnapshot> getHabit(String documentId) {
+    Stream<DocumentSnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .document(documentId)
+        .snapshots();
+
+    return snapshots;
+  }
+
+  void deleteHabit(String documentId) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .document(documentId);
+    batch.delete(docRef);
+
+    await batch.commit().catchError((error) => print('error: $error'));
   }
 }

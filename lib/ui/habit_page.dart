@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/ui/habit_form.dart';
 
 class HabitPage extends StatefulWidget {
   @override
@@ -13,7 +17,7 @@ class HabitPage extends StatefulWidget {
 
 class HabitPageState extends State<HabitPage> {
   /// Variable
-  final habits = <Habit>[
+  List<Habit> habits = <Habit>[
     Habit(
       title: 'First task',
     ),
@@ -26,6 +30,7 @@ class HabitPageState extends State<HabitPage> {
   final SlidableController slidableController = SlidableController();
   double screenWidth = 0.0;
   double screenHeight = 0.0;
+  List<String> documentIds = <String>[];
 
   /// Business process
 
@@ -39,7 +44,68 @@ class HabitPageState extends State<HabitPage> {
       decoration: BoxDecoration(
         gradient: Theme.Colors.primaryGradient,
       ),
-      child: _buildSlidableList(context),
+      child: StreamBuilder(
+        stream: DataFeeder.instance.getHabitList(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.data.documents.length == 0) {
+            return InkWell(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HabitForm(),
+                  ),
+                );
+                setState(() {});
+              },
+              child: Center(
+                child: Container(
+                  height: 150.0,
+                  width: screenWidth - 20,
+                  child: Card(
+                    elevation: 5.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Icon(
+                            Icons.add,
+                            size: 60.0,
+                            color: Colors.black45,
+                          ),
+                        ),
+                        Text(
+                          'Plan a new habit!',
+                          style: Theme.contentStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          habits = snapshot.data.documents
+              .map((documentSnapshot) => Habit.fromJson(
+                  json.decode(json.encode(documentSnapshot.data))))
+              .toList();
+
+          documentIds = snapshot.data.documents
+              .map((documentSnapshot) => documentSnapshot.documentID)
+              .toList();
+
+          return _buildSlidableList(context);
+        },
+      ),
     );
   }
 
@@ -61,7 +127,7 @@ class HabitPageState extends State<HabitPage> {
       actionExtentRatio: 0.25,
       child: _buildItemTile(context, index),
       slideToDismissDelegate: SlideToDismissDrawerDelegate(
-        dismissThresholds: <SlideActionType, double> {
+        dismissThresholds: <SlideActionType, double>{
           SlideActionType.primary: 1.0,
         },
         onDismissed: (actionType) {
