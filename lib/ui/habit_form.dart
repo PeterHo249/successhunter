@@ -46,7 +46,7 @@ class _HabitFormState extends State<HabitForm> {
               ),
             );
 
-          item = Habit.fromJson(json.decode(json.encode(snapshot.data)));
+          item = Habit.fromJson(json.decode(json.encode(snapshot.data.data)));
 
           form = HabitFormWidget(
             documentId: widget.documentId,

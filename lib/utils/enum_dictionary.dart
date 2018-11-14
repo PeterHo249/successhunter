@@ -40,6 +40,18 @@ class GoalDetailPopupChoiceEnum {
   ];
 }
 
+class HabitDetailPopupChoiceEnum {
+  static const String editHabit = 'Edit Habit';
+  static const String completeHabit = 'Complete Today';
+  static const String shareHabit = 'Share Habit';
+
+  static const List<String> choices = <String>[
+    editHabit,
+    completeHabit,
+    shareHabit,
+  ];
+}
+
 class ActivityTypeEnum {
   static const String career = 'Career';
   static const String health = 'Health';

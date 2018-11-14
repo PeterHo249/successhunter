@@ -9,6 +9,8 @@ import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/ui/goal_detail.dart';
 import 'package:successhunter/ui/goal_form.dart';
+import 'package:successhunter/ui/habit_form.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
 import 'dart:core';
 import 'package:successhunter/utils/formatter.dart';
 
@@ -24,15 +26,9 @@ class HomePageState extends State<HomePage> {
   var documentIds = <String>[];
   var goals = <Goal>[];
 
-  final habits = <Habit>[
-    Habit(
-      title: 'First task',
-    ),
-    Habit(
-      title: 'Second task',
-      isYesNoTask: false,
-    ),
-  ];
+  var habits = <Habit>[];
+  var habitDocumentIds = <String>[];
+
   double screenWidth = 0.0;
   double screenHeight = 0.0;
 
@@ -368,20 +364,84 @@ class HomePageState extends State<HomePage> {
                   'Today Task',
                   style: Theme.header2Style,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    height: 190.0,
-                    child: PageView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: habits.length,
-                      controller: PageController(viewportFraction: 1.0),
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildTaskItem(context, habits[index]);
-                      },
-                    ),
-                  ),
-                )
+                StreamBuilder(
+                  stream: DataFeeder.instance.getHabitList(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData)
+                      return Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+
+                    if (snapshot.data.documents.length == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10.0,
+                        ),
+                        child: InkWell(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HabitForm(),
+                              ),
+                            );
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 190.0,
+                            width: screenWidth,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 60.0,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                                Text(
+                                  'Create a new habit!',
+                                  style: Theme.contentStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+
+                    habits = snapshot.data.documents
+                        .map((documentSnapshot) => Habit.fromJson(
+                            json.decode(json.encode(documentSnapshot.data))))
+                        .toList();
+
+                    habitDocumentIds = snapshot.data.documents
+                        .map((documentSnapshot) => documentSnapshot.documentID)
+                        .toList();
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Container(
+                        height: 190.0,
+                        child: PageView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: habits.length,
+                          controller: PageController(viewportFraction: 1.0),
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildTaskItem(context, habits[index],
+                                habitDocumentIds[index]);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -390,24 +450,37 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTaskItem(BuildContext context, Habit taskItem) {
+  Widget _buildTaskItem(BuildContext context, Habit item, String documentId) {
     Widget secondRow;
 
-    if (taskItem.isYesNoTask) {
+    if (item.isYesNoTask) {
       secondRow = Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Due time: 19:00',
+            'Due time: ${Formatter.getTimeString(item.dueTime)}',
             style: Theme.contentStyle,
           ),
-          Container(
-            width: 30.0,
-            height: 30.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.amber,
+          InkWell(
+            onTap: () {
+              item.state = ActivityState.done;
+              DataFeeder.instance.overwriteHabit(documentId, item);
+              setState(() {});
+            },
+            child: Container(
+              width: 30.0,
+              height: 30.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: item.state == ActivityState.doing
+                    ? Colors.amber
+                    : Colors.green,
+              ),
+              child: Icon(
+                item.state == ActivityState.done ? Icons.check : Icons.remove,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -422,46 +495,66 @@ class HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Due time: 19:00',
+                'Due time: ${Formatter.getTimeString(item.dueTime)}',
                 style: Theme.contentStyle,
               ),
               Text(
-                '8/10 times',
+                '${item.currentValue}/${item.targetValue} ${item.unit}',
                 style: Theme.contentStyle,
               ),
             ],
           ),
           Slider(
-            value: 8.0,
-            onChanged: null,
-            divisions: 10,
+            value: item.currentValue.toDouble(),
+            onChanged: (value) {
+              item.currentValue = value.toInt();
+              if (item.currentValue == item.targetValue) {
+                item.state = ActivityState.done;
+              }
+              DataFeeder.instance.overwriteHabit(documentId, item);
+              setState(() {});
+            },
+            divisions: item.targetValue,
             min: 0.0,
-            max: 10.0,
+            max: item.targetValue.toDouble(),
             activeColor: Colors.blue[500],
           ),
         ],
       );
     }
 
-    return Container(
-      height: 190.0,
-      width: screenWidth - 30.0,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: screenWidth - 30.0,
-              child: Text(
-                taskItem.title,
-                style: Theme.header4Style,
-                overflow: TextOverflow.ellipsis,
+    return InkWell(
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoalDetail(
+                  documentId: documentId,
+                ),
+          ),
+        );
+        setState(() {});
+      },
+      child: Container(
+        height: 190.0,
+        width: screenWidth - 30.0,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                width: screenWidth - 30.0,
+                child: Text(
+                  item.title,
+                  style: Theme.header4Style,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            secondRow,
-          ],
+              secondRow,
+            ],
+          ),
         ),
       ),
     );

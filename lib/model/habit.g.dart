@@ -15,6 +15,7 @@ Habit _$HabitFromJson(Map<String, dynamic> json) {
           : DateTime.parse(json['dueTime'] as String),
       isYesNoTask: json['isYesNoTask'] as bool,
       targetValue: json['targetValue'] as int,
+      currentValue: json['currentValue'] as int,
       unit: json['unit'] as String,
       type: json['type'] as String,
       repetationType: json['repetationType'] as String,
@@ -26,7 +27,10 @@ Habit _$HabitFromJson(Map<String, dynamic> json) {
           ?.map((e) => (e as List)
               ?.map((e) => e == null ? null : DateTime.parse(e as String))
               ?.toList())
-          ?.toList());
+          ?.toList(),
+      currentDate: json['currentDate'] == null
+          ? null
+          : DateTime.parse(json['currentDate'] as String));
 }
 
 Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
@@ -35,6 +39,7 @@ Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
       'dueTime': instance.dueTime?.toIso8601String(),
       'isYesNoTask': instance.isYesNoTask,
       'targetValue': instance.targetValue,
+      'currentValue': instance.currentValue,
       'unit': instance.unit,
       'type': instance.type,
       'repetationType': instance.repetationType,
@@ -43,5 +48,6 @@ Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
       'state': instance.state,
       'streak': instance.streak
           ?.map((e) => e?.map((e) => e?.toIso8601String())?.toList())
-          ?.toList()
+          ?.toList(),
+      'currentDate': instance.currentDate?.toIso8601String()
     };

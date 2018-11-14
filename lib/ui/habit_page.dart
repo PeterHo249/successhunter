@@ -6,7 +6,10 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/ui/habit_detail.dart';
 import 'package:successhunter/ui/habit_form.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/formatter.dart';
 
 class HabitPage extends StatefulWidget {
   @override
@@ -33,6 +36,18 @@ class HabitPageState extends State<HabitPage> {
   List<String> documentIds = <String>[];
 
   /// Business process
+  Color _getHabitStateColor(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Colors.green[200];
+      case ActivityState.doing:
+        return Colors.white;
+      case ActivityState.failed:
+        return Colors.red[100];
+    }
+
+    return Colors.amber;
+  }
 
   /// Build layout
   @override
@@ -132,7 +147,7 @@ class HabitPageState extends State<HabitPage> {
         },
         onDismissed: (actionType) {
           if (actionType == SlideActionType.secondary) {
-            // TODO: implement here
+            DataFeeder.instance.deleteHabit(documentIds[index]);
           }
         },
       ),
@@ -142,7 +157,15 @@ class HabitPageState extends State<HabitPage> {
             caption: 'Edit',
             color: Colors.blue,
             icon: Icons.edit,
-            onTap: null,
+            onTap: () async {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HabitForm(
+                            documentId: documentIds[index],
+                          )));
+              setState(() {});
+            },
           );
         },
         actionCount: 1,
@@ -156,7 +179,7 @@ class HabitPageState extends State<HabitPage> {
             onTap: () {
               var state = Slidable.of(context);
               state.dismiss();
-              // TODO: Implement here
+              DataFeeder.instance.deleteHabit(documentIds[index]);
             },
           );
         },
@@ -176,15 +199,28 @@ class HabitPageState extends State<HabitPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Due time: 19:00',
+            'Due time: ${Formatter.getTimeString(item.dueTime)}',
             style: Theme.contentStyle,
           ),
-          Container(
-            width: 30.0,
-            height: 30.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.amber,
+          InkWell(
+            onTap: () {
+              item.state = ActivityState.done;
+              DataFeeder.instance.overwriteHabit(documentIds[index], item);
+              setState(() {});
+            },
+            child: Container(
+              width: 30.0,
+              height: 30.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: item.state == ActivityState.doing
+                    ? Colors.amber
+                    : Colors.green,
+              ),
+              child: Icon(
+                item.state == ActivityState.done ? Icons.check : Icons.remove,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -199,21 +235,28 @@ class HabitPageState extends State<HabitPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Due time: 19:00',
+                'Due time: ${Formatter.getTimeString(item.dueTime)}',
                 style: Theme.contentStyle,
               ),
               Text(
-                '8/10 times',
+                '${item.currentValue}/${item.targetValue} ${item.unit}',
                 style: Theme.contentStyle,
               ),
             ],
           ),
           Slider(
-            value: 8.0,
-            onChanged: null,
-            divisions: 10,
+            value: item.currentValue.toDouble(),
+            onChanged: (value) {
+              item.currentValue = value.toInt();
+              if (item.currentValue == item.targetValue) {
+                item.state = ActivityState.done;
+              }
+              DataFeeder.instance.overwriteHabit(documentIds[index], item);
+              setState(() {});
+            },
+            divisions: item.targetValue,
             min: 0.0,
-            max: 10.0,
+            max: item.targetValue.toDouble(),
             activeColor: Colors.blue[500],
           ),
         ],
@@ -221,8 +264,19 @@ class HabitPageState extends State<HabitPage> {
     }
 
     return InkWell(
-      onTap: null,
+      onTap: () async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HabitDetail(
+                  documentId: documentIds[index],
+                ),
+          ),
+        );
+        setState(() {});
+      },
       child: Card(
+        color: _getHabitStateColor(item.state),
         elevation: 5.0,
         child: Container(
           height: 130.0,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -200,6 +201,13 @@ class DataFeeder {
     await batch.commit().catchError((error) => print('error: $error'));
   }
 
+  void _updateHabit(AsyncSnapshot<QuerySnapshot> snapshot) {
+    var habits = snapshot.data.documents
+              .map((documentSnapshot) => Habit.fromJson(
+                  json.decode(json.encode(documentSnapshot.data))))
+              .toList();
+  }
+
   Stream<QuerySnapshot> getTodayHabitList() {}
 
   Stream<QuerySnapshot> getHabitList() {
@@ -209,6 +217,7 @@ class DataFeeder {
         .collection('habits')
         .orderBy('state')
         .snapshots();
+
     return snapshots;
   }
 
