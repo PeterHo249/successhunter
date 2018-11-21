@@ -144,6 +144,7 @@ class ActivityState {
   static const int doing = 0;
   static const int done = 1;
   static const int failed = 2;
+  static const int notToday = 3;
 }
 
 class RepetationTypeEnum {

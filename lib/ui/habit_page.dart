@@ -122,21 +122,21 @@ class HabitPageState extends State<HabitPage> {
     );
   }
 
-  Widget _buildSlidableTile(BuildContext context, int index) {
-    var item = habits[index];
+  Widget _buildSlidableTile(BuildContext context, int docIndex) {
+    var item = habits[docIndex];
     return Slidable.builder(
       key: Key(item.title),
       delegate: SlidableDrawerDelegate(),
       controller: slidableController,
       actionExtentRatio: 0.25,
-      child: _buildItemTile(context, index),
+      child: _buildItemTile(context, docIndex),
       slideToDismissDelegate: SlideToDismissDrawerDelegate(
         dismissThresholds: <SlideActionType, double>{
           SlideActionType.primary: 1.0,
         },
         onDismissed: (actionType) {
           if (actionType == SlideActionType.secondary) {
-            DataFeeder.instance.deleteHabit(documentIds[index]);
+            DataFeeder.instance.deleteHabit(documentIds[docIndex]);
           }
         },
       ),
@@ -151,7 +151,7 @@ class HabitPageState extends State<HabitPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HabitForm(
-                            documentId: documentIds[index],
+                            documentId: documentIds[docIndex],
                           )));
               setState(() {});
             },
@@ -168,7 +168,7 @@ class HabitPageState extends State<HabitPage> {
             onTap: () {
               var state = Slidable.of(context);
               state.dismiss();
-              DataFeeder.instance.deleteHabit(documentIds[index]);
+              DataFeeder.instance.deleteHabit(documentIds[docIndex]);
             },
           );
         },
@@ -192,7 +192,7 @@ class HabitPageState extends State<HabitPage> {
             style: Theme.contentStyle,
           ),
           InkWell(
-            onTap: () {
+            onTap: item.state != ActivityState.doing ? null : () {
               item.completeToday();
               DataFeeder.instance.overwriteHabit(documentIds[index], item);
               setState(() {});
@@ -235,7 +235,7 @@ class HabitPageState extends State<HabitPage> {
           ),
           Slider(
             value: item.currentValue.toDouble(),
-            onChanged: (value) {
+            onChanged: item.state != ActivityState.doing ? null : (value) {
               item.currentValue = value.toInt();
               if (item.currentValue == item.targetValue) {
                 item.completeToday();

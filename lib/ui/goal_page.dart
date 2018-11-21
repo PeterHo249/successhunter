@@ -191,20 +191,20 @@ class GoalPageState extends State<GoalPage> {
     );
   }
 
-  Widget _buildSlidableTile(BuildContext context, int index) {
+  Widget _buildSlidableTile(BuildContext context, int docIndex) {
     return Slidable.builder(
-      key: Key(goals[index].title),
+      key: Key(goals[docIndex].title),
       delegate: SlidableDrawerDelegate(),
       controller: slidableController,
       actionExtentRatio: 0.25,
-      child: _buildItemTile(context, index),
+      child: _buildItemTile(context, docIndex),
       slideToDismissDelegate: SlideToDismissDrawerDelegate(
         dismissThresholds: <SlideActionType, double>{
           SlideActionType.primary: 1.0,
         },
         onDismissed: (actionType) {
           if (actionType == SlideActionType.secondary) {
-            DataFeeder.instance.deleteGoal(documentIds[index]);
+            DataFeeder.instance.deleteGoal(documentIds[docIndex]);
           }
         },
       ),
@@ -218,7 +218,7 @@ class GoalPageState extends State<GoalPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => GoalForm(
-                          documentId: documentIds[index],
+                          documentId: documentIds[docIndex],
                         ),
                   ),
                 ),
@@ -235,7 +235,7 @@ class GoalPageState extends State<GoalPage> {
             onTap: () {
               var state = Slidable.of(context);
               state.dismiss();
-              DataFeeder.instance.deleteGoal(documentIds[index]);
+              DataFeeder.instance.deleteGoal(documentIds[docIndex]);
             },
           );
         },

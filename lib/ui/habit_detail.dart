@@ -32,6 +32,9 @@ class _HabitDetailState extends State<HabitDetail> {
     // TODO: Implement here
     switch (choice) {
       case HabitDetailPopupChoiceEnum.completeHabit:
+        if (item.state != ActivityState.doing) {
+          break;
+        }
         item.completeToday();
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
@@ -163,7 +166,7 @@ class _HabitDetailState extends State<HabitDetail> {
             style: Theme.contentStyle,
           ),
           InkWell(
-            onTap: () {
+            onTap: item.state != ActivityState.doing ? null : () {
               item.completeToday();
               DataFeeder.instance.overwriteHabit(widget.documentId, item);
               setState(() {});
@@ -206,7 +209,7 @@ class _HabitDetailState extends State<HabitDetail> {
           ),
           Slider(
             value: item.currentValue.toDouble(),
-            onChanged: (value) {
+            onChanged: item.state != ActivityState.doing ? null : (value) {
               item.currentValue = value.toInt();
               if (item.currentValue == item.targetValue) {
                 item.completeToday();
