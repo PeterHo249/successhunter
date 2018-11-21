@@ -163,6 +163,13 @@
             </list>
           </value>
         </entry>
+        <entry key="date_utils">
+          <value>
+            <list>
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0+2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="firebase_auth">
           <value>
             <list>
@@ -195,6 +202,13 @@
           <value>
             <list>
               <option value="D:/flutter/packages/flutter/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_calendar_carousel">
+          <value>
+            <list>
+              <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_calendar_carousel-1.1.10/lib" />
             </list>
           </value>
         </entry>
@@ -588,10 +602,12 @@
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.14.6/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-1.2.0/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0+2/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.6.2+1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.2.5+1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-2.0.3/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/fixnum-0.10.9/lib" />
+      <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_calendar_carousel-1.1.10/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-0.0.7/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_login-1.1.1/lib" />
       <root url="file://D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_masked_text-0.6.0/lib" />

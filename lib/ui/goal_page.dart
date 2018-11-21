@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -28,18 +29,6 @@ class GoalPageState extends State<GoalPage> {
   double screenHeight = 0.0;
 
   /// Business process
-  Color _getGoalStateColor(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Colors.green[200];
-      case ActivityState.doing:
-        return Colors.white;
-      case ActivityState.failed:
-        return Colors.red[100];
-    }
-
-    return Colors.amber;
-  }
 
   /// Build layout
   @override
@@ -131,7 +120,7 @@ class GoalPageState extends State<GoalPage> {
         setState(() {});
       },
       child: Card(
-        color: _getGoalStateColor(item.state),
+        color: Helper.getStateBackgroundColor(item.state),
         elevation: 5.0,
         child: Container(
           height: 130.0,

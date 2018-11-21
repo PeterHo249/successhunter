@@ -59,57 +59,27 @@ class DataFeeder {
 
   /// Goal Section
   addNewGoal(Goal item) async {
-    final TransactionHandler createTransaction =
-        (Transaction transaction) async {
-      final DocumentSnapshot documentSnapshot = await transaction.get(Firestore
-          .instance
-          .collection(mainCollectionId)
-          .document('goals')
-          .collection('goals')
-          .document());
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('goals')
+        .collection('goals')
+        .document();
+    batch.setData(docRef, json.decode(json.encode(item)));
 
-      var initGoal = item;
-
-      print('${json.decode(json.encode(initGoal))}');
-      await transaction.set(
-          documentSnapshot.reference, json.decode(json.encode(initGoal)));
-
-      return initGoal.toJson();
-    };
-
-    return Firestore.instance.runTransaction(createTransaction).catchError(
-      (error) {
-        print('error: $error');
-        return null;
-      },
-    );
+    await batch.commit().catchError((error) => print('error: $error'));
   }
 
   overwriteGoal(String documentId, Goal item) async {
-    final TransactionHandler createTransaction =
-        (Transaction transaction) async {
-      final DocumentSnapshot documentSnapshot = await transaction.get(Firestore
-          .instance
-          .collection(mainCollectionId)
-          .document('goals')
-          .collection('goals')
-          .document(documentId));
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('goals')
+        .collection('goals')
+        .document(documentId);
+    batch.setData(docRef, json.decode(json.encode(item)));
 
-      var initGoal = item;
-
-      print('${json.decode(json.encode(initGoal))}');
-      await transaction.set(
-          documentSnapshot.reference, json.decode(json.encode(initGoal)));
-
-      return initGoal.toJson();
-    };
-
-    return Firestore.instance.runTransaction(createTransaction).catchError(
-      (error) {
-        print('error: $error');
-        return null;
-      },
-    );
+    await batch.commit().catchError((error) => print('error: $error'));
   }
 
   Stream<QuerySnapshot> getDoingGoalList({int offset, int limit}) {
@@ -156,24 +126,15 @@ class DataFeeder {
   }
 
   deleteGoal(String documentId) async {
-    final TransactionHandler deleteTransaction =
-        (Transaction transaction) async {
-      final DocumentSnapshot documentSnapshot = await transaction.get(Firestore
-          .instance
-          .collection(mainCollectionId)
-          .document('goals')
-          .collection('goals')
-          .document(documentId));
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('goals')
+        .collection('goals')
+        .document(documentId);
+    batch.delete(docRef);
 
-      await transaction.delete(documentSnapshot.reference);
-    };
-
-    return Firestore.instance.runTransaction(deleteTransaction).catchError(
-      (error) {
-        print('error: $error');
-        return false;
-      },
-    );
+    await batch.commit().catchError((error) => print('error: $error'));
   }
 
   /// Habit section
@@ -203,12 +164,19 @@ class DataFeeder {
 
   void _updateHabit(AsyncSnapshot<QuerySnapshot> snapshot) {
     var habits = snapshot.data.documents
-              .map((documentSnapshot) => Habit.fromJson(
-                  json.decode(json.encode(documentSnapshot.data))))
-              .toList();
+        .map((documentSnapshot) =>
+            Habit.fromJson(json.decode(json.encode(documentSnapshot.data))))
+        .toList();
   }
 
-  Stream<QuerySnapshot> getTodayHabitList() {}
+  Stream<QuerySnapshot> getTodayHabitList() {
+    return Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .where('state', isEqualTo: 0)
+        .snapshots();
+  }
 
   Stream<QuerySnapshot> getHabitList() {
     Stream<QuerySnapshot> snapshots = Firestore.instance

@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/goal_form.dart';
 import 'package:successhunter/ui/milestone_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -43,6 +44,7 @@ class _GoalDetailState extends State<GoalDetail> {
         break;
       case GoalDetailPopupChoiceEnum.completeGoal:
         item.state = ActivityState.done;
+        item.currentValue = item.targetValue;
         DataFeeder.instance.overwriteGoal(widget.documentId, item);
         break;
       case GoalDetailPopupChoiceEnum.editGoal:
@@ -90,19 +92,6 @@ class _GoalDetailState extends State<GoalDetail> {
     return Icons.flag;
   }
 
-  Color _getGoalStateColor(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Colors.green[200];
-      case ActivityState.doing:
-        return Colors.white;
-      case ActivityState.failed:
-        return Colors.red[100];
-    }
-
-    return Colors.amber;
-  }
-
   /// Build Layout
   @override
   Widget build(BuildContext context) {
@@ -145,7 +134,7 @@ class _GoalDetailState extends State<GoalDetail> {
                 ),
               ),
               Card(
-                color: _getGoalStateColor(item.state),
+                color: Helper.getStateBackgroundColor(item.state),
                 elevation: 5.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

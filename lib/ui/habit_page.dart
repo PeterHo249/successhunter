@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/model/data_feeder.dart';
@@ -36,18 +37,6 @@ class HabitPageState extends State<HabitPage> {
   List<String> documentIds = <String>[];
 
   /// Business process
-  Color _getHabitStateColor(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Colors.green[200];
-      case ActivityState.doing:
-        return Colors.white;
-      case ActivityState.failed:
-        return Colors.red[100];
-    }
-
-    return Colors.amber;
-  }
 
   /// Build layout
   @override
@@ -276,7 +265,7 @@ class HabitPageState extends State<HabitPage> {
         setState(() {});
       },
       child: Card(
-        color: _getHabitStateColor(item.state),
+        color: Helper.getStateBackgroundColor(item.state),
         elevation: 5.0,
         child: Container(
           height: 130.0,

@@ -6,13 +6,14 @@ import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/habit_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/formatter.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 class HabitDetail extends StatefulWidget {
-  String documentId;
+  final String documentId;
 
   HabitDetail({this.documentId});
 
@@ -51,19 +52,6 @@ class _HabitDetailState extends State<HabitDetail> {
     }
 
     print(choice);
-  }
-
-  Color _getHabitStateColor(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Colors.green[200];
-      case ActivityState.doing:
-        return Colors.white;
-      case ActivityState.failed:
-        return Colors.red[100];
-    }
-
-    return Colors.amber;
   }
 
   /// Build layout
@@ -105,7 +93,7 @@ class _HabitDetailState extends State<HabitDetail> {
                 ),
               ),
               Card(
-                color: _getHabitStateColor(item.state),
+                color: Helper.getStateBackgroundColor(item.state),
                 elevation: 5.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -236,7 +224,7 @@ class _HabitDetailState extends State<HabitDetail> {
     }
 
     return Card(
-      color: _getHabitStateColor(item.state),
+      color: Helper.getStateBackgroundColor(item.state),
       elevation: 0.0,
       child: Container(
         height: 130.0,

@@ -20,6 +20,7 @@ class Habit {
   List<String> daysOfWeek;
   int state;
   List<List<DateTime>> streak;
+  bool isInStreak;
   DateTime currentDate;
 
   Habit({
@@ -36,6 +37,7 @@ class Habit {
     this.daysOfWeek,
     this.state = ActivityState.doing,
     this.streak,
+    this.isInStreak = false,
     this.currentDate,
   }) {
     if (dueTime == null) dueTime = DateTime(2018, 1, 1, 21);
