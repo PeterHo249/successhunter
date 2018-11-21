@@ -79,4 +79,15 @@ class Habit {
       ),
     );
   }
+
+  void completeToday() {
+    state = ActivityState.done;
+    if (isInStreak) {
+      streak[streak.length - 1].add(DateTime.now());
+    } else {
+      var newStreak = <DateTime>[DateTime.now()];
+      streak.add(newStreak);
+      isInStreak = true;
+    }
+  }
 }

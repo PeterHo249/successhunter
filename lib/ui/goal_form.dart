@@ -129,7 +129,9 @@ class _GoalFormState extends State<GoalForm> {
                 CardSettingsDatePicker(
                   label: 'Target Date',
                   initialValue: item == null ? null : item.targetDate,
-                  onSaved: (value) => item.targetDate = value,
+                  onSaved: (value) {
+                    item.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value);
+                  },
                 ),
                 CardSettingsHeader(
                   label: 'Measure',

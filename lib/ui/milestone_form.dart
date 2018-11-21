@@ -135,7 +135,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
                   label: 'Date',
                   initialValue:
                       milestoneItem == null ? null : milestoneItem.targetDate,
-                  onSaved: (value) => milestoneItem.targetDate = value,
+                  onSaved: (value) => milestoneItem.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value),
                   autovalidate: true,
                   validator: (DateTime value) {
                     if (value.isBefore(goalItem.startDate)) {

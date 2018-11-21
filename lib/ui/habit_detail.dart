@@ -32,7 +32,7 @@ class _HabitDetailState extends State<HabitDetail> {
     // TODO: Implement here
     switch (choice) {
       case HabitDetailPopupChoiceEnum.completeHabit:
-        item.state = ActivityState.done;
+        item.completeToday();
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
       case HabitDetailPopupChoiceEnum.editHabit:
@@ -126,7 +126,7 @@ class _HabitDetailState extends State<HabitDetail> {
                       child: Container(
                         child: CalendarCarousel(
                           daysHaveCircularBorder: true,
-                          height: 300.0,
+                          height: 450.0,
                           markedDates: <DateTime>[
                             DateTime.parse('20181101'),
                             DateTime.parse('20181102')
@@ -164,7 +164,7 @@ class _HabitDetailState extends State<HabitDetail> {
           ),
           InkWell(
             onTap: () {
-              item.state = ActivityState.done;
+              item.completeToday();
               DataFeeder.instance.overwriteHabit(widget.documentId, item);
               setState(() {});
             },
@@ -209,7 +209,7 @@ class _HabitDetailState extends State<HabitDetail> {
             onChanged: (value) {
               item.currentValue = value.toInt();
               if (item.currentValue == item.targetValue) {
-                item.state = ActivityState.done;
+                item.completeToday();
               }
               DataFeeder.instance.overwriteHabit(widget.documentId, item);
               setState(() {});

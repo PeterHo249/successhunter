@@ -9,6 +9,7 @@ import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/ui/goal_detail.dart';
 import 'package:successhunter/ui/goal_form.dart';
+import 'package:successhunter/ui/habit_detail.dart';
 import 'package:successhunter/ui/habit_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'dart:core';
@@ -365,7 +366,7 @@ class HomePageState extends State<HomePage> {
                   style: Theme.header2Style,
                 ),
                 StreamBuilder(
-                  stream: DataFeeder.instance.getHabitList(),
+                  stream: DataFeeder.instance.getTodayHabitList(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData)
@@ -464,7 +465,7 @@ class HomePageState extends State<HomePage> {
           ),
           InkWell(
             onTap: () {
-              item.state = ActivityState.done;
+              item.completeToday();
               DataFeeder.instance.overwriteHabit(documentId, item);
               setState(() {});
             },
@@ -509,7 +510,7 @@ class HomePageState extends State<HomePage> {
             onChanged: (value) {
               item.currentValue = value.toInt();
               if (item.currentValue == item.targetValue) {
-                item.state = ActivityState.done;
+                item.completeToday();
               }
               DataFeeder.instance.overwriteHabit(documentId, item);
               setState(() {});
@@ -528,7 +529,7 @@ class HomePageState extends State<HomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GoalDetail(
+            builder: (context) => HabitDetail(
                   documentId: documentId,
                 ),
           ),

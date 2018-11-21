@@ -193,7 +193,7 @@ class HabitPageState extends State<HabitPage> {
           ),
           InkWell(
             onTap: () {
-              item.state = ActivityState.done;
+              item.completeToday();
               DataFeeder.instance.overwriteHabit(documentIds[index], item);
               setState(() {});
             },
@@ -238,7 +238,7 @@ class HabitPageState extends State<HabitPage> {
             onChanged: (value) {
               item.currentValue = value.toInt();
               if (item.currentValue == item.targetValue) {
-                item.state = ActivityState.done;
+                item.completeToday();
               }
               DataFeeder.instance.overwriteHabit(documentIds[index], item);
               setState(() {});
