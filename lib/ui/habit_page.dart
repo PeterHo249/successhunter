@@ -202,9 +202,9 @@ class HabitPageState extends State<HabitPage> {
               height: 30.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: item.state == ActivityState.doing
-                    ? Colors.amber
-                    : Colors.green,
+                color: item.state == ActivityState.done
+                    ? Colors.green
+                    : Colors.amber,
               ),
               child: Icon(
                 item.state == ActivityState.done ? Icons.check : Icons.remove,

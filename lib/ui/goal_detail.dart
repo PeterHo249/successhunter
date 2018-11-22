@@ -143,12 +143,29 @@ class _GoalDetailState extends State<GoalDetail> {
                     Container(
                       height: 130.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            item.buildCircularIcon(),
+                            Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      height: 70.0,
+                                    ),
+                                    Container(
+                                      color: Colors.grey,
+                                      width: 5.0,
+                                      height: 50.0,
+                                    ),
+                                  ],
+                                ),
+                                item.buildCircularIcon(),
+                              ],
+                            ),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
@@ -376,16 +393,16 @@ class _GoalDetailState extends State<GoalDetail> {
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: <Widget>[
-                  Container(
-                    width: 5.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[Colors.grey, Colors.white],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.0, 1.0],
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 5.0,
+                        height: 50.0,
+                        color: Colors.grey,
                       ),
-                    ),
+                      Container(),
+                    ],
                   ),
                   Container(
                     width: 30.0,
