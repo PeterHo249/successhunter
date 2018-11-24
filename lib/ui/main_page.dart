@@ -154,7 +154,7 @@ class _MainPageState extends State<MainPage>
           ListTile(
             title: Text('Log out'),
             onTap: () {
-              Auth().signOut();
+              Auth.instance.signOut();
             },
           ),
         ],

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:successhunter/style/theme.dart' as Theme;
 
 class SplashPage extends StatefulWidget {
@@ -7,77 +11,64 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // Variable
+  double screenWidth;
+  double screenHeight;
+  // Business
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  // Layout
+  @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      key: _scaffoldKey,
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height >= 775.0
-                ? MediaQuery.of(context).size.height
-                : 775.0,
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [
-                    Theme.Colors.mainColor,
-                    Theme.Colors.secondaryColor
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 75.0),
-                  child: new Image(
-                      width: 250.0,
-                      height: 191.0,
-                      fit: BoxFit.fill,
-                      image: new AssetImage('assets/img/login_logo.png')),
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Stack(
+          children: <Widget>[
+            _buildHeaderSection(context),
+            Container(
+              width: screenWidth,
+              height: screenHeight,
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.Colors.mainColor),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(23.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.width - 46,
-                    child: _buildLoadingIndicator(context),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildLoadingIndicator(BuildContext context) {
+  Widget _buildHeaderSection(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 23.0),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        overflow: Overflow.visible,
-        children: <Widget>[
-          Card(
-            elevation: 2.0,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ],
+      height: screenHeight * 0.3,
+      decoration: BoxDecoration(
+        gradient: Theme.Colors.primaryGradient,
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(20.0),
+          bottomLeft: Radius.circular(20.0),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          'Success Hunter',
+          style:
+          Theme.header1Style.copyWith(color: Colors.white, fontSize: 30.0),
+        ),
       ),
     );
   }

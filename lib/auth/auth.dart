@@ -9,7 +9,11 @@ class Auth {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FacebookLogin facebookLogin = FacebookLogin();
 
-  Auth();
+  static final Auth _singleton = Auth._internal();
+
+  Auth._internal();
+
+  static Auth get instance => _singleton;
 
   Future<Null> signInWithFacebook() async {
     var result = await facebookLogin
