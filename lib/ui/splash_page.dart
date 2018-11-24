@@ -26,8 +26,8 @@ class _SplashPageState extends State<SplashPage> {
             decoration: new BoxDecoration(
               gradient: new LinearGradient(
                   colors: [
-                    Theme.Colors.loginGradientStart,
-                    Theme.Colors.loginGradientEnd
+                    Theme.Colors.mainColor,
+                    Theme.Colors.secondaryColor
                   ],
                   begin: const FractionalOffset(0.0, 0.0),
                   end: const FractionalOffset(1.0, 1.0),

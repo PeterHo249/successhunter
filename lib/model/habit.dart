@@ -19,7 +19,7 @@ class Habit {
   int period;
   List<String> daysOfWeek;
   int state;
-  List<List<DateTime>> streak;
+  List<DateTime> streak;
   bool isInStreak;
   DateTime currentDate;
 
@@ -45,7 +45,7 @@ class Habit {
       if (targetValue == null) targetValue = 100;
       if (unit == null) unit = '%';
     }
-    if (streak == null) streak = <List<DateTime>>[];
+    if (streak == null) streak = <DateTime>[];
     if (repetationType == RepetationTypeEnum.period) {
       if (period == null) {
         period = 1;
@@ -83,10 +83,9 @@ class Habit {
   void completeToday() {
     state = ActivityState.done;
     if (isInStreak) {
-      streak[streak.length - 1].add(DateTime.now());
+      streak.add(DateTime.now());
     } else {
-      var newStreak = <DateTime>[DateTime.now()];
-      streak.add(newStreak);
+      streak.add(DateTime.now());
       isInStreak = true;
     }
   }

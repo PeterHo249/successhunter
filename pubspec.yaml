@@ -48,38 +48,14 @@ flutter:
         - assets/login_logo.png
 
   fonts:
-      - family: WorkSansSemiBold
+      - family: RobotoBold
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Semibold.ttf
+          - asset: assets/fonts/Roboto/Roboto-Bold.ttf
 
-      - family: WorkSansBold
+      - family: RobotoMedium
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Bold.ttf
+          - asset: assets/fonts/Roboto/Roboto-Medium.ttf
 
-      - family: WorkSansExtraBold
+      - family: RobotoRegular
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-ExtraBold.ttf
-
-      - family: WorkSansMedium
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
-
-      - family: WorkSansLight
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Light.ttf
-
-      - family: WorkSansExtraLight
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-ExtraLight.ttf
-
-      - family: WorkSansThin
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Thin.ttf
-
-      - family: WorkSansExtraRegular
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Regular.ttf
-
-      - family: WorkSansExtraBlack
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Black.ttf
+          - asset: assets/fonts/Roboto/Roboto-Regular.ttf

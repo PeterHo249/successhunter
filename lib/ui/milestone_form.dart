@@ -73,7 +73,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
       appBar: AppBar(
         title: Text('New Goal'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.loginGradientStart,
+        backgroundColor: Theme.Colors.mainColor,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,

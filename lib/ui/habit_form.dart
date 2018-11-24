@@ -109,7 +109,7 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
       appBar: AppBar(
         title: Text('Habit'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.loginGradientStart,
+        backgroundColor: Theme.Colors.mainColor,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,

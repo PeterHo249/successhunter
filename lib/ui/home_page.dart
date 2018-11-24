@@ -137,7 +137,7 @@ class HomePageState extends State<HomePage> {
                         animationDuration: 1000,
                         linearStrokeCap: LinearStrokeCap.roundAll,
                         backgroundColor: Colors.grey[300],
-                        progressColor: Theme.Colors.loginGradientEnd,
+                        progressColor: Theme.Colors.secondaryColor,
                       ),
                     ],
                   ),

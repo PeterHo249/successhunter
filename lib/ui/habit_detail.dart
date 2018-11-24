@@ -82,7 +82,7 @@ class _HabitDetailState extends State<HabitDetail> {
         return Scaffold(
           appBar: AppBar(
             title: Text('My Habit'),
-            backgroundColor: Theme.Colors.loginGradientStart,
+            backgroundColor: Theme.Colors.mainColor,
             elevation: 0.0,
             actions: <Widget>[
               _buildPopupMenu(context),

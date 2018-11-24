@@ -120,7 +120,7 @@ class _GoalDetailState extends State<GoalDetail> {
         return Scaffold(
           appBar: AppBar(
             title: Text('My Goal'),
-            backgroundColor: Theme.Colors.loginGradientStart,
+            backgroundColor: Theme.Colors.mainColor,
             elevation: 0.0,
             actions: <Widget>[
               _buildPopupMenu(context),

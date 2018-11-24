@@ -70,7 +70,7 @@ class _GoalFormState extends State<GoalForm> {
       appBar: AppBar(
         title: Text('Goal'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.loginGradientStart,
+        backgroundColor: Theme.Colors.mainColor,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,

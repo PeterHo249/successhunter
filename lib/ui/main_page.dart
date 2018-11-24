@@ -66,10 +66,10 @@ class _MainPageState extends State<MainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.Colors.loginGradientEnd,
+      backgroundColor: Theme.Colors.secondaryColor,
       appBar: AppBar(
         title: Text(_choice.title),
-        backgroundColor: Theme.Colors.loginGradientStart,
+        backgroundColor: Theme.Colors.mainColor,
         elevation: 0.0,
         actions: <Widget>[
           _buildActionButton(context, _choice),
