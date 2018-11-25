@@ -6,6 +6,7 @@ import 'package:successhunter/auth/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -35,6 +36,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> _loginFormKey = new GlobalKey<FormState>();
   final GlobalKey<FormState> _signupFormKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _loginScreenKey =
+      new GlobalKey<ScaffoldState>();
 
   // Business
   @override
@@ -75,11 +78,22 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _loginWithEmail() {
+  void _loginWithEmail(BuildContext context) {
     final FormState formState = _loginFormKey.currentState;
 
     if (formState.validate()) {
       // TODO: Implement login here
+      Auth.instance
+          .signInWithEmail(
+            email: _loginEmailController.text,
+            password: _loginPasswordController.text,
+          )
+          .catchError(
+            (e) => Helper.showInSnackBar(
+                  _loginScreenKey.currentState,
+                  e.message,
+                ),
+          );
     } else {
       setState(() {
         _loginAutoValidate = true;
@@ -87,12 +101,23 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _signup() {
+  void _signup(BuildContext context) {
     final FormState formState = _signupFormKey.currentState;
 
     if (formState.validate()) {
       // TODO: Implement signup here
-
+      Auth.instance
+          .createNewUser(
+            email: _signupEmailController.text,
+            password: _signupPasswordController.text,
+            displayName: _signupUsernameController.text,
+          )
+          .catchError(
+            (e) => Helper.showInSnackBar(
+                  _loginScreenKey.currentState,
+                  e.message,
+                ),
+          );
     } else {
       setState(() {
         _signupAutoValidate = true;
@@ -107,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
     screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      key: _loginScreenKey,
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -119,22 +145,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildHeaderSection(BuildContext context) {
-    return Container(
-      height: screenHeight * 0.3,
-      decoration: BoxDecoration(
-        gradient: Theme.Colors.primaryGradient,
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(20.0),
-          bottomLeft: Radius.circular(20.0),
-        ),
-      ),
-      child: Center(
-        child: Text(
-          'Success Hunter',
-          style:
-              Theme.header1Style.copyWith(color: Colors.white, fontSize: 30.0),
-        ),
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Helper.buildHeaderBackground(context),
+        Center(
+          child: Text(
+            'Success Hunter',
+            style: Theme.header1Style
+                .copyWith(color: Colors.white, fontSize: 30.0),
+          ),
+        )
+      ],
     );
   }
 
@@ -246,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: InkWell(
-              onTap: _loginWithEmail,
+              onTap: () => _loginWithEmail(context),
               child: Container(
                 width: screenWidth * 0.4,
                 decoration: BoxDecoration(
@@ -316,7 +338,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () {
-                    print('login with google');
+                    Auth.instance.signInWithGoogle().catchError(
+                          (e) => Helper.showInSnackBar(
+                                _loginScreenKey.currentState,
+                                e.message,
+                              ),
+                        );
                   },
                 ),
                 RaisedButton(
@@ -332,7 +359,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () {
-                    print('login with facebook');
+                    Auth.instance.signInWithFacebook().catchError(
+                          (e) => Helper.showInSnackBar(
+                                _loginScreenKey.currentState,
+                                e.message,
+                              ),
+                        );
                   },
                 ),
               ],
@@ -342,7 +374,9 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
               onTap: () {
-                _pageController.animateToPage(1, duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+                _pageController.animateToPage(1,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.decelerate);
               },
               child: Text(
                 'Don\'t have an account? Sign up',
@@ -488,7 +522,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: InkWell(
-              onTap: _signup,
+              onTap: () => _signup(context),
               child: Container(
                 width: screenWidth * 0.4,
                 decoration: BoxDecoration(

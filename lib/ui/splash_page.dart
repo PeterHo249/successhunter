@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class SplashPage extends StatefulWidget {
   @override
@@ -54,22 +53,18 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Widget _buildHeaderSection(BuildContext context) {
-    return Container(
-      height: screenHeight * 0.3,
-      decoration: BoxDecoration(
-        gradient: Theme.Colors.primaryGradient,
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(20.0),
-          bottomLeft: Radius.circular(20.0),
-        ),
-      ),
-      child: Center(
-        child: Text(
-          'Success Hunter',
-          style:
-          Theme.header1Style.copyWith(color: Colors.white, fontSize: 30.0),
-        ),
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Helper.buildHeaderBackground(context),
+        Center(
+          child: Text(
+            'Success Hunter',
+            style: Theme.header1Style
+                .copyWith(color: Colors.white, fontSize: 30.0),
+          ),
+        )
+      ],
     );
   }
 }

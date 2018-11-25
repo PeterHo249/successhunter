@@ -33,6 +33,7 @@ dependencies:
   share: ^0.5.3
   firebase_messaging: ^2.0.3
   flutter_calendar_carousel: ^1.1.10
+  tinycolor: ^1.0.2
 
 dev_dependencies:
   flutter_test:
