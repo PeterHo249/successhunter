@@ -46,6 +46,11 @@ class _FABWithIconsState extends State<FABWithIcons>
       }).toList()
         ..add(
           _buildFAB(),
+        )..add(
+          Container(
+            height: 32.0,
+            width: 1.0,
+          ),
         ),
     );
   }
@@ -66,6 +71,7 @@ class _FABWithIconsState extends State<FABWithIcons>
           ),
         ),
         child: FloatingActionButton(
+          heroTag: null,
           backgroundColor: widget.backgroundColor ?? Colors.blue,
           mini: true,
           child: Icon(
@@ -88,7 +94,7 @@ class _FABWithIconsState extends State<FABWithIcons>
         }
       },
       child: Icon(Icons.add),
-      elevation: 2.0,
+      elevation: 7.0,
     );
   }
 
