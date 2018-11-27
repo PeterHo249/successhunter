@@ -46,7 +46,12 @@ flutter:
   uses-material-design: true
 
   assets:
-        - assets/login_logo.png
+        - assets/img/book.png
+        - assets/img/calendar.png
+        - assets/img/multitarget.png
+        - assets/img/person.png
+        - assets/img/statistics.png
+        - assets/img/target.png
 
   fonts:
       - family: RobotoBold

@@ -20,7 +20,7 @@ Color getStateBackgroundColor(int state) {
 }
 
 Widget buildHeaderBackground(BuildContext context,
-    {Color color, double height, double width}) {
+    {Color color, double height, double width, ImageProvider image}) {
   if (height == null) {
     height = MediaQuery.of(context).size.height * 0.3;
   }
@@ -35,9 +35,19 @@ Widget buildHeaderBackground(BuildContext context,
     alignment: Alignment.topCenter,
     children: <Widget>[
       Container(
+        color: Colors.white,
+        height: height,
+        width: width,
+      ),
+      Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
+          image: image == null ? null : DecorationImage(
+            image: image,
+            fit: BoxFit.contain,
+            colorFilter: ColorFilter.mode(color.withOpacity(0.1), BlendMode.dstIn)
+          ),
           gradient: LinearGradient(
             colors: [
               color,
@@ -49,29 +59,29 @@ Widget buildHeaderBackground(BuildContext context,
             tileMode: TileMode.clamp,
           ),
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20.0),
-            bottomRight: Radius.circular(20.0),
+            bottomLeft: Radius.circular(50.0),
+            bottomRight: Radius.circular(50.0),
           ),
         ),
       ),
       Container(
-        height: height - 20,
+        height: height,
         width: width,
         decoration: BoxDecoration(
           color: color.withAlpha(180),
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(150.0),
-            bottomRight: Radius.circular(200.0),
+            bottomLeft: Radius.circular(180.0),
+            bottomRight: Radius.circular(180.0),
           ),
         ),
       ),
       Container(
-        height: height - 20,
+        height: height,
         width: width,
         decoration: BoxDecoration(
           color: color.withAlpha(80),
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20.0),
+            bottomLeft: Radius.circular(100.0),
             bottomRight: Radius.circular(100.0),
           ),
         ),

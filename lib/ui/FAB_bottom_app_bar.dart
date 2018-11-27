@@ -35,9 +35,7 @@ class FABBottomAppBar extends StatefulWidget {
     this.notchedShape,
     this.onTabSelected,
     this.textStyle,
-  }) {
-    assert(this.items.length == 2 || this.items.length == 4);
-  }
+  });
 
   @override
   _FABBottomAppBarState createState() => _FABBottomAppBarState();

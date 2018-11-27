@@ -5,13 +5,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/FAB_bottom_app_bar.dart';
 import 'package:successhunter/ui/FAB_with_icon.dart';
-import 'package:successhunter/ui/anchored_overlay.dart';
 import 'package:successhunter/ui/diary_page.dart';
 import 'package:successhunter/ui/goal_form.dart';
 import 'package:successhunter/ui/goal_page.dart';
 import 'package:successhunter/ui/habit_form.dart';
 import 'package:successhunter/ui/habit_page.dart';
 import 'package:successhunter/ui/home_page.dart';
+import 'package:successhunter/auth/auth.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -24,14 +24,10 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   // Variable
-  final List<Widget> pageViews = [
-    HomePage(),
-    GoalPage(),
-    HabitPage(),
-    DiaryPage(),
-  ];
+
   int currentIndex = 0;
   List<Widget> fabs;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Business
   @override
@@ -46,9 +42,8 @@ class _MainPageState extends State<MainPage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // TODO: implement handle add new goal
-          Navigator.push(
-              this.context, MaterialPageRoute(builder: (context) => GoalForm()));
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => GoalForm()));
           print('add new goal');
         },
         child: Icon(
@@ -59,9 +54,19 @@ class _MainPageState extends State<MainPage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // TODO: implement handle add new habit
-          Navigator.push(
-              this.context, MaterialPageRoute(builder: (context) => HabitForm()));
+          // TODO: Implement co-op form here
+          print('add new co-op');
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
           print('add new habit');
         },
         child: Icon(
@@ -75,6 +80,15 @@ class _MainPageState extends State<MainPage> {
           // TODO: implement handle add new diary
           print('add new diary');
         },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        // TODO: What can we do here, Peter????
+        onPressed: null,
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -114,10 +128,12 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: fabs[currentIndex],
       bottomNavigationBar: _buildFABBottomAppBar(context),
-      body: pageViews[currentIndex],
+      body: _buildContentView(currentIndex),
+      drawer: _buildDrawer(context),
     );
   }
 
@@ -130,35 +146,85 @@ class _MainPageState extends State<MainPage> {
       items: [
         FABBottomAppBarItem(icon: Icons.home, label: 'Home'),
         FABBottomAppBarItem(icon: FontAwesomeIcons.bullseye, label: 'Goal'),
+        FABBottomAppBarItem(icon: Icons.people_outline, label: 'Co-op'),
         FABBottomAppBarItem(icon: Icons.calendar_today, label: 'Habit'),
         FABBottomAppBarItem(icon: FontAwesomeIcons.bookOpen, label: 'Diary'),
+        FABBottomAppBarItem(icon: Icons.person_outline, label: 'Info'),
       ],
     );
   }
 
-  Widget _buildFAB(BuildContext context) {
-    final icons = [FontAwesomeIcons.bullseye, Icons.calendar_today];
-    return AnchoredOverlay(
-      showOverlay: true,
-      overlayBuilder: (context, offset) {
-        return CenterAbout(
-          position: Offset(
-            offset.dx,
-            offset.dy - icons.length * 35.0,
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Container(
+                      width: 100.0,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(widget.user.photoUrl),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150.0,
+                    child: Text(
+                      widget.user.displayName,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.header1Style.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              gradient: Theme.Colors.primaryGradient,
+            ),
           ),
-          child: FABWithIcons(
-            icons: icons,
-            onIconTapped: _selectedFAB,
-            backgroundColor: Theme.Colors.mainColor,
-            foregroundColor: Colors.white,
+          ListTile(
+            title: Text('Settings'),
+            onTap: () {},
           ),
-        );
-      },
-      child: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
-        elevation: 2.0,
+          ListTile(
+            title: Text('Log out'),
+            onTap: () {
+              Auth.instance.signOut();
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  Widget _buildContentView(int index) {
+    switch (index) {
+      case 0:
+        return HomePage();
+      case 1:
+        return GoalPage();
+      case 2:
+        return Container();
+      case 3:
+        return HabitPage();
+      case 4:
+        return DiaryPage();
+      case 5:
+        return Container();
+    }
   }
 }
