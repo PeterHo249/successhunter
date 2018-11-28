@@ -46,7 +46,7 @@ Widget buildHeaderBackground(BuildContext context,
           image: image == null ? null : DecorationImage(
             image: image,
             fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(color.withOpacity(0.1), BlendMode.dstIn)
+            colorFilter: ColorFilter.mode(color.withOpacity(0.4), BlendMode.dstIn)
           ),
           gradient: LinearGradient(
             colors: [

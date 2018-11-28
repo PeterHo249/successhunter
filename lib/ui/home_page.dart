@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/model/habit.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,6 +21,12 @@ class _HomePageState extends State<HomePage> {
   // Variable
   double screenHeight;
   double screenWidth;
+
+  var goalDocumentIds = <String>[];
+  var goals = <Goal>[];
+
+  var habitDocumentIds = <String>[];
+  var habits = <Habit>[];
 
   // Business
 
@@ -26,7 +39,10 @@ class _HomePageState extends State<HomePage> {
     return CustomScrollView(
       slivers: <Widget>[
         _buildHeader(context),
-        _buildContent(context),
+        _buildSectionHeader(context, 'Today Task'),
+        _buildTodayTaskSection(context),
+        _buildSectionHeader(context, 'My Goal'),
+        _buildGoalSection(context),
       ],
     );
   }
@@ -57,9 +73,13 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Container(
+                // TODO: Implement avatar here
                 height: screenHeight * 0.3 - 100.0,
                 width: screenHeight * 0.3 - 100.0,
-                color: Colors.red,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.grey,
+                ),
               ),
             ),
             Expanded(
@@ -132,10 +152,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                           LinearPercentIndicator(
                             width: screenWidth - screenHeight * 0.23,
+                            lineHeight: 10.0,
                             percent: 0.5,
-                            progressColor: Colors.redAccent,
+                            progressColor: Colors.deepOrange,
+                            padding: const EdgeInsets.all(0.0),
                             backgroundColor: Colors.blueGrey,
-                            linearStrokeCap: LinearStrokeCap.round,
+                            linearStrokeCap: LinearStrokeCap.roundAll,
                             animation: true,
                             animationDuration: 700,
                           ),
@@ -175,8 +197,108 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    return SliverFillRemaining();
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: CustomSliverPersistentHeaderDelegate(
+        minHeight: 60.0,
+        maxHeight: 80.0,
+        child: Container(
+          child: Text(
+            title,
+            style: Theme.header2Style.copyWith(
+              color: Theme.Colors.mainColor,
+            ),
+          ),
+          alignment: Alignment(-0.9, 0.0),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTodayTaskSection(BuildContext context) {
+    return StreamBuilder(
+      stream: DataFeeder.instance.getTodayHabitList(),
+      builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          // TODO: Implement loading
+          return SliverFillRemaining(
+            child: Text('loading'),
+          );
+        }
+
+        if (snapshot.data.documents.length == 0) {
+          // TODO: Implement nothing
+          return SliverFillRemaining(
+            child: Text('nothing'),
+          );
+        }
+
+        habits = snapshot.data.documents
+            .map((documentSnapshot) =>
+                Habit.fromJson(json.decode(json.encode(documentSnapshot.data))))
+            .toList();
+
+        habitDocumentIds = snapshot.data.documents
+            .map((documentSnapshot) => documentSnapshot.documentID)
+            .toList();
+
+        // TODO: Implement list todo here
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return _buildTodayTaskTile(context, habits[index]);
+            },
+            childCount: habits.length,
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildTodayTaskTile(BuildContext context, Habit item) {
+    return Container(
+      height: 100.0,
+      color: Colors.greenAccent,
+      child: Center(
+        child: Text(item.title),
+      ),
+    );
+  }
+
+  Widget _buildGoalSection(BuildContext context) {
+    return StreamBuilder(
+      stream: DataFeeder.instance.getDoingGoalList(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          // TODO: Implement loading
+          return SliverFillRemaining(
+            child: Text('loading'),
+          );
+        }
+
+        if (snapshot.data.documents.length == 0) {
+          // TODO: Implement add new
+          return SliverFillRemaining(
+            child: Text('nothing'),
+          );
+        }
+
+        goals = snapshot.data.documents
+            .map((documentSnapshot) =>
+                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
+            .toList();
+
+        goalDocumentIds = snapshot.data.documents
+            .map((documentSnapshot) => documentSnapshot.documentID)
+            .toList();
+
+        // TODO: Implement list todo here
+        return SliverFillRemaining(
+          child: Text('has some data'),
+        );
+      },
+    );
   }
 }
 
