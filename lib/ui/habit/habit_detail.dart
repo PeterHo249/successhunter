@@ -7,7 +7,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
-import 'package:successhunter/ui/habit_form.dart';
+import 'package:successhunter/ui/habit/habit_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/formatter.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';

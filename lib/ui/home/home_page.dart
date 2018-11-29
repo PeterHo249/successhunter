@@ -204,6 +204,7 @@ class _HomePageState extends State<HomePage> {
         minHeight: 60.0,
         maxHeight: 80.0,
         child: Container(
+          color: Colors.white,
           child: Text(
             title,
             style: Theme.header2Style.copyWith(

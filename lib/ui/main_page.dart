@@ -5,13 +5,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/FAB_bottom_app_bar.dart';
 import 'package:successhunter/ui/FAB_with_icon.dart';
-import 'package:successhunter/ui/diary_page.dart';
-import 'package:successhunter/ui/goal_form.dart';
-import 'package:successhunter/ui/goal_page.dart';
-import 'package:successhunter/ui/habit_form.dart';
-import 'package:successhunter/ui/habit_page.dart';
-import 'package:successhunter/ui/home_page.dart';
+import 'package:successhunter/ui/coop/coop_page.dart';
+import 'package:successhunter/ui/diary/diary_page.dart';
+import 'package:successhunter/ui/goal/goal_form.dart';
+import 'package:successhunter/ui/goal/goal_page.dart';
+import 'package:successhunter/ui/habit/habit_form.dart';
+import 'package:successhunter/ui/habit/habit_page.dart';
+import 'package:successhunter/ui/home/home_page.dart';
 import 'package:successhunter/auth/auth.dart';
+import 'package:successhunter/ui/info/info_page.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -35,7 +37,12 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     fabs = [
       FABWithIcons(
-        icons: [FontAwesomeIcons.bullseye, Icons.calendar_today],
+        icons: [
+          FontAwesomeIcons.bullseye,
+          Icons.people_outline,
+          Icons.calendar_today,
+          FontAwesomeIcons.bookOpen,
+        ],
         backgroundColor: Theme.Colors.mainColor,
         foregroundColor: Colors.white,
         onIconTapped: _selectedFAB,
@@ -218,13 +225,15 @@ class _MainPageState extends State<MainPage> {
       case 1:
         return GoalPage();
       case 2:
-        return Container();
+        return CoopPage();
       case 3:
         return HabitPage();
       case 4:
         return DiaryPage();
       case 5:
-        return Container();
+        return InfoPage();
     }
+
+    return Container();
   }
 }

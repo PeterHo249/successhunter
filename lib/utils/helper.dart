@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tinycolor/tinycolor.dart';
 
-
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 

@@ -7,7 +7,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
-import 'package:successhunter/ui/goal_form.dart';
+import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/milestone_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
