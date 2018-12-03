@@ -44,7 +44,7 @@ class Habit {
     this.longestStreak = 0,
     this.currentStreak = 0,
   }) {
-    if (dueTime == null) dueTime = DateTime(2018, 1, 1, 21);
+    if (dueTime == null) dueTime = DateTime(2018, 1, 1, 21).toUtc();
     if (!isYesNoTask) {
       if (targetValue == null) targetValue = 100;
       if (unit == null) unit = '%';
@@ -60,7 +60,7 @@ class Habit {
         daysOfWeek = DayOfWeekEnum.days.toList();
       }
     }
-    if (currentDate == null) currentDate = DateTime.now();
+    if (currentDate == null) currentDate = DateTime.now().toUtc();
   }
 
   factory Habit.fromJson(Map<String, dynamic> json) => _$HabitFromJson(json);
@@ -87,9 +87,9 @@ class Habit {
   void completeToday() {
     state = ActivityState.done;
     if (isInStreak) {
-      streak.add(DateTime.now());
+      streak.add(DateTime.now().toUtc());
     } else {
-      streak.add(DateTime.now());
+      streak.add(DateTime.now().toUtc());
       isInStreak = true;
     }
   }

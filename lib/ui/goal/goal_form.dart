@@ -176,10 +176,10 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
                 ),
                 CardSettingsDatePicker(
                   label: 'Target Date',
-                  initialValue: item == null ? null : item.targetDate,
+                  initialValue: item == null ? null : item.targetDate.toLocal(),
                   onSaved: (value) {
                     item.targetDate =
-                        updateJustTime(TimeOfDay(hour: 23, minute: 59), value);
+                        updateJustTime(TimeOfDay(hour: 23, minute: 59), value).toUtc();
                   },
                 ),
                 CardSettingsHeader(

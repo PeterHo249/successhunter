@@ -204,11 +204,11 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
                   initialValue: item == null
                       ? null
                       : TimeOfDay(
-                          hour: item.dueTime.hour,
-                          minute: item.dueTime.minute,
+                          hour: item.dueTime.toLocal().hour,
+                          minute: item.dueTime.toLocal().minute,
                         ),
                   onSaved: (value) =>
-                      item.dueTime = updateJustTime(value, item.dueTime),
+                      item.dueTime = updateJustTime(value, item.dueTime).toUtc(),
                 ),
                 CardSettingsListPicker(
                   label: 'Repetation',

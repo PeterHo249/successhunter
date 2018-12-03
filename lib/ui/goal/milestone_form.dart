@@ -134,15 +134,15 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 CardSettingsDatePicker(
                   label: 'Date',
                   initialValue:
-                      milestoneItem == null ? null : milestoneItem.targetDate,
-                  onSaved: (value) => milestoneItem.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value),
+                      milestoneItem == null ? null : milestoneItem.targetDate.toLocal(),
+                  onSaved: (value) => milestoneItem.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value).toUtc(),
                   autovalidate: true,
                   validator: (DateTime value) {
-                    if (value.isBefore(goalItem.startDate)) {
+                    if (value.isBefore(goalItem.startDate.toLocal())) {
                       return 'This has to be greater than goal\'s start date.';
                     }
 
-                    if (value.isAfter(goalItem.targetDate)) {
+                    if (value.isAfter(goalItem.targetDate.toLocal())) {
                       return 'This has to be less than goal\'s target date.';
                     }
 

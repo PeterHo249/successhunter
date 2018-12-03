@@ -8,6 +8,6 @@ class Formatter {
 
   static String getTimeString(DateTime time, {String pattern = 'HH:mm:ss'}) {
     var formatter = DateFormat(pattern);
-    return formatter.format(time);
+    return formatter.format(time.toLocal());
   }
 }

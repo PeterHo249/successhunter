@@ -38,11 +38,11 @@ class Goal {
 
     if (currentValue == null) currentValue = startValue;
 
-    if (startDate == null) startDate = DateTime.now();
+    if (startDate == null) startDate = DateTime.now().toUtc();
 
-    if (targetDate == null) targetDate = DateTime.now();
+    if (targetDate == null) targetDate = DateTime.now().toUtc();
 
-    if (doneDate == null) doneDate = DateTime.now();
+    if (doneDate == null) doneDate = DateTime.now().toUtc();
 
     if (milestones == null) milestones = <Milestone>[];
   }
@@ -62,7 +62,7 @@ class Goal {
         : currentValue + milestones[index].targetValue;
     if (currentValue == targetValue) {
       state = ActivityState.done;
-      doneDate = DateTime.now();
+      doneDate = DateTime.now().toUtc();
     }
   }
 }
@@ -83,7 +83,7 @@ class Milestone {
     this.state = 0,
   }) {
     if (description == null) description = '';
-    if (targetDate == null) targetDate = DateTime.now();
+    if (targetDate == null) targetDate = DateTime.now().toUtc();
   }
 
   factory Milestone.fromJson(Map<String, dynamic> json) =>
