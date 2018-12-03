@@ -1,31 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class TabChoice {
-  final String title;
-  final Icon icon;
-  final Widget action;
-
-  const TabChoice({this.title, this.icon, this.action});
-}
-
-const List<TabChoice> choices = const <TabChoice>[
-  const TabChoice(title: 'Home', icon: Icon(Icons.home)),
-  const TabChoice(title: 'Goal', icon: Icon(FontAwesomeIcons.bullseye)),
-  const TabChoice(title: 'Habit', icon: Icon(Icons.calendar_today)),
-  const TabChoice(title: 'Diary', icon: Icon(FontAwesomeIcons.journalWhills)),
-];
-
-class MainPagePopupChoiceEnum {
-  static const String addGoal = 'Add Goal';
-  static const String addHabit = 'Add Habit';
-
-  static const List<String> choices = <String>[
-    addGoal,
-    addHabit,
-  ];
-}
-
 class GoalDetailPopupChoiceEnum {
   static const String addMilestone = 'Add Milestone';
   static const String editGoal = 'Edit Goal';

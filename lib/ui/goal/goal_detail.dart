@@ -8,7 +8,7 @@ import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/goal/goal_form.dart';
-import 'package:successhunter/ui/milestone_form.dart';
+import 'package:successhunter/ui/goal/milestone_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/utils/formatter.dart';
@@ -163,7 +163,7 @@ class _GoalDetailState extends State<GoalDetail> {
                                     ),
                                   ],
                                 ),
-                                item.buildCircularIcon(),
+                                //item.buildCircularIcon(),
                               ],
                             ),
                             Padding(

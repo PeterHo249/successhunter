@@ -74,7 +74,6 @@ class _MainPageState extends State<MainPage> {
         onPressed: () {
           Navigator.push(this.context,
               MaterialPageRoute(builder: (context) => HabitForm()));
-          print('add new habit');
         },
         child: Icon(
           Icons.add,

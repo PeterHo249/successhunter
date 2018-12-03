@@ -22,6 +22,8 @@ class Habit {
   List<DateTime> streak;
   bool isInStreak;
   DateTime currentDate;
+  int longestStreak;
+  int currentStreak;
 
   Habit({
     this.title,
@@ -39,6 +41,8 @@ class Habit {
     this.streak,
     this.isInStreak = false,
     this.currentDate,
+    this.longestStreak = 0,
+    this.currentStreak = 0,
   }) {
     if (dueTime == null) dueTime = DateTime(2018, 1, 1, 21);
     if (!isYesNoTask) {

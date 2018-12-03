@@ -29,7 +29,9 @@ Habit _$HabitFromJson(Map<String, dynamic> json) {
       isInStreak: json['isInStreak'] as bool,
       currentDate: json['currentDate'] == null
           ? null
-          : DateTime.parse(json['currentDate'] as String));
+          : DateTime.parse(json['currentDate'] as String),
+      longestStreak: json['longestStreak'] as int,
+      currentStreak: json['currentStreak'] as int);
 }
 
 Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
@@ -47,5 +49,7 @@ Map<String, dynamic> _$HabitToJson(Habit instance) => <String, dynamic>{
       'state': instance.state,
       'streak': instance.streak?.map((e) => e?.toIso8601String())?.toList(),
       'isInStreak': instance.isInStreak,
-      'currentDate': instance.currentDate?.toIso8601String()
+      'currentDate': instance.currentDate?.toIso8601String(),
+      'longestStreak': instance.longestStreak,
+      'currentStreak': instance.currentStreak
     };

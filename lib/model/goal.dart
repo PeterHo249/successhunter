@@ -55,23 +55,6 @@ class Goal {
 
   Map<String, dynamic> toJson() => _$GoalToJson(this);
 
-  Widget buildCircularIcon() {
-    var data = TypeDecorationEnum.typeDecorations[ActivityTypeEnum.getIndex(type)];
-    return Container(
-      height: 80.0,
-      width: 80.0,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: data.backgroundColor,
-      ),
-      child: Icon(
-        data.icon,
-        color: data.color,
-        size: 30.0,
-      ),
-    );
-  }
-
   void completeMilestone(int index) {
     milestones[index].state = ActivityState.done;
     currentValue = currentValue + milestones[index].targetValue > targetValue

@@ -7,6 +7,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class GoalForm extends StatefulWidget {
   final String documentId;
@@ -19,24 +20,13 @@ class GoalForm extends StatefulWidget {
 
 class _GoalFormState extends State<GoalForm> {
   /// Variable
-  final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
-  bool _isAutoValidate = false;
   Goal item;
 
   /// Business process
-  Future _savePressed() async {
-    final form = _goalFormKey.currentState;
-    if (form.validate()) {
-      form.save();
-      if (widget.documentId == null) {
-        DataFeeder.instance.addNewGoal(item);
-      } else {
-        DataFeeder.instance.overwriteGoal(widget.documentId, item);
-      }
-      Navigator.pop(this.context);
-    } else {
-      _isAutoValidate = true;
-    }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   /// Build layout
@@ -44,7 +34,9 @@ class _GoalFormState extends State<GoalForm> {
   Widget build(BuildContext context) {
     if (widget.documentId == null) {
       item = Goal();
-      return _buildForm();
+      return GoalFormWidget(
+        item: item,
+      );
     } else {
       return StreamBuilder(
         stream: DataFeeder.instance.getGoal(widget.documentId),
@@ -59,18 +51,68 @@ class _GoalFormState extends State<GoalForm> {
 
           item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
 
-          return _buildForm();
+          return GoalFormWidget(
+            item: item,
+            documentId: widget.documentId,
+          );
         },
       );
     }
   }
+}
 
-  Widget _buildForm() {
+class GoalFormWidget extends StatefulWidget {
+  final Goal item;
+  final String documentId;
+
+  GoalFormWidget({this.item, this.documentId});
+
+  @override
+  _GoalFormWidgetState createState() => _GoalFormWidgetState();
+}
+
+class _GoalFormWidgetState extends State<GoalFormWidget> {
+  // Variable
+  final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
+  bool _isAutoValidate = false;
+  Color color;
+
+  // Business
+  Future _savePressed() async {
+    final form = _goalFormKey.currentState;
+    if (form.validate()) {
+      form.save();
+      if (widget.documentId == null) {
+        DataFeeder.instance.addNewGoal(widget.item);
+      } else {
+        DataFeeder.instance.overwriteGoal(widget.documentId, widget.item);
+      }
+      Navigator.pop(this.context);
+    } else {
+      _isAutoValidate = true;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    color = TypeDecorationEnum
+        .typeDecorations[ActivityTypeEnum.getIndex(widget.item.type)]
+        .backgroundColor;
+  }
+
+  // Layout
+  @override
+  Widget build(BuildContext context) {
+    return _buildForm(widget.item);
+  }
+
+  Widget _buildForm(Goal item) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Goal'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.mainColor,
+        backgroundColor: color,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,
@@ -83,10 +125,9 @@ class _GoalFormState extends State<GoalForm> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: Theme.Colors.primaryGradient,
-            ),
+          Helper.buildHeaderBackground(
+            context,
+            color: color,
           ),
           Form(
             key: _goalFormKey,
@@ -124,13 +165,21 @@ class _GoalFormState extends State<GoalForm> {
                   label: 'Goal Type',
                   options: ActivityTypeEnum.types,
                   initialValue: item == null ? null : item.type,
+                  onChanged: (value) {
+                    setState(() {
+                      color = color = TypeDecorationEnum
+                          .typeDecorations[ActivityTypeEnum.getIndex(value)]
+                          .backgroundColor;
+                    });
+                  },
                   onSaved: (value) => item.type = value,
                 ),
                 CardSettingsDatePicker(
                   label: 'Target Date',
                   initialValue: item == null ? null : item.targetDate,
                   onSaved: (value) {
-                    item.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value);
+                    item.targetDate =
+                        updateJustTime(TimeOfDay(hour: 23, minute: 59), value);
                   },
                 ),
                 CardSettingsHeader(

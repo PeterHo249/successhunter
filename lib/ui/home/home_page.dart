@@ -4,13 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
-
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/goal/goal_form.dart';
+import 'package:successhunter/ui/habit/habit_detail.dart';
+import 'package:successhunter/ui/habit/habit_form.dart';
+import 'package:successhunter/utils/formatter.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -222,16 +228,53 @@ class _HomePageState extends State<HomePage> {
       stream: DataFeeder.instance.getTodayHabitList(),
       builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
-          // TODO: Implement loading
-          return SliverFillRemaining(
-            child: Text('loading'),
+          return SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  height: 120.0,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
         if (snapshot.data.documents.length == 0) {
-          // TODO: Implement nothing
-          return SliverFillRemaining(
-            child: Text('nothing'),
+          return SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(this.context,
+                        MaterialPageRoute(builder: (context) => HabitForm()));
+                  },
+                  child: Container(
+                    height: 120.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.add,
+                          size: 50.0,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          'You don\'t have any task today.\n Press + to add new one.',
+                          style: Theme.contentStyle.copyWith(
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
@@ -244,11 +287,10 @@ class _HomePageState extends State<HomePage> {
             .map((documentSnapshot) => documentSnapshot.documentID)
             .toList();
 
-        // TODO: Implement list todo here
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              return _buildTodayTaskTile(context, habits[index]);
+              return _buildTodayTaskTile(context, habits[index], index);
             },
             childCount: habits.length,
           ),
@@ -257,14 +299,179 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTodayTaskTile(BuildContext context, Habit item) {
-    return Container(
-      height: 100.0,
-      color: Colors.greenAccent,
-      child: Center(
-        child: Text(item.title),
+  Widget _buildTodayTaskTile(BuildContext context, Habit item, int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HabitDetail(
+                documentId: habitDocumentIds[index],
+              ),
+            ),
+          );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                height: 100.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Helper.buildCircularIcon(
+                      data: TypeDecorationEnum
+                          .typeDecorations[ActivityTypeEnum.getIndex(item.type)],
+                    ),
+                    _buildTodayTaskInfo(context, item, index),
+                  ],
+                ),
+              ),
+            ),
+            Divider(
+              color: Colors.blueGrey,
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildTodayTaskInfo(BuildContext context, Habit item, int index) {
+    Widget result;
+
+    String dueTimeInfo;
+
+    switch (item.repetationType) {
+      case RepetationTypeEnum.everyDay:
+        dueTimeInfo = 'Due every day at ${Formatter.getTimeString(item.dueTime)}';
+        break;
+      case RepetationTypeEnum.period:
+        dueTimeInfo = 'Due every ${item.period} day(s) at ${Formatter.getTimeString(item.dueTime)}';
+        break;
+      case RepetationTypeEnum.dayOfWeek:
+        dueTimeInfo = 'Due every ';
+        for (int i = 0; i < item.daysOfWeek.length; i++) {
+          dueTimeInfo += '${item.daysOfWeek[i]} ';
+        }
+        dueTimeInfo += 'at ${Formatter.getTimeString(item.dueTime)}';
+        break;
+    }
+
+    if (item.isYesNoTask) {
+      result = Container(
+        width: screenWidth - 100.0,
+        height: 80.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    item.title,
+                    style: Theme.header3Style,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    dueTimeInfo,
+                    style: Theme.contentStyle,
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                item.completeToday();
+                DataFeeder.instance.overwriteHabit(habitDocumentIds[index], item);
+              },
+              child: Helper.buildCircularIcon(
+                  data: TypeDecoration(
+                    icon: Icons.remove,
+                    color: Colors.white,
+                    backgroundColor: Colors.amber,
+                  ),
+                  size: 30.0),
+            ),
+          ],
+        ),
+      );
+    } else {
+      result = Container(
+        width: screenWidth - 100.0,
+        height: 80.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        item.title,
+                        style: Theme.header3Style,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        dueTimeInfo,
+                        style: Theme.contentStyle,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  'Completed:\n${item.currentValue}/${item.targetValue} ${item.unit}',
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            Slider(
+              value: item.currentValue.toDouble(),
+              onChanged: (value) {
+                item.currentValue = value.toInt();
+                if (item.currentValue == item.targetValue) {
+                  item.completeToday();
+                }
+                DataFeeder.instance.overwriteHabit(habitDocumentIds[index], item);
+                setState(() {});
+              },
+              divisions: item.targetValue,
+              min: 0.0,
+              max: item.targetValue.toDouble(),
+              activeColor: Colors.blue[500],
+            ),
+          ],
+        ),
+      );
+    }
+
+    return result;
   }
 
   Widget _buildGoalSection(BuildContext context) {
@@ -272,16 +479,53 @@ class _HomePageState extends State<HomePage> {
       stream: DataFeeder.instance.getDoingGoalList(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
-          // TODO: Implement loading
-          return SliverFillRemaining(
-            child: Text('loading'),
+          return SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Container(
+                  height: 120.0,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
         if (snapshot.data.documents.length == 0) {
-          // TODO: Implement add new
-          return SliverFillRemaining(
-            child: Text('nothing'),
+          return SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(this.context,
+                        MaterialPageRoute(builder: (context) => GoalForm()));
+                  },
+                  child: Container(
+                    height: 120.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.add,
+                          size: 50.0,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          'You don\'t have any goal to attain.\n Press + to add new one.',
+                          style: Theme.contentStyle.copyWith(
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
@@ -295,195 +539,22 @@ class _HomePageState extends State<HomePage> {
             .toList();
 
         // TODO: Implement list todo here
-        return SliverFillRemaining(
-          child: Text('has some data'),
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return _buildDoingGoalTile(context, goals[index], index);
+            },
+            childCount: goals.length,
+          ),
         );
       },
     );
   }
+
+  Widget _buildDoingGoalTile(BuildContext context, Goal item, int index) {}
 }
 
 /*
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:successhunter/model/goal.dart';
-import 'package:successhunter/model/habit.dart';
-import 'package:successhunter/ui/goal_detail.dart';
-import 'package:successhunter/ui/goal_form.dart';
-import 'package:successhunter/ui/habit_detail.dart';
-import 'package:successhunter/ui/habit_form.dart';
-import 'package:successhunter/utils/enum_dictionary.dart';
-import 'dart:core';
-import 'package:successhunter/utils/formatter.dart';
-
-class HomePage extends StatefulWidget {
-  @override
-  HomePageState createState() {
-    return new HomePageState();
-  }
-}
-
-class HomePageState extends State<HomePage> {
-  /// Variable
-  var documentIds = <String>[];
-  var goals = <Goal>[];
-
-  var habits = <Habit>[];
-  var habitDocumentIds = <String>[];
-
-  double screenWidth = 0.0;
-  double screenHeight = 0.0;
-
-  /// Business process
-
-  /// Build layout
-  @override
-  Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: Theme.Colors.primaryGradient,
-      ),
-      child: ListView(
-        children: <Widget>[
-          _buildInfoCard(context),
-          _buildGoalCard(context),
-          _buildTaskCard(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5.0),
-      child: Card(
-        elevation: 5.0,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      height: (screenWidth - 40) * 0.3,
-                      width: (screenWidth - 40) * 0.3,
-                      decoration: BoxDecoration(
-                        color: Colors.yellow,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30.0),
-                        child: SizedBox(
-                          width: (screenWidth - 40) * 0.7,
-                          child: Text(
-                            'Display name',
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.header1Style,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15.0),
-                        child: SizedBox(
-                          width: (screenWidth - 40) * 0.7,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Lv: 13',
-                                style: Theme.header4Style,
-                              ),
-                              Text(
-                                'Gold: 1300',
-                                style: Theme.header4Style,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
-                        child: SizedBox(
-                          width: (screenWidth - 40) * 0.7,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Exp',
-                                style: Theme.header4Style,
-                              ),
-                              Text(
-                                '80/150',
-                                style: Theme.header4Style,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      LinearPercentIndicator(
-                        width: (screenWidth - 40) * 0.7,
-                        lineHeight: 10.0,
-                        percent: 0.52,
-                        animation: true,
-                        animationDuration: 1000,
-                        linearStrokeCap: LinearStrokeCap.roundAll,
-                        backgroundColor: Colors.grey[300],
-                        progressColor: Theme.Colors.secondaryColor,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: 60.0,
-                    width: 60.0,
-                    color: Colors.yellow,
-                  ),
-                  Container(
-                    height: 60.0,
-                    width: 60.0,
-                    color: Colors.yellow,
-                  ),
-                  Container(
-                    height: 60.0,
-                    width: 60.0,
-                    color: Colors.yellow,
-                  ),
-                  Container(
-                    height: 60.0,
-                    width: 60.0,
-                    color: Colors.yellow,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildGoalCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),

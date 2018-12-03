@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
+
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class HabitForm extends StatefulWidget {
   final String documentId;
@@ -74,6 +76,7 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
   bool _isAutoValidate = false;
   bool _isYesNo = false;
   String _repetationType;
+  Color color;
 
   /// Business process
   Future _savePressed() async {
@@ -96,6 +99,8 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
     super.initState();
     _isYesNo = widget.item.isYesNoTask;
     _repetationType = widget.item.repetationType;
+    color = TypeDecorationEnum
+        .typeDecorations[ActivityTypeEnum.getIndex(widget.item.type)].backgroundColor;
   }
 
   /// Build layout
@@ -109,7 +114,7 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
       appBar: AppBar(
         title: Text('Habit'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.mainColor,
+        backgroundColor: color,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,
@@ -122,11 +127,7 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: Theme.Colors.primaryGradient,
-            ),
-          ),
+          Helper.buildHeaderBackground(context, color: color,),
           Form(
             key: _habitFormKey,
             child: CardSettings(
@@ -163,6 +164,12 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
                   label: 'Habit type',
                   options: ActivityTypeEnum.types,
                   initialValue: item == null ? null : item.type,
+                  onChanged: (value) {
+                    setState(() {
+                      color = color = TypeDecorationEnum
+                          .typeDecorations[ActivityTypeEnum.getIndex(value)].backgroundColor;
+                    });
+                  },
                   onSaved: (value) => item.type = value,
                 ),
                 CardSettingsSwitch(

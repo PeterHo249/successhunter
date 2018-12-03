@@ -103,3 +103,19 @@ void showInSnackBar(ScaffoldState scaffoldState, String message) {
 
   scaffoldState.showSnackBar(snackBar);
 }
+
+Widget buildCircularIcon({@required TypeDecoration data, double size: 80.0,}) {
+  return Container(
+    height: size,
+    width: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: data.backgroundColor,
+    ),
+    child: Icon(
+      data.icon,
+      color: data.color,
+      size: size * 0.4,
+    ),
+  );
+}
