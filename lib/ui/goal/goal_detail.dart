@@ -31,7 +31,6 @@ class _GoalDetailState extends State<GoalDetail> {
 
   /// Business process
   void _handlePopupMenuChoice(String choice) {
-    // TODO: Implement here
     switch (choice) {
       case GoalDetailPopupChoiceEnum.addMilestone:
         Navigator.push(
@@ -134,7 +133,6 @@ class _GoalDetailState extends State<GoalDetail> {
                 ),
               ),
               Card(
-                color: Helper.getStateBackgroundColor(item.state),
                 elevation: 5.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

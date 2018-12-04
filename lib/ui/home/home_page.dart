@@ -29,11 +29,9 @@ class _HomePageState extends State<HomePage> {
   double screenHeight;
   double screenWidth;
 
-  var goalDocumentIds = <String>[];
-  var goals = <Goal>[];
+  var goals = <GoalDocument>[];
 
-  var habitDocumentIds = <String>[];
-  var habits = <Habit>[];
+  var habits = <HabitDocument>[];
 
   // Business
 
@@ -279,19 +277,16 @@ class _HomePageState extends State<HomePage> {
           );
         }
 
-        habits = snapshot.data.documents
-            .map((documentSnapshot) =>
-                Habit.fromJson(json.decode(json.encode(documentSnapshot.data))))
-            .toList();
-
-        habitDocumentIds = snapshot.data.documents
-            .map((documentSnapshot) => documentSnapshot.documentID)
-            .toList();
+        habits = snapshot.data.documents.map((documentSnapshot) =>
+          HabitDocument(
+            item: Habit.fromJson(json.decode(json.encode(documentSnapshot.data))), 
+            documentId: documentSnapshot.documentID,),
+        ).toList();
 
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              return _buildTodayTaskTile(context, habits[index], index);
+              return _buildTodayTaskTile(context, habits[index]);
             },
             childCount: habits.length,
           ),
@@ -300,7 +295,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTodayTaskTile(BuildContext context, Habit item, int index) {
+  Widget _buildTodayTaskTile(BuildContext context, HabitDocument document) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -311,7 +306,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) => HabitDetail(
-                    documentId: habitDocumentIds[index],
+                    documentId: document.documentId,
                   ),
             ),
           );
@@ -328,12 +323,15 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Helper.buildCircularIcon(
-                      data: TypeDecorationEnum.typeDecorations[
-                          ActivityTypeEnum.getIndex(item.type)],
-                      size: 70.0
+                    Hero(
+                      tag: document.documentId,
+                      child: Helper.buildCircularIcon(
+                        data: TypeDecorationEnum.typeDecorations[
+                            ActivityTypeEnum.getIndex(document.item.type)],
+                        size: 70.0
+                      ),
                     ),
-                    _buildTodayTaskInfo(context, item, index),
+                    _buildTodayTaskInfo(context, document),
                   ],
                 ),
               ),
@@ -347,30 +345,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTodayTaskInfo(BuildContext context, Habit item, int index) {
+  Widget _buildTodayTaskInfo(BuildContext context, HabitDocument document) {
     Widget result;
 
     String dueTimeInfo;
 
-    switch (item.repetationType) {
+    switch (document.item.repetationType) {
       case RepetationTypeEnum.everyDay:
         dueTimeInfo =
-            'Due every day at ${Formatter.getTimeString(item.dueTime)}';
+            'Due every day at ${Formatter.getTimeString(document.item.dueTime)}';
         break;
       case RepetationTypeEnum.period:
         dueTimeInfo =
-            'Due every ${item.period} day(s) at ${Formatter.getTimeString(item.dueTime)}';
+            'Due every ${document.item.period} day(s) at ${Formatter.getTimeString(document.item.dueTime)}';
         break;
       case RepetationTypeEnum.dayOfWeek:
         dueTimeInfo = 'Due every ';
-        for (int i = 0; i < item.daysOfWeek.length; i++) {
-          dueTimeInfo += '${item.daysOfWeek[i]} ';
+        for (int i = 0; i < document.item.daysOfWeek.length; i++) {
+          dueTimeInfo += '${document.item.daysOfWeek[i]} ';
         }
-        dueTimeInfo += 'at ${Formatter.getTimeString(item.dueTime)}';
+        dueTimeInfo += 'at ${Formatter.getTimeString(document.item.dueTime)}';
         break;
     }
 
-    if (item.isYesNoTask) {
+    if (document.item.isYesNoTask) {
       result = Container(
         width: screenWidth - 100.0,
         height: 80.0,
@@ -385,7 +383,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    item.title,
+                    document.item.title,
                     style: Theme.header3Style,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -401,9 +399,9 @@ class _HomePageState extends State<HomePage> {
             ),
             InkWell(
               onTap: () {
-                item.completeToday();
+                document.item.completeToday();
                 DataFeeder.instance
-                    .overwriteHabit(habitDocumentIds[index], item);
+                    .overwriteHabit(document.documentId, document.item);
               },
               child: Helper.buildCircularIcon(
                   data: TypeDecoration(
@@ -435,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        item.title,
+                        document.item.title,
                         style: Theme.header3Style,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -450,26 +448,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  'Completed:\n${item.currentValue}/${item.targetValue} ${item.unit}',
+                  'Completed:\n${document.item.currentValue}/${document.item.targetValue} ${document.item.unit}',
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
             Slider(
-              value: item.currentValue.toDouble(),
+              value: document.item.currentValue.toDouble(),
               onChanged: (value) {
-                item.currentValue = value.toInt();
-                if (item.currentValue == item.targetValue) {
-                  item.completeToday();
+                document.item.currentValue = value.toInt();
+                if (document.item.currentValue == document.item.targetValue) {
+                  document.item.completeToday();
                 }
                 DataFeeder.instance
-                    .overwriteHabit(habitDocumentIds[index], item);
+                    .overwriteHabit(document.documentId, document.item);
                 setState(() {});
               },
-              divisions: item.targetValue,
+              divisions: document.item.targetValue,
               min: 0.0,
-              max: item.targetValue.toDouble(),
+              max: document.item.targetValue.toDouble(),
               activeColor: Colors.blue[500],
             ),
           ],
@@ -535,20 +533,17 @@ class _HomePageState extends State<HomePage> {
           );
         }
 
-        goals = snapshot.data.documents
-            .map((documentSnapshot) =>
-                Goal.fromJson(json.decode(json.encode(documentSnapshot.data))))
-            .toList();
+        goals = snapshot.data.documents.map((documentSnapshot) =>
+          GoalDocument(
+            item: Goal.fromJson(json.decode(json.encode(documentSnapshot.data))), 
+            documentId: documentSnapshot.documentID,
+            ),
+        ).toList();
 
-        goalDocumentIds = snapshot.data.documents
-            .map((documentSnapshot) => documentSnapshot.documentID)
-            .toList();
-
-        // TODO: Implement list todo here
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              return _buildDoingGoalTile(context, goals[index], index);
+              return _buildDoingGoalTile(context, goals[index]);
             },
             childCount: goals.length,
           ),
@@ -557,7 +552,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDoingGoalTile(BuildContext context, Goal item, int index) {
+  Widget _buildDoingGoalTile(BuildContext context, GoalDocument document) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -568,7 +563,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) => GoalDetail(
-                    documentId: goalDocumentIds[index],
+                    documentId: document.documentId,
                   ),
             ),
           );
@@ -587,10 +582,10 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Helper.buildCircularIcon(
                       data: TypeDecorationEnum.typeDecorations[
-                          ActivityTypeEnum.getIndex(item.type)],
+                          ActivityTypeEnum.getIndex(document.item.type)],
                       size: 70.0,
                     ),
-                    _buildGoalInfo(context, item, index),
+                    _buildGoalInfo(context, document),
                   ],
                 ),
               ),
@@ -604,9 +599,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGoalInfo(BuildContext context, Goal item, int index) {
+  Widget _buildGoalInfo(BuildContext context, GoalDocument document) {
     int remainDay =
-        item.targetDate.toLocal().difference(DateTime.now().toLocal()).inDays;
+        document.item.targetDate.toLocal().difference(DateTime.now().toLocal()).inDays;
     if (remainDay < 0) {
       remainDay = 0;
     }
@@ -620,13 +615,13 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              item.title,
+              document.item.title,
               style: Theme.header2Style,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
             Text(
-              'From ${Formatter.getDateString(item.startDate.toLocal())} to ${Formatter.getDateString(item.targetDate.toLocal())}',
+              'From ${Formatter.getDateString(document.item.startDate.toLocal())} to ${Formatter.getDateString(document.item.targetDate.toLocal())}',
               style: Theme.contentStyle,
               overflow: TextOverflow.ellipsis,
             ),
@@ -640,7 +635,7 @@ class _HomePageState extends State<HomePage> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  'Target: ${item.targetValue} ${item.unit}',
+                  'Target: ${document.item.targetValue} ${document.item.unit}',
                   style: Theme.contentStyle,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -650,9 +645,9 @@ class _HomePageState extends State<HomePage> {
               width: screenWidth - 100.0,
               lineHeight: 10.0,
               progressColor: TypeDecorationEnum.typeDecorations[
-              ActivityTypeEnum.getIndex(item.type)].backgroundColor,
+              ActivityTypeEnum.getIndex(document.item.type)].backgroundColor,
               backgroundColor: Colors.grey,
-              percent: item.currentValue.toDouble() / item.targetValue.toDouble(),
+              percent: document.item.currentValue.toDouble() / document.item.targetValue.toDouble(),
             ),
           ],
         ),

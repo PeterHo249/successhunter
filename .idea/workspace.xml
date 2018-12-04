@@ -8,13 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="44533baa-c0d9-4987-a8ec-c72dbf43e63e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/goal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/goal.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/habit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/habit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/goal/goal_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/goal/goal_form.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/goal/milestone_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/goal/milestone_form.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/habit/habit_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/habit/habit_form.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/home/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/home/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/formatter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/formatter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/goal/goal_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/goal/goal_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/habit/habit_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/habit/habit_page.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -29,14 +24,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="home_page.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/home/home_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="336" column="20" lean-forward="true" selection-start-line="336" selection-start-column="20" selection-end-line="336" selection-end-column="20" />
+            <state relative-caret-position="8551">
+              <caret line="522" column="26" selection-start-line="522" selection-start-column="26" selection-end-line="522" selection-end-column="90" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
-                <element signature="e#16966#19435#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="habit_page.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/ui/habit/habit_page.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-458">
+              <caret line="129" column="14" lean-forward="true" selection-start-line="129" selection-start-column="14" selection-end-line="129" selection-end-column="14" />
+              <folding>
+                <element signature="e#1#55#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -45,10 +51,10 @@
       <file leaf-file-name="goal_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/goal/goal_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3009">
-              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+            <state relative-caret-position="154">
+              <caret line="30" column="25" lean-forward="true" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
               <folding>
-                <element signature="e#1#40#0" expanded="true" />
+                <element signature="e#1#55#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,7 +63,7 @@
       <file leaf-file-name="main_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
+            <state relative-caret-position="1003">
               <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="75" selection-end-column="68" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
@@ -69,7 +75,7 @@
       <file leaf-file-name="goal_detail.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/goal/goal_detail.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-563">
+            <state relative-caret-position="2346">
               <caret line="152" column="37" selection-start-line="152" selection-start-column="37" selection-end-line="152" selection-end-column="37" />
             </state>
           </provider>
@@ -166,6 +172,8 @@
         <option value="$PROJECT_DIR$/lib/ui/goal/goal_form.dart" />
         <option value="$PROJECT_DIR$/lib/ui/habit/habit_form.dart" />
         <option value="$PROJECT_DIR$/lib/ui/home/home_page.dart" />
+        <option value="$PROJECT_DIR$/lib/ui/habit/habit_page.dart" />
+        <option value="$PROJECT_DIR$/lib/ui/goal/goal_page.dart" />
       </list>
     </option>
   </component>
@@ -182,7 +190,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -256,8 +265,7 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -370,7 +378,7 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50214136" side_tool="true" weight="0.3293919" />
       <window_info anchor="bottom" id="Dart Analysis" order="9" weight="0.32784185" />
-      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49785867" visible="true" weight="0.26688632" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.49785867" weight="0.26688632" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3293919" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.34102142" />
       <window_info anchor="right" id="Flutter Outline" order="8" weight="0.37777779" />
@@ -658,16 +666,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ui/habit/habit_page.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="209" selection-end-column="1" />
-          <folding>
-            <element signature="e#1#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/diary/diary_page.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3196">
@@ -707,9 +705,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1624">
           <caret line="238" column="25" lean-forward="true" selection-start-line="238" selection-start-column="25" selection-end-line="238" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -717,9 +712,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1731">
           <caret line="178" column="79" selection-start-line="178" selection-start-column="79" selection-end-line="178" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -755,15 +747,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
           <caret line="114" column="13" selection-start-line="114" selection-start-column="13" selection-end-line="114" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
+        <state relative-caret-position="1003">
           <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="75" selection-end-column="68" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
@@ -771,30 +760,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ui/goal/goal_page.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3009">
-          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-          <folding>
-            <element signature="e#1#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/goal/goal_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-563">
+        <state relative-caret-position="2346">
           <caret line="152" column="37" selection-start-line="152" selection-start-column="37" selection-end-line="152" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/home/home_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="336" column="20" lean-forward="true" selection-start-line="336" selection-start-column="20" selection-end-line="336" selection-end-column="20" />
+        <state relative-caret-position="8551">
+          <caret line="522" column="26" selection-start-line="522" selection-start-column="26" selection-end-line="522" selection-end-column="90" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
-            <element signature="e#16966#19435#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ui/goal/goal_page.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="30" column="25" lean-forward="true" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+          <folding>
+            <element signature="e#1#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ui/habit/habit_page.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-458">
+          <caret line="129" column="14" lean-forward="true" selection-start-line="129" selection-start-column="14" selection-end-line="129" selection-end-column="14" />
+          <folding>
+            <element signature="e#1#55#0" expanded="true" />
           </folding>
         </state>
       </provider>

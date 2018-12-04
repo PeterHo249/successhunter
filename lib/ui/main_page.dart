@@ -30,11 +30,13 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
   List<Widget> fabs;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  PageController pageController;
 
   // Business
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     fabs = [
       FABWithIcons(
         icons: [
@@ -107,11 +109,17 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     super.dispose();
+    pageController.dispose();
   }
 
   void _selectedTab(int index) {
     setState(() {
       currentIndex = index;
+      pageController.animateToPage(
+        index,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
       print('page no: $index');
     });
   }
@@ -133,12 +141,28 @@ class _MainPageState extends State<MainPage> {
   // Layout
   @override
   Widget build(BuildContext context) {
+    FABBottomAppBar appBar = _buildFABBottomAppBar(context);
     return Scaffold(
       key: scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: fabs[currentIndex],
-      bottomNavigationBar: _buildFABBottomAppBar(context),
-      body: _buildContentView(currentIndex),
+      bottomNavigationBar: appBar,
+      body: PageView(
+        controller: pageController,
+        children: <Widget>[
+          HomePage(),
+          GoalPage(),
+          CoopPage(),
+          HabitPage(),
+          DiaryPage(),
+          InfoPage(),
+        ],
+        onPageChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+      ),
       drawer: _buildDrawer(context),
     );
   }

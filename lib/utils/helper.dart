@@ -4,18 +4,17 @@ import 'package:tinycolor/tinycolor.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 
-
-Color getStateBackgroundColor(int state) {
+Color getStateColor(int state) {
   switch (state) {
     case ActivityState.done:
-      return Colors.green[50];
+      return Colors.green;
     case ActivityState.doing:
-      return Colors.white;
+      return Colors.amber;
     case ActivityState.failed:
-      return Colors.red[50];
+      return Colors.red;
   }
 
-  return Colors.grey[200];
+  return Colors.grey;
 }
 
 Widget buildHeaderBackground(BuildContext context,

@@ -62,7 +62,6 @@ class _CoopPageState extends State<CoopPage> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Container(
-                // TODO: Implement avatar here
                 height: screenHeight * 0.3 - 100.0,
                 width: screenHeight * 0.3 - 100.0,
                 decoration: BoxDecoration(

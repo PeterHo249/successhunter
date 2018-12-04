@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -125,9 +124,12 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
       ),
       body: Stack(
         children: <Widget>[
-          Helper.buildHeaderBackground(
-            context,
-            color: color,
+          Hero(
+            tag: widget.documentId ?? 'HeroTag',
+            child: Helper.buildHeaderBackground(
+              context,
+              color: color,
+            ),
           ),
           Form(
             key: _goalFormKey,
@@ -179,7 +181,8 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
                   initialValue: item == null ? null : item.targetDate.toLocal(),
                   onSaved: (value) {
                     item.targetDate =
-                        updateJustTime(TimeOfDay(hour: 23, minute: 59), value).toUtc();
+                        updateJustTime(TimeOfDay(hour: 23, minute: 59), value)
+                            .toUtc();
                   },
                 ),
                 CardSettingsHeader(

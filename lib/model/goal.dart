@@ -91,3 +91,11 @@ class Milestone {
 
   Map<String, dynamic> toJson() => _$MilestoneToJson(this);
 }
+
+
+class GoalDocument {
+  final Goal item;
+  final String documentId;
+
+  GoalDocument({@required this.item, this.documentId});
+}

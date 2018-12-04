@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:successhunter/style/theme.dart' as Theme;
-
 class FABBottomAppBarItem {
   final IconData icon;
   final String label;

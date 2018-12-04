@@ -94,3 +94,10 @@ class Habit {
     }
   }
 }
+
+class HabitDocument {
+  final Habit item;
+  final String documentId;
+
+  HabitDocument({@required this.item, this.documentId,});
+}

@@ -6,7 +6,6 @@ import 'package:card_settings/card_settings.dart';
 
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
-import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 
@@ -25,7 +24,6 @@ class _HabitFormState extends State<HabitForm> {
   Widget form;
 
   /// Business process
-  
 
   /// Build layout
   @override
@@ -100,7 +98,8 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
     _isYesNo = widget.item.isYesNoTask;
     _repetationType = widget.item.repetationType;
     color = TypeDecorationEnum
-        .typeDecorations[ActivityTypeEnum.getIndex(widget.item.type)].backgroundColor;
+        .typeDecorations[ActivityTypeEnum.getIndex(widget.item.type)]
+        .backgroundColor;
   }
 
   /// Build layout
@@ -127,7 +126,13 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
       ),
       body: Stack(
         children: <Widget>[
-          Helper.buildHeaderBackground(context, color: color,),
+          Hero(
+            tag: widget.documentId ?? 'HeroTag',
+            child: Helper.buildHeaderBackground(
+              context,
+              color: color,
+            ),
+          ),
           Form(
             key: _habitFormKey,
             child: CardSettings(
@@ -167,7 +172,8 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
                   onChanged: (value) {
                     setState(() {
                       color = color = TypeDecorationEnum
-                          .typeDecorations[ActivityTypeEnum.getIndex(value)].backgroundColor;
+                          .typeDecorations[ActivityTypeEnum.getIndex(value)]
+                          .backgroundColor;
                     });
                   },
                   onSaved: (value) => item.type = value,
@@ -207,8 +213,8 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
                           hour: item.dueTime.toLocal().hour,
                           minute: item.dueTime.toLocal().minute,
                         ),
-                  onSaved: (value) =>
-                      item.dueTime = updateJustTime(value, item.dueTime).toUtc(),
+                  onSaved: (value) => item.dueTime =
+                      updateJustTime(value, item.dueTime).toUtc(),
                 ),
                 CardSettingsListPicker(
                   label: 'Repetation',
@@ -226,7 +232,8 @@ class _HabitFormWidgetState extends State<HabitFormWidget> {
                   contentAlign: TextAlign.center,
                   unitLabel: 'day(s)',
                   visible: _repetationType == RepetationTypeEnum.period,
-                  initialValue: item == null || item.period == null ? 0 : item.period,
+                  initialValue:
+                      item == null || item.period == null ? 0 : item.period,
                   onSaved: (value) => item.period = value,
                 ),
                 CardSettingsMultiselect(

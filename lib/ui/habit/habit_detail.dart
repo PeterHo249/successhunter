@@ -96,7 +96,6 @@ class _HabitDetailState extends State<HabitDetail> {
                 ),
               ),
               Card(
-                color: Helper.getStateBackgroundColor(item.state),
                 elevation: 5.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -227,7 +226,6 @@ class _HabitDetailState extends State<HabitDetail> {
     }
 
     return Card(
-      color: Helper.getStateBackgroundColor(item.state),
       elevation: 0.0,
       child: Container(
         height: 130.0,

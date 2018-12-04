@@ -2,10 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/chart/pie_chart.dart';
 
 class DiaryPage extends StatefulWidget {
   @override
@@ -28,7 +30,15 @@ class _DiaryPageState extends State<DiaryPage> {
     return CustomScrollView(
       slivers: <Widget>[
         _buildHeader(context),
-        SliverFillRemaining(),
+        SliverFillRemaining(
+          child: PieChart(
+            data: <ChartEntry>[
+              ChartEntry(value: 10.0, color: Colors.red),
+              ChartEntry(value: 20.0, color: Colors.blue),
+            ],
+            size: 200.0,
+          ),
+        ),
       ],
     );
   }
