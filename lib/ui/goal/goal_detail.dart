@@ -31,7 +31,6 @@ class _GoalDetailState extends State<GoalDetail> {
   double screenHeight = 0.0;
   double screenWidth = 0.0;
   Color color;
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   // Business
   void _fabIconPressed(int index) {
@@ -85,7 +84,7 @@ class _GoalDetailState extends State<GoalDetail> {
               slivers: <Widget>[
                 _buildHeader(
                   context,
-                  _buildInfoSection(context),
+                  Container(),
                 ),
                 SliverFillRemaining(
                   child: Center(
@@ -181,7 +180,7 @@ class _GoalDetailState extends State<GoalDetail> {
               padding: EdgeInsets.all(5.0),
               child: Text(
                 item.title,
-                style: Theme.header3Style.copyWith(color: Colors.white),
+                style: Theme.header2Style.copyWith(color: Colors.white),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

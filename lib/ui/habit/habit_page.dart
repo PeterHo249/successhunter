@@ -298,10 +298,31 @@ class _HabitPageState extends State<HabitPage> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => HabitDetail(
-                    documentId: document.documentId,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return HabitDetail(
+                  documentId: document.documentId,
+                );
+              },
+              transitionsBuilder: (BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child) {
+                return SlideTransition(
+                  position: new Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: new SlideTransition(
+                    position: new Tween<Offset>(
+                      begin: Offset.zero,
+                      end: const Offset(1.0, 0.0),
+                    ).animate(secondaryAnimation),
+                    child: child,
                   ),
+                );
+              },
             ),
           );
         },
@@ -422,7 +443,7 @@ class _HabitPageState extends State<HabitPage> {
     if (document.item.isYesNoTask) {
       result = Container(
         width: screenWidth - 100.0,
-        height: 80.0,
+        height: 100.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -433,17 +454,23 @@ class _HabitPageState extends State<HabitPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    document.item.title,
-                    style: Theme.header3Style,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: screenWidth - 200.0,
+                    child: Text(
+                      document.item.title,
+                      style: Theme.header3Style,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Text(
-                    dueTimeInfo,
-                    style: Theme.contentStyle,
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                  SizedBox(
+                    width: screenWidth - 200.0,
+                    child: Text(
+                      dueTimeInfo,
+                      style: Theme.contentStyle,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
                 ],
               ),
@@ -455,7 +482,7 @@ class _HabitPageState extends State<HabitPage> {
     } else {
       result = Container(
         width: screenWidth - 100.0,
-        height: 80.0,
+        height: 100.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -470,17 +497,23 @@ class _HabitPageState extends State<HabitPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        document.item.title,
-                        style: Theme.header3Style,
-                        overflow: TextOverflow.ellipsis,
+                      SizedBox(
+                        width: screenWidth - 200.0,
+                        child: Text(
+                          document.item.title,
+                          style: Theme.header3Style,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      Text(
-                        dueTimeInfo,
-                        style: Theme.contentStyle,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                      SizedBox(
+                        width: screenWidth - 200.0,
+                        child: Text(
+                          dueTimeInfo,
+                          style: Theme.contentStyle,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
                     ],
                   ),
