@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -6,6 +5,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/chart/stacked_area_chart.dart';
 
 class InfoPage extends StatefulWidget {
   @override
@@ -28,7 +28,162 @@ class _InfoPageState extends State<InfoPage> {
     return CustomScrollView(
       slivers: <Widget>[
         _buildHeader(context),
-        SliverFillRemaining(),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'Avatars',
+                  style: Theme.contentStyle.copyWith(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              Wrap(
+                spacing: 10.0,
+                alignment: WrapAlignment.spaceEvenly,
+                runSpacing: 5.0,
+                children: <Widget>[
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'Achivements',
+                  style: Theme.contentStyle.copyWith(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              Wrap(
+                spacing: 10.0,
+                alignment: WrapAlignment.spaceEvenly,
+                runSpacing: 5.0,
+                children: <Widget>[
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                  Container(
+                    height: 80.0,
+                    width: 80.0,
+                    color: Colors.grey[300],
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'Your working on Goal last 10 day',
+                  style: Theme.contentStyle.copyWith(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              StackedAreaChart(
+                data: [
+                  TaskCountPerDate(
+                    date: 0,
+                    doingCount: 5,
+                    attainedCount: 2,
+                    failedCount: 3,
+                  ),
+                  TaskCountPerDate(
+                    date: 1,
+                    doingCount: 6,
+                    attainedCount: 3,
+                    failedCount: 1,
+                  ),
+                  TaskCountPerDate(
+                    date: 2,
+                    doingCount: 1,
+                    attainedCount: 4,
+                    failedCount: 7,
+                  ),
+                ],
+                animate: true,
+                height: 200.0,
+                width: 250.0,
+              ),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'Your working on Habit last 10 day',
+                  style: Theme.contentStyle.copyWith(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              StackedAreaChart(
+                data: [
+                  TaskCountPerDate(
+                    date: 0,
+                    doingCount: 5,
+                    attainedCount: 2,
+                    failedCount: 3,
+                  ),
+                  TaskCountPerDate(
+                    date: 1,
+                    doingCount: 6,
+                    attainedCount: 3,
+                    failedCount: 1,
+                  ),
+                  TaskCountPerDate(
+                    date: 2,
+                    doingCount: 1,
+                    attainedCount: 4,
+                    failedCount: 7,
+                  ),
+                ],
+                animate: true,
+                height: 200.0,
+                width: 250.0,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -50,7 +205,7 @@ class _InfoPageState extends State<InfoPage> {
       width: screenWidth,
       child: Padding(
         padding:
-        EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
+            EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -202,5 +357,4 @@ class _InfoPageState extends State<InfoPage> {
       ),
     );
   }
-
 }

@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
@@ -137,7 +135,6 @@ class _HabitPageState extends State<HabitPage> {
             _buildHabitList(context, failedHabits),
             _buildSectionHeader(context, 'Not Today'),
             _buildHabitList(context, notTodayHabits),
-            SliverFillRemaining(),
           ],
         );
       },

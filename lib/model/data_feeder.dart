@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -198,6 +199,64 @@ class DataFeeder {
         .collection(mainCollectionId)
         .document('habits')
         .collection('habits')
+        .document(documentId);
+    batch.delete(docRef);
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  // Diary Section
+  void addNewDiary(Diary item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('diaries')
+        .collection('diaries')
+        .document();
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  void overwriteDiary(String documentId, Diary item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('diaries')
+        .collection('diaries')
+        .document(documentId);
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  Stream<QuerySnapshot> getDairyList() {
+    Stream<QuerySnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .snapshots();
+
+    return snapshots;
+  }
+
+  Stream<DocumentSnapshot> getDairy(String documentId) {
+    Stream<DocumentSnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('habits')
+        .collection('habits')
+        .document(documentId)
+        .snapshots();
+
+    return snapshots;
+  }
+
+  void deleteDiary(String documentId) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef = Firestore.instance
+        .collection(mainCollectionId)
+        .document('diaries')
+        .collection('diaries')
         .document(documentId);
     batch.delete(docRef);
 

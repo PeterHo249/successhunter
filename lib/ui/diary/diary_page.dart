@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -30,15 +29,8 @@ class _DiaryPageState extends State<DiaryPage> {
     return CustomScrollView(
       slivers: <Widget>[
         _buildHeader(context),
-        SliverFillRemaining(
-          child: PieChart(
-            data: <ChartEntry>[
-              ChartEntry(value: 10.0, color: Colors.red),
-              ChartEntry(value: 20.0, color: Colors.blue),
-            ],
-            size: 200.0,
-          ),
-        ),
+        _buildSectionHeader(context, 'Your Note'),
+        _buildSectionHeader(context, 'Automated Note'),
       ],
     );
   }
@@ -60,7 +52,7 @@ class _DiaryPageState extends State<DiaryPage> {
       width: screenWidth,
       child: Padding(
         padding:
-        EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
+            EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -212,5 +204,4 @@ class _DiaryPageState extends State<DiaryPage> {
       ),
     );
   }
-
 }
