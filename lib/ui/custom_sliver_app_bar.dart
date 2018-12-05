@@ -11,6 +11,7 @@ class CustomSliverAppBar extends StatefulWidget {
   final double height;
   final double width;
   final ImageProvider image;
+  final Widget leading;
 
   CustomSliverAppBar({
     this.backgroundColor = Colors.blue,
@@ -20,6 +21,7 @@ class CustomSliverAppBar extends StatefulWidget {
     this.height = 300.0,
     this.width = 300.0,
     this.image,
+    this.leading,
   });
 
   @override
@@ -30,15 +32,17 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: IconButton(
-        icon: Icon(
-          Icons.menu,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-      ),
+      leading: widget.leading == null
+          ? IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            )
+          : widget.leading,
       title: Text(
         widget.title,
         style: Theme.header1Style.copyWith(
@@ -46,7 +50,7 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
         ),
       ),
       expandedHeight: widget.height,
-      backgroundColor: Theme.Colors.mainColor,
+      backgroundColor: widget.backgroundColor,
       pinned: true,
       centerTitle: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -57,7 +61,7 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
             children: <Widget>[
               Helper.buildHeaderBackground(
                 context,
-                color: Theme.Colors.mainColor,
+                color: widget.backgroundColor,
                 height: widget.height,
                 width: widget.width,
                 image: widget.image,
@@ -71,5 +75,4 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
       ),
     );
   }
-
 }

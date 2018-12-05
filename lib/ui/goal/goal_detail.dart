@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
-import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/utils/helper.dart' as Helper;
+import 'package:successhunter/ui/FAB_with_icon.dart';
+import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/goal/milestone_form.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/formatter.dart';
-import 'package:share/share.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class GoalDetail extends StatefulWidget {
   final String documentId;
@@ -24,29 +26,33 @@ class GoalDetail extends StatefulWidget {
 }
 
 class _GoalDetailState extends State<GoalDetail> {
-  /// Variable
+  // Variable
   Goal item;
-  double screenWidth = 0.0;
   double screenHeight = 0.0;
+  double screenWidth = 0.0;
+  Color color;
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
-  /// Business process
-  void _handlePopupMenuChoice(String choice) {
-    switch (choice) {
-      case GoalDetailPopupChoiceEnum.addMilestone:
+  // Business
+  void _fabIconPressed(int index) {
+    switch (index) {
+      case 0:
         Navigator.push(
           this.context,
           MaterialPageRoute(
-              builder: (context) => MilestoneForm(
-                    documentId: widget.documentId,
-                  )),
+            builder: (context) => MilestoneForm(
+                  documentId: widget.documentId,
+                ),
+          ),
         );
         break;
-      case GoalDetailPopupChoiceEnum.completeGoal:
+      case 1:
         item.state = ActivityState.done;
         item.currentValue = item.targetValue;
+        item.doneDate = DateTime.now().toUtc();
         DataFeeder.instance.overwriteGoal(widget.documentId, item);
         break;
-      case GoalDetailPopupChoiceEnum.editGoal:
+      case 2:
         Navigator.push(
           this.context,
           MaterialPageRoute(
@@ -55,43 +61,15 @@ class _GoalDetailState extends State<GoalDetail> {
                   )),
         );
         break;
-      case GoalDetailPopupChoiceEnum.shareGoal:
+      case 3:
         Share.share(
           'I\'m try to attain goal ${item.title} before ${Formatter.getDateString(item.targetDate)}. Do you want take it with me?',
         );
         break;
     }
-
-    print(choice);
   }
 
-  Color _getStateColor(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Colors.green;
-      case ActivityState.doing:
-        return Colors.amber;
-      case ActivityState.failed:
-        return Colors.red;
-    }
-
-    return Colors.amber;
-  }
-
-  IconData _getStateIcon(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Icons.check;
-      case ActivityState.doing:
-        return Icons.flag;
-      case ActivityState.failed:
-        return Icons.clear;
-    }
-
-    return Icons.flag;
-  }
-
-  /// Build Layout
+  // Layout
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -101,158 +79,148 @@ class _GoalDetailState extends State<GoalDetail> {
       stream: DataFeeder.instance.getGoal(widget.documentId),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return Container(
-            decoration: BoxDecoration(
-              gradient: Theme.Colors.primaryGradient,
-            ),
-            child: Center(
-              child: CircularProgressIndicator(),
+        if (!snapshot.hasData) {
+          return Scaffold(
+            body: CustomScrollView(
+              slivers: <Widget>[
+                _buildHeader(
+                  context,
+                  _buildInfoSection(context),
+                ),
+                SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'Something was wrong!',
+                      style: Theme.contentStyle,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
+        } else {
+          item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+          item.milestones.sort((Milestone a, Milestone b) {
+            return a.targetDate.compareTo(b.targetDate);
+          });
+          color = TypeDecorationEnum
+              .typeDecorations[ActivityTypeEnum.getIndex(item.type)]
+              .backgroundColor;
 
-        item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
-        item.milestones.sort((Milestone a, Milestone b) {
-          return a.targetDate.compareTo(b.targetDate);
-        });
-
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('My Goal'),
-            backgroundColor: Theme.Colors.mainColor,
-            elevation: 0.0,
-            actions: <Widget>[
-              _buildPopupMenu(context),
-            ],
-          ),
-          body: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  gradient: Theme.Colors.primaryGradient,
+          return Scaffold(
+            floatingActionButton: FABWithIcons(
+              icons: [
+                Icons.outlined_flag,
+                Icons.check,
+                Icons.edit,
+                Icons.share,
+              ],
+              foregroundColor: Colors.white,
+              backgroundColor: color,
+              onIconTapped: _fabIconPressed,
+              mainIcon: Icons.menu,
+            ),
+            body: CustomScrollView(
+              slivers: <Widget>[
+                Hero(
+                  tag: widget.documentId,
+                  child: _buildHeader(
+                    context,
+                    _buildInfoSection(context),
+                  ),
                 ),
-              ),
-              Card(
-                elevation: 5.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 130.0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Stack(
-                              alignment: AlignmentDirectional.center,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 70.0,
-                                    ),
-                                    Container(
-                                      color: Colors.grey,
-                                      width: 5.0,
-                                      height: 50.0,
-                                    ),
-                                  ],
-                                ),
-                                //item.buildCircularIcon(),
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: screenWidth - 130.0,
-                                    child: Text(
-                                      item.title,
-                                      style: Theme.header2Style,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: screenWidth - 130.0,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: 50.0,
-                                          child: Text(
-                                            '${item.targetValue} ${item.unit}',
-                                            style: Theme.contentStyle,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${item.targetDate.difference(DateTime.now()).inDays} day(s) remain',
-                                          style: Theme.contentStyle,
-                                        ),
-                                        Text(
-                                          '${Formatter.getDateString(item.targetDate)}',
-                                          style: Theme.contentStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  LinearPercentIndicator(
-                                    width: screenWidth - 130.0,
-                                    percent: item.getDonePercent(),
-                                    backgroundColor: Colors.grey[300],
-                                    progressColor: TypeDecorationEnum
-                                        .typeDecorations[
-                                            ActivityTypeEnum.getIndex(item.type)]
-                                        .backgroundColor,
-                                    animation: true,
-                                    animationDuration: 1000,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: screenHeight - 220.0,
-                      child: ListView(
-                        children: _buildMilestoneList(),
-                      ),
-                    ),
-                  ],
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    _buildMilestoneList(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        }
       },
     );
   }
 
-  Widget _buildPopupMenu(BuildContext context) {
-    return PopupMenuButton<String>(
-      onSelected: _handlePopupMenuChoice,
-      icon: Icon(Icons.menu),
-      itemBuilder: (BuildContext context) {
-        return GoalDetailPopupChoiceEnum.choices.map((String choice) {
-          return PopupMenuItem<String>(
-            value: choice,
-            child: Text(choice),
-          );
-        }).toList();
-      },
+  Widget _buildHeader(BuildContext context, Widget child) {
+    return CustomSliverAppBar(
+      backgroundColor: color,
+      foregroundColor: Colors.white,
+      height: screenHeight * 0.3,
+      width: screenWidth,
+      flexibleChild: child,
+      title: 'Goal Detail',
+      image: AssetImage('assets/img/target.png'),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  Widget _buildInfoSection(BuildContext context) {
+    int remainDay =
+        item.targetDate.toLocal().difference(DateTime.now().toLocal()).inDays;
+
+    if (remainDay < 0) {
+      remainDay = 0;
+    }
+
+    return Container(
+      width: screenWidth,
+      child: Padding(
+        padding:
+            EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                item.title,
+                style: Theme.header3Style.copyWith(color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Target date: ${Formatter.getDateString(item.targetDate)}\nRemain day: ${remainDay}\nType: ${item.type}\nStatus: ${Helper.getStateString(item.state)}',
+                    style: Theme.contentStyle.copyWith(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  CircularPercentIndicator(
+                    radius: screenHeight * 0.15,
+                    percent: item.currentValue.toDouble() /
+                        item.targetValue.toDouble(),
+                    animation: true,
+                    circularStrokeCap: CircularStrokeCap.round,
+                    progressColor: Colors.white,
+                    lineWidth: 10.0,
+                    center: Text(
+                      '${(item.currentValue.toDouble() / item.targetValue.toDouble()) * 100.0}%',
+                      style: Theme.contentStyle.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -330,10 +298,10 @@ class _GoalDetailState extends State<GoalDetail> {
                         height: 30.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: _getStateColor(milestones[i].state),
+                          color: Helper.getStateColor(milestones[i].state),
                         ),
                         child: Icon(
-                          _getStateIcon(milestones[i].state),
+                          Helper.getStateIcon(milestones[i].state),
                           color: Colors.white,
                         ),
                       ),

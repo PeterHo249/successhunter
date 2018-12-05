@@ -5,8 +5,9 @@ class FABWithIcons extends StatefulWidget {
   final ValueChanged<int> onIconTapped;
   final Color backgroundColor;
   final Color foregroundColor;
+  final IconData mainIcon;
 
-  FABWithIcons({this.icons, this.onIconTapped, this.backgroundColor, this.foregroundColor});
+  FABWithIcons({this.mainIcon, this.icons, this.onIconTapped, this.backgroundColor, this.foregroundColor});
 
   @override
   _FABWithIconsState createState() => _FABWithIconsState();
@@ -93,7 +94,8 @@ class _FABWithIconsState extends State<FABWithIcons>
           _controller.reverse();
         }
       },
-      child: Icon(Icons.add),
+      backgroundColor: widget.backgroundColor,
+      child: Icon(widget.mainIcon ?? Icons.add),
       elevation: 7.0,
     );
   }

@@ -17,6 +17,32 @@ Color getStateColor(int state) {
   return Colors.grey;
 }
 
+IconData getStateIcon(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return Icons.check;
+      case ActivityState.doing:
+        return Icons.flag;
+      case ActivityState.failed:
+        return Icons.clear;
+    }
+
+    return Icons.flag;
+  }
+
+  String getStateString(int state) {
+    switch (state) {
+      case ActivityState.done:
+        return 'Attained';
+      case ActivityState.doing:
+        return 'In Process';
+      case ActivityState.failed:
+        return 'Failed';
+    }
+
+    return 'Error';
+  }
+
 Widget buildHeaderBackground(BuildContext context,
     {Color color, double height, double width, ImageProvider image}) {
   if (height == null) {

@@ -277,11 +277,15 @@ class _HomePageState extends State<HomePage> {
           );
         }
 
-        habits = snapshot.data.documents.map((documentSnapshot) =>
-          HabitDocument(
-            item: Habit.fromJson(json.decode(json.encode(documentSnapshot.data))), 
-            documentId: documentSnapshot.documentID,),
-        ).toList();
+        habits = snapshot.data.documents
+            .map(
+              (documentSnapshot) => HabitDocument(
+                    item: Habit.fromJson(
+                        json.decode(json.encode(documentSnapshot.data))),
+                    documentId: documentSnapshot.documentID,
+                  ),
+            )
+            .toList();
 
         return SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -326,10 +330,9 @@ class _HomePageState extends State<HomePage> {
                     Hero(
                       tag: document.documentId,
                       child: Helper.buildCircularIcon(
-                        data: TypeDecorationEnum.typeDecorations[
-                            ActivityTypeEnum.getIndex(document.item.type)],
-                        size: 70.0
-                      ),
+                          data: TypeDecorationEnum.typeDecorations[
+                              ActivityTypeEnum.getIndex(document.item.type)],
+                          size: 70.0),
                     ),
                     _buildTodayTaskInfo(context, document),
                   ],
@@ -533,12 +536,15 @@ class _HomePageState extends State<HomePage> {
           );
         }
 
-        goals = snapshot.data.documents.map((documentSnapshot) =>
-          GoalDocument(
-            item: Goal.fromJson(json.decode(json.encode(documentSnapshot.data))), 
-            documentId: documentSnapshot.documentID,
-            ),
-        ).toList();
+        goals = snapshot.data.documents
+            .map(
+              (documentSnapshot) => GoalDocument(
+                    item: Goal.fromJson(
+                        json.decode(json.encode(documentSnapshot.data))),
+                    documentId: documentSnapshot.documentID,
+                  ),
+            )
+            .toList();
 
         return SliverList(
           delegate: SliverChildBuilderDelegate(
@@ -561,10 +567,31 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => GoalDetail(
-                    documentId: document.documentId,
+            PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return GoalDetail(
+                  documentId: document.documentId,
+                );
+              },
+              transitionsBuilder: (BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child) {
+                return SlideTransition(
+                  position: new Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: new SlideTransition(
+                    position: new Tween<Offset>(
+                      begin: Offset.zero,
+                      end: const Offset(1.0, 0.0),
+                    ).animate(secondaryAnimation),
+                    child: child,
                   ),
+                );
+              },
             ),
           );
         },
@@ -600,8 +627,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildGoalInfo(BuildContext context, GoalDocument document) {
-    int remainDay =
-        document.item.targetDate.toLocal().difference(DateTime.now().toLocal()).inDays;
+    int remainDay = document.item.targetDate
+        .toLocal()
+        .difference(DateTime.now().toLocal())
+        .inDays;
     if (remainDay < 0) {
       remainDay = 0;
     }
@@ -644,10 +673,13 @@ class _HomePageState extends State<HomePage> {
             LinearPercentIndicator(
               width: screenWidth - 100.0,
               lineHeight: 10.0,
-              progressColor: TypeDecorationEnum.typeDecorations[
-              ActivityTypeEnum.getIndex(document.item.type)].backgroundColor,
+              progressColor: TypeDecorationEnum
+                  .typeDecorations[
+                      ActivityTypeEnum.getIndex(document.item.type)]
+                  .backgroundColor,
               backgroundColor: Colors.grey,
-              percent: document.item.currentValue.toDouble() / document.item.targetValue.toDouble(),
+              percent: document.item.currentValue.toDouble() /
+                  document.item.targetValue.toDouble(),
             ),
           ],
         ),

@@ -141,12 +141,12 @@ class _MainPageState extends State<MainPage> {
   // Layout
   @override
   Widget build(BuildContext context) {
-    FABBottomAppBar appBar = _buildFABBottomAppBar(context);
+    FABBottomAppBar bottomAppBar = _buildFABBottomAppBar(context);
     return Scaffold(
       key: scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: fabs[currentIndex],
-      bottomNavigationBar: appBar,
+      bottomNavigationBar: bottomAppBar,
       body: PageView(
         controller: pageController,
         children: <Widget>[
@@ -239,24 +239,5 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
     );
-  }
-
-  Widget _buildContentView(int index) {
-    switch (index) {
-      case 0:
-        return HomePage();
-      case 1:
-        return GoalPage();
-      case 2:
-        return CoopPage();
-      case 3:
-        return HabitPage();
-      case 4:
-        return DiaryPage();
-      case 5:
-        return InfoPage();
-    }
-
-    return Container();
   }
 }
