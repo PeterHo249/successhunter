@@ -160,7 +160,7 @@ class _DiaryDetailState extends State<DiaryDetail> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Date: ${Formatter.getDateString(item.date)}',
+                    'Date: ${Formatter.getDateString(item.date.toLocal())}',
                     style: Theme.contentStyle.copyWith(
                       color: Colors.white,
                       fontSize: 20.0,
