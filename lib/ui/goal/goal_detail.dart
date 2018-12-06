@@ -121,12 +121,9 @@ class _GoalDetailState extends State<GoalDetail> {
             ),
             body: CustomScrollView(
               slivers: <Widget>[
-                Hero(
-                  tag: widget.documentId,
-                  child: _buildHeader(
-                    context,
-                    _buildInfoSection(context),
-                  ),
+                _buildHeader(
+                  context,
+                  _buildInfoSection(context),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
@@ -143,6 +140,7 @@ class _GoalDetailState extends State<GoalDetail> {
 
   Widget _buildHeader(BuildContext context, Widget child) {
     return CustomSliverAppBar(
+      heroTag: widget.documentId,
       backgroundColor: color,
       foregroundColor: Colors.white,
       height: screenHeight * 0.3,

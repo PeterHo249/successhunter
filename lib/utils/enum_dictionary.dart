@@ -1,32 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class GoalDetailPopupChoiceEnum {
-  static const String addMilestone = 'Add Milestone';
-  static const String editGoal = 'Edit Goal';
-  static const String completeGoal = 'Complete Goal';
-  static const String shareGoal = 'Share Goal';
-
-  static const List<String> choices = <String>[
-    addMilestone,
-    editGoal,
-    completeGoal,
-    shareGoal,
-  ];
-}
-
-class HabitDetailPopupChoiceEnum {
-  static const String editHabit = 'Edit Habit';
-  static const String completeHabit = 'Complete Today';
-  static const String shareHabit = 'Share Habit';
-
-  static const List<String> choices = <String>[
-    editHabit,
-    completeHabit,
-    shareHabit,
-  ];
-}
-
 class ActivityTypeEnum {
   static const String career = 'Career';
   static const String health = 'Health';

@@ -121,6 +121,7 @@ class _HabitDetailState extends State<HabitDetail> {
 
   Widget _buildHeader(BuildContext context, Widget child) {
     return CustomSliverAppBar(
+      heroTag: widget.documentId,
       backgroundColor: color,
       foregroundColor: Colors.white,
       height: screenHeight * 0.3,

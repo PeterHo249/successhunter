@@ -12,12 +12,14 @@ Diary _$DiaryFromJson(Map<String, dynamic> json) {
       content: json['content'] as String,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
-      isPositive: json['isPositive'] as bool);
+      positive: json['positive'] as bool,
+      automated: json['automated'] as bool);
 }
 
 Map<String, dynamic> _$DiaryToJson(Diary instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'date': instance.date?.toIso8601String(),
-      'isPositive': instance.isPositive
+      'positive': instance.positive,
+      'automated': instance.automated
     };

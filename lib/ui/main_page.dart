@@ -6,6 +6,7 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/FAB_bottom_app_bar.dart';
 import 'package:successhunter/ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/coop/coop_page.dart';
+import 'package:successhunter/ui/diary/diary_form.dart';
 import 'package:successhunter/ui/diary/diary_page.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/goal/goal_page.dart';
@@ -85,8 +86,8 @@ class _MainPageState extends State<MainPage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // TODO: implement handle add new diary
-          print('add new diary');
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => DiaryForm()));
         },
         child: Icon(
           Icons.add,
@@ -115,26 +116,33 @@ class _MainPageState extends State<MainPage> {
   void _selectedTab(int index) {
     setState(() {
       currentIndex = index;
-      pageController.animateToPage(
+      pageController.jumpToPage(
         index,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
       );
-      print('page no: $index');
     });
   }
 
   void _selectedFAB(int index) {
     setState(() {
-      // TODO: Implement handle add habit and goal here
-      if (index == 0) {
-        Navigator.push(
-            this.context, MaterialPageRoute(builder: (context) => GoalForm()));
-      } else {
-        Navigator.push(
-            this.context, MaterialPageRoute(builder: (context) => HabitForm()));
+      switch (index) {
+        case 0:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => GoalForm()));
+          break;
+        case 1:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
+          break;
+        case 2:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
+          break;
+        case 3:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => DiaryForm()));
+          break;
+        default:
       }
-      print('fab no: $index');
     });
   }
 

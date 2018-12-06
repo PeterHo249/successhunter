@@ -6,8 +6,9 @@ import 'package:successhunter/style/theme.dart' as Theme;
 class PieChart extends StatefulWidget {
   final List<ChartEntry> data;
   final double size;
+  final String holeLabel;
 
-  PieChart({@required this.data, @required this.size});
+  PieChart({@required this.data, @required this.size, this.holeLabel});
 
   _PieChartState createState() => _PieChartState();
 }
@@ -35,7 +36,7 @@ class _PieChartState extends State<PieChart> {
       initialChartData: [data],
       key: GlobalKey<AnimatedCircularChartState>(),
       duration: Duration(milliseconds: 500),
-      holeLabel: 'Today\nWork',
+      holeLabel: widget.holeLabel ?? 'Today\nWork',
       labelStyle: Theme.contentStyle.copyWith(color: Colors.white),
       chartType: CircularChartType.Radial,
     );

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/diary.dart';
-import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 
 class DiaryForm extends StatefulWidget {
@@ -38,16 +37,17 @@ class _DiaryFormState extends State<DiaryForm> {
       );
     } else {
       return StreamBuilder(
-        stream: DataFeeder.instance.getGoal(widget.documentId),
+        stream: DataFeeder.instance.getDairy(widget.documentId),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData)
+          if (!snapshot.hasData) {
             return Container(
               child: Center(
                 child: CircularProgressIndicator(),
               ),
             );
-
+          }
+          
           item = Diary.fromJson(json.decode(json.encode(snapshot.data.data)));
 
           return DiaryFormWidget(
@@ -75,7 +75,6 @@ class _DiaryFormWidgetState extends State<DiaryFormWidget> {
   final GlobalKey<FormState> _diaryFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
   Color color;
-  bool _isPositive = true;
 
   // Business
   Future _savePressed() async {
@@ -96,7 +95,7 @@ class _DiaryFormWidgetState extends State<DiaryFormWidget> {
   @override
   void initState() {
     super.initState();
-    color = widget.item.isPositive ? Colors.green : Colors.red;
+    color = widget.item.positive ? Colors.green : Colors.red;
   }
 
   // Layout
@@ -108,7 +107,7 @@ class _DiaryFormWidgetState extends State<DiaryFormWidget> {
   Widget _buildForm(Diary item) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Goal'),
+        title: Text('Diary'),
         elevation: 0.0,
         backgroundColor: color,
         actions: <Widget>[
@@ -141,7 +140,7 @@ class _DiaryFormWidgetState extends State<DiaryFormWidget> {
                   label: 'Title',
                   hintText: 'Enter your note title',
                   autovalidate: _isAutoValidate,
-                  initialValue: item == null ? null : item.title,
+                  initialValue: item.title == null ? null : item.title,
                   requiredIndicator: Text(
                     '*',
                     style: TextStyle(color: Colors.red),
@@ -158,19 +157,30 @@ class _DiaryFormWidgetState extends State<DiaryFormWidget> {
                   label: 'Content',
                   initialValue: item == null ? null : item.content,
                   onSaved: (value) => item.content = value,
+                  requiredIndicator: Text(
+                    '*',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Content of note is required.';
+
+                    return null;
+                  },
+                  autovalidate: _isAutoValidate,
                 ),
                 CardSettingsSwitch(
                   label: 'Is positive?',
                   contentAlign: TextAlign.center,
                   onChanged: (value) {
                     setState(() {
-                      _isPositive = value;
+                      color = value ? Colors.green : Colors.red;
                     });
                   },
-                  initialValue: item == null || item.isPositive == null
+                  initialValue: item == null || item.positive == null
                       ? true
-                      : item.isPositive,
-                  onSaved: (value) => item.isPositive = value,
+                      : item.positive,
+                  onSaved: (value) => item.positive = value,
                 ),
               ],
             ),

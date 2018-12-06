@@ -233,8 +233,8 @@ class DataFeeder {
   Stream<QuerySnapshot> getDairyList() {
     Stream<QuerySnapshot> snapshots = Firestore.instance
         .collection(mainCollectionId)
-        .document('habits')
-        .collection('habits')
+        .document('diaries')
+        .collection('diaries')
         .snapshots();
 
     return snapshots;
@@ -243,8 +243,8 @@ class DataFeeder {
   Stream<DocumentSnapshot> getDairy(String documentId) {
     Stream<DocumentSnapshot> snapshots = Firestore.instance
         .collection(mainCollectionId)
-        .document('habits')
-        .collection('habits')
+        .document('diaries')
+        .collection('diaries')
         .document(documentId)
         .snapshots();
 

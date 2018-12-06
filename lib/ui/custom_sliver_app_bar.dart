@@ -12,6 +12,7 @@ class CustomSliverAppBar extends StatefulWidget {
   final double width;
   final ImageProvider image;
   final Widget leading;
+  final String heroTag;
 
   CustomSliverAppBar({
     this.backgroundColor = Colors.blue,
@@ -22,6 +23,7 @@ class CustomSliverAppBar extends StatefulWidget {
     this.width = 300.0,
     this.image,
     this.leading,
+    this.heroTag = 'HeroTag',
   });
 
   @override
@@ -59,12 +61,15 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: <Widget>[
-              Helper.buildHeaderBackground(
-                context,
-                color: widget.backgroundColor,
-                height: widget.height,
-                width: widget.width,
-                image: widget.image,
+              Hero(
+                tag: widget.heroTag,
+                child: Helper.buildHeaderBackground(
+                  context,
+                  color: widget.backgroundColor,
+                  height: widget.height,
+                  width: widget.width,
+                  image: widget.image,
+                ),
               ),
               Center(
                 child: widget.flexibleChild,
