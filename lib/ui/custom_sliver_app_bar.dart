@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
@@ -12,7 +14,7 @@ class CustomSliverAppBar extends StatefulWidget {
   final double width;
   final ImageProvider image;
   final Widget leading;
-  final String heroTag;
+  String heroTag;
 
   CustomSliverAppBar({
     this.backgroundColor = Colors.blue,
@@ -23,8 +25,13 @@ class CustomSliverAppBar extends StatefulWidget {
     this.width = 300.0,
     this.image,
     this.leading,
-    this.heroTag = 'HeroTag',
-  });
+    this.heroTag,
+  }) {
+    if (heroTag == null) {
+      var rnd = Random();
+      heroTag = rnd.nextInt(1000000).toString();
+    }
+  }
 
   @override
   _CustomSliverAppBarState createState() => _CustomSliverAppBarState();
