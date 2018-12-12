@@ -1,15 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:successhunter/auth/auth.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:successhunter/style/theme.dart' as Theme;
-
-import 'package:successhunter/ui/home_page.dart';
-import 'package:successhunter/ui/goal_page.dart';
-import 'package:successhunter/ui/habit_page.dart';
-import 'package:successhunter/ui/diary_page.dart';
-import 'package:successhunter/ui/goal_form.dart';
-
-import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/ui/FAB_bottom_app_bar.dart';
+import 'package:successhunter/ui/FAB_with_icon.dart';
+import 'package:successhunter/ui/coop/coop_page.dart';
+import 'package:successhunter/ui/diary/diary_form.dart';
+import 'package:successhunter/ui/diary/diary_page.dart';
+import 'package:successhunter/ui/goal/goal_form.dart';
+import 'package:successhunter/ui/goal/goal_page.dart';
+import 'package:successhunter/ui/habit/habit_form.dart';
+import 'package:successhunter/ui/habit/habit_page.dart';
+import 'package:successhunter/ui/home/home_page.dart';
+import 'package:successhunter/auth/auth.dart';
+import 'package:successhunter/ui/info/info_page.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -20,81 +25,170 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage>
-    with SingleTickerProviderStateMixin {
-  TabChoice _choice;
-  TabController _tabController;
+class _MainPageState extends State<MainPage> {
+  // Variable
 
+  int currentIndex = 0;
+  List<Widget> fabs;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  PageController pageController;
+
+  // Business
   @override
   void initState() {
     super.initState();
-    _choice = choices[0];
-    _tabController = TabController(length: choices.length, vsync: this);
-    _tabController.addListener(_handleSelectedTab);
+    pageController = PageController();
+    fabs = [
+      FABWithIcons(
+        icons: [
+          FontAwesomeIcons.bullseye,
+          Icons.people_outline,
+          Icons.calendar_today,
+          FontAwesomeIcons.bookOpen,
+        ],
+        backgroundColor: Theme.Colors.mainColor,
+        foregroundColor: Colors.white,
+        onIconTapped: _selectedFAB,
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => GoalForm()));
+          print('add new goal');
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          // TODO: Implement co-op form here
+          print('add new co-op');
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => DiaryForm()));
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+      FloatingActionButton(
+        // TODO: What can we do here, Peter????
+        onPressed: null,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Theme.Colors.mainColor,
+      ),
+    ];
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    pageController.dispose();
   }
 
-  /// Business process
-
-  void _handleSelectedTab() {
+  void _selectedTab(int index) {
     setState(() {
-      _choice = choices[_tabController.index];
+      currentIndex = index;
+      pageController.jumpToPage(
+        index,
+      );
     });
   }
 
-  void _handlePopupMenuChoice(String choice) {
-    // TODO: Implement here
-    if (choice == MainPagePopupChoiceEnum.addGoal) {
-      Navigator.push(
-          this.context, MaterialPageRoute(builder: (context) => GoalForm()));
-    } else {}
-
-    print(choice);
+  void _selectedFAB(int index) {
+    setState(() {
+      switch (index) {
+        case 0:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => GoalForm()));
+          break;
+        case 1:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
+          break;
+        case 2:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => HabitForm()));
+          break;
+        case 3:
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => DiaryForm()));
+          break;
+        default:
+      }
+    });
   }
 
-  /// Build layout
-
+  // Layout
   @override
   Widget build(BuildContext context) {
+    FABBottomAppBar bottomAppBar = _buildFABBottomAppBar(context);
     return Scaffold(
-      backgroundColor: Theme.Colors.loginGradientEnd,
-      appBar: AppBar(
-        title: Text(_choice.title),
-        backgroundColor: Theme.Colors.loginGradientStart,
-        elevation: 0.0,
-        actions: <Widget>[
-          _buildActionButton(context, _choice),
-        ],
-      ),
-      drawer: _buildDrawer(context),
-      body: TabBarView(
-        controller: _tabController,
+      key: scaffoldKey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: fabs[currentIndex],
+      bottomNavigationBar: bottomAppBar,
+      body: PageView(
+        controller: pageController,
         children: <Widget>[
           HomePage(),
           GoalPage(),
+          CoopPage(),
           HabitPage(),
           DiaryPage(),
+          InfoPage(),
         ],
+        onPageChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
       ),
-      bottomNavigationBar: TabBar(
-        controller: _tabController,
-        labelColor: Theme.Colors.tabItemSelected,
-        unselectedLabelColor: Colors.white70,
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Theme.Colors.tabItemSelected,
-        tabs: choices.map((TabChoice choice) {
-          return Tab(
-            text: choice.title,
-            icon: choice.icon,
-          );
-        }).toList(),
-      ),
+      drawer: _buildDrawer(context),
+    );
+  }
+
+  Widget _buildFABBottomAppBar(BuildContext context) {
+    return FABBottomAppBar(
+      color: Colors.grey,
+      selectedColor: Theme.Colors.mainColor,
+      onTabSelected: _selectedTab,
+      textStyle: Theme.contentStyle.copyWith(fontSize: 14.0),
+      items: [
+        FABBottomAppBarItem(icon: Icons.home, label: 'Home'),
+        FABBottomAppBarItem(icon: FontAwesomeIcons.bullseye, label: 'Goal'),
+        FABBottomAppBarItem(icon: Icons.people_outline, label: 'Co-op'),
+        FABBottomAppBarItem(icon: Icons.calendar_today, label: 'Habit'),
+        FABBottomAppBarItem(icon: FontAwesomeIcons.bookOpen, label: 'Diary'),
+        FABBottomAppBarItem(icon: Icons.person_outline, label: 'Info'),
+      ],
     );
   }
 
@@ -128,10 +222,7 @@ class _MainPageState extends State<MainPage>
                     child: Text(
                       widget.user.displayName,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'WorkSansSemiBold',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
+                      style: Theme.header1Style.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -150,71 +241,11 @@ class _MainPageState extends State<MainPage>
           ListTile(
             title: Text('Log out'),
             onTap: () {
-              Auth().signOut();
+              Auth.instance.signOut();
             },
           ),
         ],
       ),
     );
   }
-
-  Widget _buildPopupMenu(BuildContext context) {
-    return PopupMenuButton<String>(
-      onSelected: _handlePopupMenuChoice,
-      icon: Icon(Icons.add),
-      itemBuilder: (BuildContext context) {
-        return MainPagePopupChoiceEnum.choices.map((String choice) {
-          return PopupMenuItem<String>(
-            value: choice,
-            child: Text(choice),
-          );
-        }).toList();
-      },
-    );
-  }
-
-  Widget _buildActionButton(BuildContext context, TabChoice choice) {
-    Widget result;
-
-    // TODO: Implement handler
-    switch (choices.indexOf(choice)) {
-      case 0:
-        result = _buildPopupMenu(context);
-        break;
-      case 1:
-        result = IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => GoalForm())),
-        );
-        break;
-      case 2:
-        result = IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          color: Colors.white,
-          onPressed: null,
-        );
-        break;
-      case 3:
-        result = IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          color: Colors.white,
-          onPressed: null,
-        );
-        break;
-    }
-
-    return result;
-  }
 }
-
-

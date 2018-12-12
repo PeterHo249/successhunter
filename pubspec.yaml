@@ -23,7 +23,7 @@ dependencies:
   google_sign_in: ^3.2.4
   flutter_facebook_login: ^1.1.1
   font_awesome_flutter: ^8.0.1
-  charts_flutter: ^0.4.0
+  flutter_circular_chart: ^0.1.0
   percent_indicator: ^1.0.9
   intl: ^0.15.7
   card_settings: ^1.2.2
@@ -32,6 +32,10 @@ dependencies:
   json_annotation: ^2.0.0
   share: ^0.5.3
   firebase_messaging: ^2.0.3
+  flutter_calendar_carousel: ^1.1.10
+  tinycolor: ^1.0.2
+  flutter_charts: ^0.1.10
+  charts_flutter: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -44,41 +48,22 @@ flutter:
   uses-material-design: true
 
   assets:
-        - assets/login_logo.png
+        - assets/img/book.png
+        - assets/img/calendar.png
+        - assets/img/multitarget.png
+        - assets/img/person.png
+        - assets/img/statistics.png
+        - assets/img/target.png
 
   fonts:
-      - family: WorkSansSemiBold
+      - family: RobotoBold
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Semibold.ttf
+          - asset: assets/fonts/Roboto/Roboto-Bold.ttf
 
-      - family: WorkSansBold
+      - family: RobotoMedium
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Bold.ttf
+          - asset: assets/fonts/Roboto/Roboto-Medium.ttf
 
-      - family: WorkSansExtraBold
+      - family: RobotoRegular
         fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-ExtraBold.ttf
-
-      - family: WorkSansMedium
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
-
-      - family: WorkSansLight
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Light.ttf
-
-      - family: WorkSansExtraLight
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-ExtraLight.ttf
-
-      - family: WorkSansThin
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Thin.ttf
-
-      - family: WorkSansExtraRegular
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Regular.ttf
-
-      - family: WorkSansExtraBlack
-        fonts:
-          - asset: assets/fonts/Work_Sans/WorkSans-Black.ttf
+          - asset: assets/fonts/Roboto/Roboto-Regular.ttf

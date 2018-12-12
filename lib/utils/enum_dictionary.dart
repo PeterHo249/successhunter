@@ -1,46 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class TabChoice {
-  final String title;
-  final Icon icon;
-  final Widget action;
-
-  const TabChoice({this.title, this.icon, this.action});
-}
-
-const List<TabChoice> choices = const <TabChoice>[
-  const TabChoice(title: 'Home', icon: Icon(Icons.home)),
-  const TabChoice(title: 'Goal', icon: Icon(FontAwesomeIcons.bullseye)),
-  const TabChoice(title: 'Habit', icon: Icon(Icons.calendar_today)),
-  const TabChoice(title: 'Diary', icon: Icon(FontAwesomeIcons.journalWhills)),
-];
-
-class MainPagePopupChoiceEnum {
-  static const String addGoal = 'Add Goal';
-  static const String addHabit = 'Add Habit';
-
-  static const List<String> choices = <String>[
-    addGoal,
-    addHabit,
-  ];
-}
-
-class GoalDetailPopupChoiceEnum {
-  static const String addMilestone = 'Add Milestone';
-  static const String editGoal = 'Edit Goal';
-  static const String completeGoal = 'Complete Goal';
-  static const String shareGoal = 'Share Goal';
-
-  static const List<String> choices = <String>[
-    addMilestone,
-    editGoal,
-    completeGoal,
-    shareGoal,
-  ];
-}
-
-class GoalTypeEnum {
+class ActivityTypeEnum {
   static const String career = 'Career';
   static const String health = 'Health';
   static const String relationship = 'Relationship';
@@ -132,4 +93,41 @@ class ActivityState {
   static const int doing = 0;
   static const int done = 1;
   static const int failed = 2;
+  static const int notToday = 3;
+}
+
+class RepetationTypeEnum {
+  static const String everyDay = 'Every day';
+  static const String dayOfWeek = 'Day of Week';
+  static const String period = 'Period';
+
+  static const List<String> types = <String>[
+    everyDay,
+    dayOfWeek,
+    period,
+  ];
+
+  static int getIndex(String type) {
+    return types.indexOf(type);
+  }
+}
+
+class DayOfWeekEnum {
+  static const String monday = 'Monday';
+  static const String tuesday = 'Tuesday';
+  static const String wednesday = 'Wednesday';
+  static const String thursday = 'Thursday';
+  static const String friday = 'Friday';
+  static const String saturday = 'Saturday';
+  static const String sunday = 'Sunday';
+
+  static const List<String> days = <String>[
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+  ];
 }
