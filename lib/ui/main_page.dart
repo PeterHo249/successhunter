@@ -116,8 +116,10 @@ class _MainPageState extends State<MainPage> {
   void _selectedTab(int index) {
     setState(() {
       currentIndex = index;
-      pageController.jumpToPage(
+      pageController.animateToPage(
         index,
+        duration: Duration(milliseconds: 300,),
+        curve: Curves.linear,
       );
     });
   }
