@@ -48,12 +48,48 @@ flutter:
   uses-material-design: true
 
   assets:
+        # background for header
         - assets/img/book.png
         - assets/img/calendar.png
         - assets/img/multitarget.png
         - assets/img/person.png
         - assets/img/statistics.png
         - assets/img/target.png
+        # avatar
+        - assets/avatar/boss.png
+        - assets/avatar/kid.png
+        - assets/avatar/new_officer.png
+        - assets/avatar/old_officer.png
+        - assets/avatar/student.png
+        - assets/avatar/teenager.png
+        # badge
+        - assets/badge/coop_1.png
+        - assets/badge/coop_5.png
+        - assets/badge/coop_10.png
+        - assets/badge/coop_50.png
+        - assets/badge/coop_100.png
+        - assets/badge/goal_1.png
+        - assets/badge/goal_5.png
+        - assets/badge/goal_10.png
+        - assets/badge/goal_50.png
+        - assets/badge/goal_100.png
+        - assets/badge/habit_1.png
+        - assets/badge/habit_5.png
+        - assets/badge/habit_10.png
+        - assets/badge/habit_50.png
+        - assets/badge/habit_100.png
+        - assets/badge/streak_5.png
+        - assets/badge/streak_10.png
+        - assets/badge/streak_50.png
+        - assets/badge/streak_100.png
+        - assets/badge/level_1.png
+        - assets/badge/level_10.png
+        - assets/badge/level_20.png
+        - assets/badge/level_30.png
+        - assets/badge/level_40.png
+        - assets/badge/level_50.png
+        # flare animation
+        - assets/flare/loading.flr
 
   fonts:
       - family: RobotoBold
