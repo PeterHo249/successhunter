@@ -13,7 +13,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
       level: json['level'] as int,
       experience: json['experience'] as int,
       badges: (json['badges'] as List)?.map((e) => e as String)?.toList(),
-      currentAvatar: json['currentAvatar'] as String);
+      currentAvatar: json['currentAvatar'] as String,
+      availableAvatars: (json['availableAvatars'] as List)
+          ?.map((e) => e as String)
+          ?.toList());
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -22,5 +25,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'level': instance.level,
       'experience': instance.experience,
       'badges': instance.badges,
+      'availableAvatars': instance.availableAvatars,
       'currentAvatar': instance.currentAvatar
     };

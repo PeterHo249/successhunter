@@ -9,11 +9,23 @@ class User {
   int level;
   int experience;
   List<String> badges;
+  List<String> availableAvatars;
   String currentAvatar;
 
-  User({this.displayName = '', this.uid = '', this.level = 1, this.experience = 0, this.badges, this.currentAvatar = 'avatar_1',}) {
+  User({
+    this.displayName = '',
+    this.uid = '',
+    this.level = 1,
+    this.experience = 0,
+    this.badges,
+    this.currentAvatar = 'kid.png',
+    this.availableAvatars,
+  }) {
     if (badges == null) {
       badges = List<String>();
+    }
+    if (availableAvatars == null) {
+      availableAvatars = <String>['kid.png'];
     }
   }
 
