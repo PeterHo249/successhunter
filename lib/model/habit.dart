@@ -88,8 +88,16 @@ class Habit {
     state = ActivityState.done;
     if (isInStreak) {
       streak.add(DateTime.now().toUtc());
+      currentStreak++;
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
     } else {
       streak.add(DateTime.now().toUtc());
+      currentStreak = 1;
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
       isInStreak = true;
     }
   }

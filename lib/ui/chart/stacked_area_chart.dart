@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:successhunter/model/chart_data.dart';
 
 class StackedAreaChart extends StatelessWidget {
   final List<TaskCountPerDate> data;
@@ -78,28 +79,4 @@ class StackedAreaChart extends StatelessWidget {
       ),
     );
   }
-}
-
-class TaskCountPerType {
-  final int date;
-  final int value;
-
-  TaskCountPerType({
-    this.date,
-    this.value: 0,
-  });
-}
-
-class TaskCountPerDate {
-  final int date;
-  final int doingCount;
-  final int attainedCount;
-  final int failedCount;
-
-  TaskCountPerDate({
-    @required this.date,
-    this.doingCount: 0,
-    this.attainedCount: 0,
-    this.failedCount: 0,
-  });
 }

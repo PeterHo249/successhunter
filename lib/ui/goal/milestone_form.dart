@@ -71,7 +71,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
   Widget _buildForm() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Goal'),
+        title: Text('New Milestone'),
         elevation: 0.0,
         backgroundColor: Theme.Colors.mainColor,
         actions: <Widget>[
@@ -100,7 +100,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsText(
                   label: 'Title',
-                  hintText: 'Enter your goal title',
+                  hintText: 'Enter your milestone title',
                   autovalidate: _isAutoValidate,
                   initialValue:
                       milestoneItem == null ? null : milestoneItem.title,

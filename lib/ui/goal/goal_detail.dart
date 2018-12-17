@@ -46,10 +46,12 @@ class _GoalDetailState extends State<GoalDetail> {
         );
         break;
       case 1:
-        item.state = ActivityState.done;
-        item.currentValue = item.targetValue;
-        item.doneDate = DateTime.now().toUtc();
-        DataFeeder.instance.overwriteGoal(widget.documentId, item);
+        if (item.state == ActivityState.doing) {
+          item.state = ActivityState.done;
+          item.currentValue = item.targetValue;
+          item.doneDate = DateTime.now().toUtc();
+          DataFeeder.instance.overwriteGoal(widget.documentId, item);
+        }
         break;
       case 2:
         Navigator.push(

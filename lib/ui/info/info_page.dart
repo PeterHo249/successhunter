@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:successhunter/model/chart_data.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
