@@ -6,8 +6,6 @@ import 'package:successhunter/ui/splash_page.dart';
 import 'package:successhunter/ui/main_page.dart';
 import 'package:successhunter/model/data_feeder.dart';
 
-
-
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _handleCurrentScreen() {
-    return StreamBuilder<FirebaseUser> (
+    return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -33,7 +31,10 @@ class MyApp extends StatelessWidget {
         } else {
           if (snapshot.hasData) {
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
-            return MainPage(user: snapshot.data,);
+            DataFeeder.instance.initUserInfo(snapshot.data);
+            return MainPage(
+              user: snapshot.data,
+            );
           }
           return LoginPage();
         }
@@ -41,4 +42,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

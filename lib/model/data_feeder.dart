@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 
 class DataFeeder {
@@ -19,42 +21,47 @@ class DataFeeder {
     mainCollectionId = uid;
   }
 
-  initializeDatabase() async {
-    final TransactionHandler createTransaction =
-        (Transaction transaction) async {
-      final DocumentSnapshot documentSnapshot = await transaction.get(Firestore
-          .instance
-          .collection(mainCollectionId)
-          .document('goals')
-          .collection('goals')
-          .document());
-      var initGoal = Goal(
-        title: 'Sample goal',
-        targetDate: DateTime.parse('20190112'),
-        currentValue: 40,
-        type: ActivityTypeEnum.career,
-        milestones: <Milestone>[
-          Milestone(
-            title: 'First milestone',
-            targetValue: 20,
-            targetDate: DateTime.parse('20181108'),
-          ),
-        ],
-      );
+  // Information section
+  Stream<DocumentSnapshot> getInfo() {
+    Stream<DocumentSnapshot> snapshots = Firestore.instance
+        .collection(mainCollectionId)
+        .document('info')
+        .snapshots();
 
-      print('${json.decode(json.encode(initGoal))}');
-      await transaction.set(
-          documentSnapshot.reference, json.decode(json.encode(initGoal)));
+    return snapshots;
+  }
 
-      return initGoal.toJson();
-    };
-
-    return Firestore.instance.runTransaction(createTransaction).catchError(
-      (error) {
-        print('error: $error');
-        return null;
+  initUserInfo(FirebaseUser user) async {
+    Firestore.instance
+        .collection(mainCollectionId)
+        .document('info')
+        .snapshots()
+        .listen(
+      (documentSnapshot) async {
+        if (!documentSnapshot.exists) {
+          var batch = Firestore.instance.batch();
+          User item = User(
+            displayName: user.displayName,
+            uid: user.uid,
+          );
+          batch.setData(
+              Firestore.instance.collection(mainCollectionId).document('info'),
+              json.decode(json.encode(item)));
+          await batch.commit().catchError((error) => print('error: $error'));
+        }
       },
     );
+  }
+
+  overwriteInfo(User item) async {
+    var batch = Firestore.instance.batch();
+
+    DocumentReference docRef =
+        Firestore.instance.collection(mainCollectionId).document('info');
+
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
   }
 
   /// Goal Section
