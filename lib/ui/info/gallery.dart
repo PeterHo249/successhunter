@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/hero_dialog_route.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 
 class Gallery extends StatelessWidget {
@@ -67,53 +68,60 @@ class Gallery extends StatelessWidget {
       children: avatars.map((avatar) {
         return InkWell(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    'Avatar',
-                    style: Theme.header2Style,
-                  ),
-                  content: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          height: 100.0,
-                          width: 100.0,
-                          child: Image.asset(
-                            'assets/avatar/$avatar',
-                            fit: BoxFit.contain,
-                          ),
+            Navigator.push(
+              context,
+              HeroDialogRoute(
+                builder: (BuildContext context) {
+                  return Center(
+                    child: AlertDialog(
+                      title: Text(
+                        'Avatar',
+                        style: Theme.header2Style,
+                      ),
+                      content: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(10.0),
+                              height: 100.0,
+                              width: 100.0,
+                              child: Hero(
+                                tag: avatar,
+                                child: Image.asset(
+                                  'assets/avatar/$avatar',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'You will receive this avatar when reach level ${avatarNames[avatar]}',
+                              style: Theme.contentStyle,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ],
                         ),
-                        Text(
-                          'You will receive this avatar when reach level ${avatarNames[avatar]}',
-                          style: Theme.contentStyle,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          textColor: Colors.white,
+                          child: Text(
+                            'Ok',
+                            style: Theme.header4Style,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),
-                  ),
-                  actions: <Widget>[
-                    RaisedButton(
-                      textColor: Colors.white,
-                      child: Text(
-                        'Ok',
-                        style: Theme.header4Style,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             );
           },
           child: Container(
@@ -124,9 +132,12 @@ class Gallery extends StatelessWidget {
               child: Stack(
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
-                  Image.asset(
-                    'assets/avatar/$avatar',
-                    fit: BoxFit.contain,
+                  Hero(
+                    tag: avatar,
+                    child: Image.asset(
+                      'assets/avatar/$avatar',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   Container(
                     height: 20.0,
@@ -159,53 +170,60 @@ class Gallery extends StatelessWidget {
       children: badges.map((badge) {
         return InkWell(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    'Badge',
-                    style: Theme.header2Style,
-                  ),
-                  content: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          height: 100.0,
-                          width: 100.0,
-                          child: Image.asset(
-                            'assets/badge/$badge',
-                            fit: BoxFit.contain,
-                          ),
+            Navigator.push(
+              context,
+              HeroDialogRoute(
+                builder: (BuildContext context) {
+                  return Center(
+                    child: AlertDialog(
+                      title: Text(
+                        'Badge',
+                        style: Theme.header2Style,
+                      ),
+                      content: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(10.0),
+                              height: 100.0,
+                              width: 100.0,
+                              child: Hero(
+                                tag: badge,
+                                child: Image.asset(
+                                  'assets/badge/$badge',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              badgeNames[badge],
+                              style: Theme.contentStyle,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ],
                         ),
-                        Text(
-                          badgeNames[badge],
-                          style: Theme.contentStyle,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          textColor: Colors.white,
+                          child: Text(
+                            'Ok',
+                            style: Theme.header4Style,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),
-                  ),
-                  actions: <Widget>[
-                    RaisedButton(
-                      textColor: Colors.white,
-                      child: Text(
-                        'Ok',
-                        style: Theme.header4Style,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             );
           },
           child: Container(
@@ -213,9 +231,12 @@ class Gallery extends StatelessWidget {
             width: 100.0,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Image.asset(
-                'assets/badge/$badge',
-                fit: BoxFit.contain,
+              child: Hero(
+                tag: badge,
+                child: Image.asset(
+                  'assets/badge/$badge',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),

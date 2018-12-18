@@ -8,6 +8,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/hero_dialog_route.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
@@ -262,53 +263,60 @@ class _InfoPageState extends State<InfoPage> {
       children: info.badges.map((badge) {
         return InkWell(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text(
-                    'Badge',
-                    style: Theme.header2Style,
-                  ),
-                  content: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          height: 100.0,
-                          width: 100.0,
-                          child: Image.asset(
-                            'assets/badge/$badge',
-                            fit: BoxFit.contain,
-                          ),
+            Navigator.push(
+              context,
+              HeroDialogRoute(
+                builder: (BuildContext context) {
+                  return Center(
+                    child: AlertDialog(
+                      title: Text(
+                        'Badge',
+                        style: Theme.header2Style,
+                      ),
+                      content: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(10.0),
+                              height: 100.0,
+                              width: 100.0,
+                              child: Hero(
+                                tag: badge,
+                                child: Image.asset(
+                                  'assets/badge/$badge',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              badgeNames[badge],
+                              style: Theme.contentStyle,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ],
                         ),
-                        Text(
-                          badgeNames[badge],
-                          style: Theme.contentStyle,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          textColor: Colors.white,
+                          child: Text(
+                            'Ok',
+                            style: Theme.header4Style,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),
-                  ),
-                  actions: <Widget>[
-                    RaisedButton(
-                      textColor: Colors.white,
-                      child: Text(
-                        'Ok',
-                        style: Theme.header4Style,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             );
           },
           child: Container(
@@ -316,9 +324,12 @@ class _InfoPageState extends State<InfoPage> {
             width: 100.0,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Image.asset(
-                'assets/badge/$badge',
-                fit: BoxFit.contain,
+              child: Hero(
+                tag: badge,
+                child: Image.asset(
+                  'assets/badge/$badge',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
@@ -332,7 +343,6 @@ class _InfoPageState extends State<InfoPage> {
   Widget _buildGoalChart(context) {
     var data = info.goalCounts ?? List<TaskCountPerDate>();
     var currentDate = DateTime.now();
-    
 
     while (data.length < 10) {
       data.insert(
@@ -363,7 +373,6 @@ class _InfoPageState extends State<InfoPage> {
   Widget _buildHabitChart(context) {
     var data = info.habitCounts ?? List<TaskCountPerDate>();
     var currentDate = DateTime.now();
-    
 
     while (data.length < 10) {
       data.insert(
