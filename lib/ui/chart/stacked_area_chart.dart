@@ -8,7 +8,11 @@ class StackedAreaChart extends StatelessWidget {
   final double height;
   final double width;
 
-  StackedAreaChart({@required this.data, this.animate: true, this.height: 100.0, this.width: 100.0});
+  StackedAreaChart(
+      {@required this.data,
+      this.animate: true,
+      this.height: 100.0,
+      this.width: 100.0});
 
   List<charts.Series<TaskCountPerType, int>> _convertDataToSeriesList() {
     final doingTaskData = <TaskCountPerType>[];

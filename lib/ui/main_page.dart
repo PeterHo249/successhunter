@@ -14,6 +14,7 @@ import 'package:successhunter/ui/habit/habit_form.dart';
 import 'package:successhunter/ui/habit/habit_page.dart';
 import 'package:successhunter/ui/home/home_page.dart';
 import 'package:successhunter/auth/auth.dart';
+import 'package:successhunter/ui/info/gallery.dart';
 import 'package:successhunter/ui/info/info_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -118,7 +119,9 @@ class _MainPageState extends State<MainPage> {
       currentIndex = index;
       pageController.animateToPage(
         index,
-        duration: Duration(milliseconds: 300,),
+        duration: Duration(
+          milliseconds: 300,
+        ),
         curve: Curves.linear,
       );
     });
@@ -239,6 +242,14 @@ class _MainPageState extends State<MainPage> {
           ListTile(
             title: Text('Settings'),
             onTap: () {},
+          ),
+          ListTile(
+            title: Text('Gallery'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => Gallery()));
+            },
           ),
           ListTile(
             title: Text('Log out'),

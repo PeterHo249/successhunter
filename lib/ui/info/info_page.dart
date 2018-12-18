@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/chart_data.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
-import 'package:flare_flutter/flare_actor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -65,9 +63,9 @@ class _InfoPageState extends State<InfoPage> {
             _buildSectionHeader(context, 'Achivements'),
             _buildAchivementSection(context),
             _buildSectionHeader(context, 'Goal last 10 days'),
-            //_buildGoalChart(context),
+            _buildGoalChart(context),
             _buildSectionHeader(context, 'Habit last 10 days'),
-            //_buildHabitChart(context),
+            _buildHabitChart(context),
           ],
         );
       },
@@ -331,164 +329,65 @@ class _InfoPageState extends State<InfoPage> {
     );
   }
 
-  Widget _buildGoalChart(context) {}
+  Widget _buildGoalChart(context) {
+    var data = info.goalCounts ?? List<TaskCountPerDate>();
+    var currentDate = DateTime.now();
+    
 
-  Widget _buildHabitChart(context) {}
-}
+    while (data.length < 10) {
+      data.insert(
+        0,
+        TaskCountPerDate(
+          date: currentDate.subtract(Duration(days: 1 + data.length)).day,
+          doingCount: 0,
+          attainedCount: 0,
+          failedCount: 0,
+        ),
+      );
+    }
 
-/*SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'Avatars',
-                  style: Theme.contentStyle.copyWith(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              Wrap(
-                spacing: 10.0,
-                alignment: WrapAlignment.spaceEvenly,
-                runSpacing: 5.0,
-                children: <Widget>[
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'Achivements',
-                  style: Theme.contentStyle.copyWith(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              Wrap(
-                spacing: 10.0,
-                alignment: WrapAlignment.spaceEvenly,
-                runSpacing: 5.0,
-                children: <Widget>[
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                  Container(
-                    height: 80.0,
-                    width: 80.0,
-                    color: Colors.grey[300],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'Your working on Goal last 10 day',
-                  style: Theme.contentStyle.copyWith(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              StackedAreaChart(
-                data: [
-                  TaskCountPerDate(
-                    date: 0,
-                    doingCount: 5,
-                    attainedCount: 2,
-                    failedCount: 3,
-                  ),
-                  TaskCountPerDate(
-                    date: 1,
-                    doingCount: 6,
-                    attainedCount: 3,
-                    failedCount: 1,
-                  ),
-                  TaskCountPerDate(
-                    date: 2,
-                    doingCount: 1,
-                    attainedCount: 4,
-                    failedCount: 7,
-                  ),
-                ],
-                animate: true,
-                height: 200.0,
-                width: 250.0,
-              ),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'Your working on Habit last 10 day',
-                  style: Theme.contentStyle.copyWith(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              StackedAreaChart(
-                data: [
-                  TaskCountPerDate(
-                    date: 0,
-                    doingCount: 5,
-                    attainedCount: 2,
-                    failedCount: 3,
-                  ),
-                  TaskCountPerDate(
-                    date: 1,
-                    doingCount: 6,
-                    attainedCount: 3,
-                    failedCount: 1,
-                  ),
-                  TaskCountPerDate(
-                    date: 2,
-                    doingCount: 1,
-                    attainedCount: 4,
-                    failedCount: 7,
-                  ),
-                ],
-                animate: true,
-                height: 200.0,
-                width: 250.0,
-              ),
-            ],
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          StackedAreaChart(
+            data: data,
+            animate: true,
+            height: 200.0,
+            width: 250.0,
           ),
-        ),*/
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHabitChart(context) {
+    var data = info.habitCounts ?? List<TaskCountPerDate>();
+    var currentDate = DateTime.now();
+    
+
+    while (data.length < 10) {
+      data.insert(
+        0,
+        TaskCountPerDate(
+          date: currentDate.subtract(Duration(days: 1 + data.length)).day,
+          doingCount: 0,
+          attainedCount: 0,
+          failedCount: 0,
+        ),
+      );
+    }
+
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          StackedAreaChart(
+            data: data,
+            animate: true,
+            height: 200.0,
+            width: 250.0,
+          ),
+        ],
+      ),
+    );
+  }
+}

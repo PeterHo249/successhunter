@@ -14,8 +14,17 @@ User _$UserFromJson(Map<String, dynamic> json) {
       experience: json['experience'] as int,
       badges: (json['badges'] as List)?.map((e) => e as String)?.toList(),
       currentAvatar: json['currentAvatar'] as String,
-      availableAvatars: (json['availableAvatars'] as List)
-          ?.map((e) => e as String)
+      availableAvatars:
+          (json['availableAvatars'] as List)?.map((e) => e as String)?.toList(),
+      goalCounts: (json['goalCounts'] as List)
+          ?.map((e) => e == null
+              ? null
+              : TaskCountPerDate.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      habitCounts: (json['habitCounts'] as List)
+          ?.map((e) => e == null
+              ? null
+              : TaskCountPerDate.fromJson(e as Map<String, dynamic>))
           ?.toList());
 }
 
@@ -26,5 +35,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'experience': instance.experience,
       'badges': instance.badges,
       'availableAvatars': instance.availableAvatars,
-      'currentAvatar': instance.currentAvatar
+      'currentAvatar': instance.currentAvatar,
+      'goalCounts': instance.goalCounts,
+      'habitCounts': instance.habitCounts
     };

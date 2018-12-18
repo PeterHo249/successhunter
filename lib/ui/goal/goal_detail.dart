@@ -192,7 +192,7 @@ class _GoalDetailState extends State<GoalDetail> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Target date: ${Formatter.getDateString(item.targetDate)}\nRemain day: ${remainDay}\nType: ${item.type}\nStatus: ${Helper.getStateString(item.state)}',
+                    'Target date: ${Formatter.getDateString(item.targetDate)}\nRemain day: $remainDay\nType: ${item.type}\nStatus: ${Helper.getStateString(item.state)}',
                     style: Theme.contentStyle.copyWith(
                       color: Colors.white,
                       fontSize: 20.0,

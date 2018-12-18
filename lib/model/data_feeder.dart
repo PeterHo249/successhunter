@@ -6,7 +6,6 @@ import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/model/user.dart';
-import 'package:successhunter/utils/enum_dictionary.dart';
 
 class DataFeeder {
   String mainCollectionId = '';

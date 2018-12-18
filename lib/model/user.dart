@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:successhunter/model/chart_data.dart';
 
 part 'user.g.dart';
 
@@ -11,6 +12,8 @@ class User {
   List<String> badges;
   List<String> availableAvatars;
   String currentAvatar;
+  List<TaskCountPerDate> goalCounts;
+  List<TaskCountPerDate> habitCounts;
 
   User({
     this.displayName = '',
@@ -20,12 +23,20 @@ class User {
     this.badges,
     this.currentAvatar = 'kid_1.png',
     this.availableAvatars,
+    this.goalCounts,
+    this.habitCounts,
   }) {
     if (badges == null) {
       badges = List<String>();
     }
     if (availableAvatars == null) {
       availableAvatars = <String>['kid_1.png', 'kid_4.png'];
+    }
+    if (goalCounts == null) {
+      goalCounts = List<TaskCountPerDate>();
+    }
+    if (habitCounts == null) {
+      habitCounts = List<TaskCountPerDate>();
     }
   }
 
