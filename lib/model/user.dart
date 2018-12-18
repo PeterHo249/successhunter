@@ -18,14 +18,14 @@ class User {
     this.level = 1,
     this.experience = 0,
     this.badges,
-    this.currentAvatar = 'kid.png',
+    this.currentAvatar = 'kid_1.png',
     this.availableAvatars,
   }) {
     if (badges == null) {
       badges = List<String>();
     }
     if (availableAvatars == null) {
-      availableAvatars = <String>['kid.png'];
+      availableAvatars = <String>['kid_1.png', 'kid_4.png'];
     }
   }
 
