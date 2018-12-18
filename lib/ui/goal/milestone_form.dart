@@ -6,6 +6,7 @@ import 'package:card_settings/card_settings.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class MilestoneForm extends StatefulWidget {
   final String documentId;
@@ -51,7 +52,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
         if (!snapshot.hasData)
           return Container(
             child: Center(
-              child: CircularProgressIndicator(),
+              child: Helper.buildFlareLoading(),
             ),
           );
 

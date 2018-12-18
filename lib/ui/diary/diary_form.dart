@@ -43,7 +43,7 @@ class _DiaryFormState extends State<DiaryForm> {
           if (!snapshot.hasData) {
             return Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: Helper.buildFlareLoading(),
               ),
             );
           }

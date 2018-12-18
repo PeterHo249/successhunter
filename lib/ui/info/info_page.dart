@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/chart_data.dart';
+import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/user.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/chart/stacked_area_chart.dart';
@@ -17,6 +24,7 @@ class _InfoPageState extends State<InfoPage> {
   // Variable
   double screenHeight;
   double screenWidth;
+  User info;
 
   // Business
 
@@ -29,7 +37,12 @@ class _InfoPageState extends State<InfoPage> {
     return CustomScrollView(
       slivers: <Widget>[
         _buildHeader(context),
-        SliverList(
+        _buildSectionHeader(context, 'Avatars'),
+        _buildSectionHeader(context, 'Achivements'),
+        _buildSectionHeader(context, 'Goal last 10 days'),
+        _buildSectionHeader(context, 'Habit last 10 days'),
+
+        /*SliverList(
           delegate: SliverChildListDelegate(
             [
               Padding(
@@ -184,24 +197,43 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ],
           ),
-        ),
+        ),*/
       ],
     );
   }
 
   Widget _buildHeader(BuildContext context) {
-    return CustomSliverAppBar(
-      backgroundColor: Theme.Colors.mainColor,
-      foregroundColor: Colors.white,
-      height: screenHeight * 0.3,
-      width: screenWidth,
-      flexibleChild: _buildInfoSection(context),
-      title: 'My Info',
-      image: AssetImage('assets/img/person.png'),
+    return StreamBuilder(
+      stream: DataFeeder.instance.getInfo(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return CustomSliverAppBar(
+            backgroundColor: Theme.Colors.mainColor,
+            foregroundColor: Colors.white,
+            height: screenHeight * 0.3,
+            width: screenWidth,
+            flexibleChild: Helper.buildFlareLoading(),
+            title: 'Display Name',
+            image: AssetImage('assets/img/statistics.png'),
+          );
+        }
+
+        info = User.fromJson(json.decode(json.encode(snapshot.data.data)));
+
+        return CustomSliverAppBar(
+          backgroundColor: Theme.Colors.mainColor,
+          foregroundColor: Colors.white,
+          height: screenHeight * 0.3,
+          width: screenWidth,
+          flexibleChild: _buildInfoSection(context, info),
+          title: info.displayName,
+          image: AssetImage('assets/img/statistics.png'),
+        );
+      },
     );
   }
 
-  Widget _buildInfoSection(BuildContext context) {
+  Widget _buildInfoSection(BuildContext context, User info) {
     return Container(
       width: screenWidth,
       child: Padding(
@@ -215,12 +247,21 @@ class _InfoPageState extends State<InfoPage> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Container(
-                // TODO: Implement avatar here
                 height: screenHeight * 0.3 - 100.0,
                 width: screenHeight * 0.3 - 100.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.grey,
+                  image: DecorationImage(
+                    image: AssetImage('assets/background/background_1.jpg'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.asset(
+                    'assets/avatar/${info.currentAvatar}',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
@@ -234,35 +275,15 @@ class _InfoPageState extends State<InfoPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Lv: 50',
+                            'Lv: ${info.level}',
                             style: Theme.contentStyle.copyWith(
                               color: Colors.white,
                               fontSize: 20.0,
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Icon(
-                                  FontAwesomeIcons.coins,
-                                  color: Colors.yellow,
-                                ),
-                              ),
-                              Text(
-                                '3500',
-                                style: Theme.contentStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -283,7 +304,7 @@ class _InfoPageState extends State<InfoPage> {
                                   ),
                                 ),
                                 Text(
-                                  '230/1000',
+                                  '${info.experience}/${info.level * 50}',
                                   style: Theme.contentStyle.copyWith(
                                     color: Colors.white,
                                     fontSize: 20.0,
@@ -295,7 +316,8 @@ class _InfoPageState extends State<InfoPage> {
                           LinearPercentIndicator(
                             width: screenWidth - screenHeight * 0.23,
                             lineHeight: 10.0,
-                            percent: 0.5,
+                            percent: info.experience.toDouble() /
+                                (info.level * 50).toDouble(),
                             progressColor: Colors.deepOrange,
                             padding: const EdgeInsets.all(0.0),
                             backgroundColor: Colors.blueGrey,
@@ -310,23 +332,20 @@ class _InfoPageState extends State<InfoPage> {
                         spacing: 10.0,
                         runSpacing: 5.0,
                         runAlignment: WrapAlignment.center,
-                        children: <Widget>[
-                          Container(
+                        children: info.badges
+                            .sublist(info.badges.length - 4 < 0
+                                ? 0
+                                : info.badges.length - 4)
+                            .map((badge) {
+                          return Container(
                             width: 50.0,
                             height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                        ],
+                            child: Image.asset(
+                              'assets/badge/$badge',
+                              fit: BoxFit.contain,
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),

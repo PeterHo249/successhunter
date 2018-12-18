@@ -112,6 +112,8 @@ flutter:
         - assets/badge/level_50.png
         # flare animation
         - assets/flare/loading.flr
+        # avatar background
+        - assets/background/background_1.jpg
 
   fonts:
       - family: RobotoBold

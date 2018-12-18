@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:tinycolor/tinycolor.dart';
 
@@ -18,30 +19,41 @@ Color getStateColor(int state) {
 }
 
 IconData getStateIcon(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Icons.check;
-      case ActivityState.doing:
-        return Icons.flag;
-      case ActivityState.failed:
-        return Icons.clear;
-    }
-
-    return Icons.flag;
+  switch (state) {
+    case ActivityState.done:
+      return Icons.check;
+    case ActivityState.doing:
+      return Icons.flag;
+    case ActivityState.failed:
+      return Icons.clear;
   }
 
-  String getStateString(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return 'Attained';
-      case ActivityState.doing:
-        return 'In Process';
-      case ActivityState.failed:
-        return 'Failed';
-    }
+  return Icons.flag;
+}
 
-    return 'Error';
+String getStateString(int state) {
+  switch (state) {
+    case ActivityState.done:
+      return 'Attained';
+    case ActivityState.doing:
+      return 'In Process';
+    case ActivityState.failed:
+      return 'Failed';
   }
+
+  return 'Error';
+}
+
+Widget buildFlareLoading() {
+  return Container(
+    height: 30.0,
+    width: 170.0,
+    child: FlareActor(
+      'assets/flare/loading.flr',
+      animation: 'loading',
+    ),
+  );
+}
 
 Widget buildHeaderBackground(BuildContext context,
     {Color color, double height, double width, ImageProvider image}) {
@@ -67,11 +79,13 @@ Widget buildHeaderBackground(BuildContext context,
         height: height,
         width: width,
         decoration: BoxDecoration(
-          image: image == null ? null : DecorationImage(
-            image: image,
-            fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(color.withOpacity(0.4), BlendMode.dstIn)
-          ),
+          image: image == null
+              ? null
+              : DecorationImage(
+                  image: image,
+                  fit: BoxFit.contain,
+                  colorFilter: ColorFilter.mode(
+                      color.withOpacity(0.4), BlendMode.dstIn)),
           gradient: LinearGradient(
             colors: [
               color,
@@ -129,7 +143,10 @@ void showInSnackBar(ScaffoldState scaffoldState, String message) {
   scaffoldState.showSnackBar(snackBar);
 }
 
-Widget buildCircularIcon({@required TypeDecoration data, double size: 80.0,}) {
+Widget buildCircularIcon({
+  @required TypeDecoration data,
+  double size: 80.0,
+}) {
   return Container(
     height: size,
     width: size,

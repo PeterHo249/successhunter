@@ -51,7 +51,7 @@ class _GoalPageState extends State<GoalPage> {
               _buildHeader(context, Container()),
               SliverFillRemaining(
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Helper.buildFlareLoading(),
                 ),
               ),
             ],
