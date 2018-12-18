@@ -25,8 +25,67 @@ class _InfoPageState extends State<InfoPage> {
   double screenHeight;
   double screenWidth;
   User info = User();
+  TextEditingController controller;
 
   // Business
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void showEditNameDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Edit display name',
+            style: Theme.header2Style,
+          ),
+          content: Container(
+            height: 50.0,
+            child: Center(
+              child: TextField(
+                controller: controller,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Enter a new name',
+                  hintStyle: Theme.contentStyle,
+                ),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              textColor: Colors.white,
+              child: Text('Cancel', style: Theme.header4Style,),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              child: Text('Ok', style: Theme.header4Style,),
+              onPressed: () {
+                if (controller.text != null) {
+                  info.displayName = controller.text;
+                  DataFeeder.instance.overwriteInfo(info);
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   // Layout
   @override
@@ -82,6 +141,15 @@ class _InfoPageState extends State<InfoPage> {
       flexibleChild: _buildInfoSection(context, info),
       title: info.displayName,
       image: AssetImage('assets/img/statistics.png'),
+      action: IconButton(
+        icon: Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          showEditNameDialog(context);
+        },
+      ),
     );
   }
 
