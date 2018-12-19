@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
@@ -31,8 +32,19 @@ class _GoalDetailState extends State<GoalDetail> {
   double screenHeight = 0.0;
   double screenWidth = 0.0;
   Color color;
+  User info = User();
 
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
+
   void _fabIconPressed(int index) {
     switch (index) {
       case 0:
@@ -50,6 +62,11 @@ class _GoalDetailState extends State<GoalDetail> {
           item.state = ActivityState.done;
           item.currentValue = item.targetValue;
           item.doneDate = DateTime.now().toUtc();
+          var isLevelUp = info.addExperience(50);
+          if (isLevelUp) {
+            Helper.showLevelUpDialog(this.context, info);
+          }
+          DataFeeder.instance.overwriteInfo(info);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
         break;
@@ -253,6 +270,11 @@ class _GoalDetailState extends State<GoalDetail> {
               icon: Icons.check,
               onTap: () {
                 item.completeMilestone(i);
+                var isLevelUp = info.addExperience(10);
+                if (isLevelUp) {
+                  Helper.showLevelUpDialog(context, info);
+                }
+                DataFeeder.instance.overwriteInfo(info);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);
                 setState(() {});
               },

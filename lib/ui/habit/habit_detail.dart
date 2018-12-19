@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:share/share.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
@@ -29,8 +30,19 @@ class _HabitDetailState extends State<HabitDetail> {
   double screenHeight = 0.0;
   double screenWidth = 0.0;
   Color color;
+  User info = User();
 
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
+
   void _fabIconPressed(int index) {
     switch (index) {
       case 0:
@@ -38,6 +50,11 @@ class _HabitDetailState extends State<HabitDetail> {
           break;
         }
         item.completeToday();
+        var isLevelUp = info.addExperience(10);
+        if (isLevelUp) {
+          Helper.showLevelUpDialog(context, info);
+        }
+        DataFeeder.instance.overwriteInfo(info);
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
       case 1:
@@ -289,6 +306,11 @@ class _HabitDetailState extends State<HabitDetail> {
                 item.currentValue = value.toInt();
                 if (item.currentValue == item.targetValue) {
                   item.completeToday();
+                  var isLevelUp = info.addExperience(10);
+                  if (isLevelUp) {
+                    Helper.showLevelUpDialog(context, info);
+                  }
+                  DataFeeder.instance.overwriteInfo(info);
                 }
                 DataFeeder.instance.overwriteHabit(widget.documentId, item);
                 setState(() {});
@@ -310,6 +332,11 @@ class _HabitDetailState extends State<HabitDetail> {
         return InkWell(
           onTap: () {
             item.completeToday();
+            var isLevelUp = info.addExperience(10);
+            if (isLevelUp) {
+              Helper.showLevelUpDialog(context, info);
+            }
+            DataFeeder.instance.overwriteInfo(info);
             DataFeeder.instance.overwriteHabit(widget.documentId, item);
           },
           child: Helper.buildCircularIcon(
@@ -384,8 +411,10 @@ class _HabitDetailState extends State<HabitDetail> {
           markedDateWidget: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.green, width: 4.0,),
-              
+              border: Border.all(
+                color: Colors.green,
+                width: 4.0,
+              ),
             ),
           ),
         ),

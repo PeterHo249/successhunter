@@ -12,6 +12,7 @@ class User {
   List<String> badges;
   List<String> availableAvatars;
   String currentAvatar;
+  String email;
   List<TaskCountPerDate> goalCounts;
   List<TaskCountPerDate> habitCounts;
 
@@ -25,6 +26,7 @@ class User {
     this.availableAvatars,
     this.goalCounts,
     this.habitCounts,
+    this.email = '',
   }) {
     if (badges == null) {
       badges = List<String>();
@@ -43,6 +45,71 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  bool addExperience(int amount) {
+    experience += amount;
+    if (experience >= level * 50) {
+      experience -= level * 50;
+      level++;
+      switch (level) {
+        case 4:
+          availableAvatars.add('kid_2.png');
+          availableAvatars.add('kid_5.png');
+          break;
+        case 7:
+          availableAvatars.add('kid_3.png');
+          availableAvatars.add('kid_6.png');
+          break;
+        case 10:
+          availableAvatars.add('student_1.png');
+          availableAvatars.add('student_4.png');
+          break;
+        case 14:
+          availableAvatars.add('student_2.png');
+          availableAvatars.add('student_5.png');
+          break;
+        case 17:
+          availableAvatars.add('student_3.png');
+          availableAvatars.add('student_6.png');
+          break;
+        case 20:
+          availableAvatars.add('teenager_1.png');
+          availableAvatars.add('teenager_4.png');
+          break;
+        case 24:
+          availableAvatars.add('teenager_2.png');
+          availableAvatars.add('teenager_5.png');
+          break;
+        case 27:
+          availableAvatars.add('teenager_3.png');
+          availableAvatars.add('teenager_6.png');
+          break;
+        case 30:
+          availableAvatars.add('officer_1.png');
+          availableAvatars.add('officer_4.png');
+          break;
+        case 34:
+          availableAvatars.add('officer_2.png');
+          availableAvatars.add('officer_5.png');
+          break;
+        case 37:
+          availableAvatars.add('officer_3.png');
+          availableAvatars.add('officer_6.png');
+          break;
+        case 40:
+          availableAvatars.add('boss_1.png');
+          availableAvatars.add('boss_3.png');
+          break;
+        case 45:
+          availableAvatars.add('boss_2.png');
+          break;
+        default:
+      }
+      return true;
+    }
+
+    return false;
+  }
 }
 
 class UserDocument {

@@ -25,7 +25,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
           ?.map((e) => e == null
               ? null
               : TaskCountPerDate.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+          ?.toList(),
+      email: json['email'] as String);
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -36,6 +37,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'badges': instance.badges,
       'availableAvatars': instance.availableAvatars,
       'currentAvatar': instance.currentAvatar,
+      'email': instance.email,
       'goalCounts': instance.goalCounts,
       'habitCounts': instance.habitCounts
     };

@@ -42,6 +42,7 @@ class DataFeeder {
           User item = User(
             displayName: user.displayName,
             uid: user.uid,
+            email: user.email,
           );
           batch.setData(
               Firestore.instance.collection(mainCollectionId).document('info'),

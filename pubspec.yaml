@@ -112,6 +112,7 @@ flutter:
         - assets/badge/level_50.png
         # flare animation
         - assets/flare/loading.flr
+        - assets/flare/firework.flr
         # avatar background
         - assets/background/background_1.jpg
 

@@ -1,5 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:tinycolor/tinycolor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
@@ -159,5 +161,66 @@ Widget buildCircularIcon({
       color: data.color,
       size: size * 0.4,
     ),
+  );
+}
+
+void showLevelUpDialog(BuildContext context, User info) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Level Up',
+          style: Theme.header2Style,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10.0),
+              height: 300.0,
+              width: 200.0,
+              child: FlareActor(
+                'assets/flare/firework.flr',
+                animation: 'fired',
+                fit: BoxFit.contain,
+              ),
+            ),
+            Text(
+              'Congratulation! You\'ve just reached level ${info.level}',
+              style: Theme.contentStyle,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          RaisedButton(
+            textColor: Colors.white,
+            child: Text(
+              'Ok',
+              style: Theme.header4Style,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          RaisedButton(
+            textColor: Colors.white,
+            child: Text(
+              'Share',
+              style: Theme.header4Style,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Share.share('I\'ve just reached level ${info.level}. Hurrrray!');
+            },
+          ),
+        ],
+      );
+    },
   );
 }
