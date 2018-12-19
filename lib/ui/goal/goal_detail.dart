@@ -62,10 +62,7 @@ class _GoalDetailState extends State<GoalDetail> {
           item.state = ActivityState.done;
           item.currentValue = item.targetValue;
           item.doneDate = DateTime.now().toUtc();
-          var isLevelUp = info.addExperience(50);
-          if (isLevelUp) {
-            Helper.showLevelUpDialog(this.context, info);
-          }
+          info.addExperience(this.context, 50);
           DataFeeder.instance.overwriteInfo(info);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
@@ -270,10 +267,7 @@ class _GoalDetailState extends State<GoalDetail> {
               icon: Icons.check,
               onTap: () {
                 item.completeMilestone(i);
-                var isLevelUp = info.addExperience(10);
-                if (isLevelUp) {
-                  Helper.showLevelUpDialog(context, info);
-                }
+                info.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(info);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);
                 setState(() {});

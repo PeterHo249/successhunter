@@ -438,10 +438,7 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: () {
                 document.item.completeToday();
-                var isLevelUp = info.addExperience(10);
-                if (isLevelUp) {
-                  Helper.showLevelUpDialog(context, info);
-                }
+                info.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(info);
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);
@@ -509,10 +506,7 @@ class _HomePageState extends State<HomePage> {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday();
-                  var isLevelUp = info.addExperience(10);
-                  if (isLevelUp) {
-                    Helper.showLevelUpDialog(context, info);
-                  }
+                  info.addExperience(context, 10);
                   DataFeeder.instance.overwriteInfo(info);
                 }
                 DataFeeder.instance

@@ -164,7 +164,26 @@ Widget buildCircularIcon({
   );
 }
 
-void showLevelUpDialog(BuildContext context, User info) {
+void showLevelUpDialog(
+  BuildContext context,
+  User info, {
+  String content,
+  List<String> imagePaths,
+}) {
+  List<Widget> imagesRow = <Widget>[];
+  if (imagePaths != null) {
+    imagesRow = imagePaths.map((imagePath) {
+      return Container(
+        height: 100.0,
+        width: 100.0,
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.contain,
+        ),
+      );
+    }).toList();
+  }
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -178,18 +197,31 @@ void showLevelUpDialog(BuildContext context, User info) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              height: 300.0,
-              width: 200.0,
-              child: FlareActor(
-                'assets/flare/firework.flr',
-                animation: 'fired',
-                fit: BoxFit.contain,
-              ),
-            ),
+            imagePaths == null
+                ? Container(
+                    padding: EdgeInsets.all(10.0),
+                    height: 300.0,
+                    width: 200.0,
+                    child: FlareActor(
+                      'assets/flare/firework.flr',
+                      animation: 'fired',
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Wrap(
+                      children: imagesRow,
+                      runAlignment: WrapAlignment.center,
+                      alignment: WrapAlignment.center,
+                      spacing: 10.0,
+                      runSpacing: 5.0,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                    )),
             Text(
-              'Congratulation! You\'ve just reached level ${info.level}',
+              content == null
+                  ? 'Congratulation! You\'ve just reached level ${info.level}'
+                  : content,
               style: Theme.contentStyle,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,

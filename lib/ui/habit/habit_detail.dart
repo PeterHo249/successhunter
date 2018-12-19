@@ -50,10 +50,7 @@ class _HabitDetailState extends State<HabitDetail> {
           break;
         }
         item.completeToday();
-        var isLevelUp = info.addExperience(10);
-        if (isLevelUp) {
-          Helper.showLevelUpDialog(context, info);
-        }
+        info.addExperience(this.context, 10);
         DataFeeder.instance.overwriteInfo(info);
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
@@ -306,10 +303,7 @@ class _HabitDetailState extends State<HabitDetail> {
                 item.currentValue = value.toInt();
                 if (item.currentValue == item.targetValue) {
                   item.completeToday();
-                  var isLevelUp = info.addExperience(10);
-                  if (isLevelUp) {
-                    Helper.showLevelUpDialog(context, info);
-                  }
+                  info.addExperience(context, 10);
                   DataFeeder.instance.overwriteInfo(info);
                 }
                 DataFeeder.instance.overwriteHabit(widget.documentId, item);
@@ -332,10 +326,7 @@ class _HabitDetailState extends State<HabitDetail> {
         return InkWell(
           onTap: () {
             item.completeToday();
-            var isLevelUp = info.addExperience(10);
-            if (isLevelUp) {
-              Helper.showLevelUpDialog(context, info);
-            }
+            info.addExperience(context, 10);
             DataFeeder.instance.overwriteInfo(info);
             DataFeeder.instance.overwriteHabit(widget.documentId, item);
           },
