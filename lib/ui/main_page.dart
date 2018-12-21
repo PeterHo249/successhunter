@@ -161,6 +161,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: fabs[currentIndex],
       bottomNavigationBar: bottomAppBar,
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: pageController,
         children: <Widget>[
           HomePage(),

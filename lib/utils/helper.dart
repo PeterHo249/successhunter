@@ -87,7 +87,9 @@ Widget buildHeaderBackground(BuildContext context,
                   image: image,
                   fit: BoxFit.contain,
                   colorFilter: ColorFilter.mode(
-                      color.withOpacity(0.4), BlendMode.dstIn)),
+                    color.withOpacity(0.4),
+                    BlendMode.dstIn,
+                  )),
           gradient: LinearGradient(
             colors: [
               color,

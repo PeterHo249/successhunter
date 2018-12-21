@@ -27,7 +27,6 @@ class _HabitPageState extends State<HabitPage> {
   double screenHeight;
   double screenWidth;
 
-  User info = User();
   var habits = <HabitDocument>[];
   var todayHabits = <HabitDocument>[];
   var attainedHabits = <HabitDocument>[];
@@ -41,7 +40,7 @@ class _HabitPageState extends State<HabitPage> {
   void initState() {
     DataFeeder.instance.getInfo().listen(
       (documentSnapshot) {
-        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
       },
     );
     super.initState();
@@ -404,8 +403,8 @@ class _HabitPageState extends State<HabitPage> {
         iconButton = InkWell(
           onTap: () {
             document.item.completeToday();
-            info.addExperience(context, 10);
-            DataFeeder.instance.overwriteInfo(info);
+            gInfo.addExperience(context, 10);
+            DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance
                 .overwriteHabit(document.documentId, document.item);
           },
@@ -541,8 +540,8 @@ class _HabitPageState extends State<HabitPage> {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday();
-                  info.addExperience(context, 10);
-                  DataFeeder.instance.overwriteInfo(info);
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);

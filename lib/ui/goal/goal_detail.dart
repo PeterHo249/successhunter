@@ -32,14 +32,13 @@ class _GoalDetailState extends State<GoalDetail> {
   double screenHeight = 0.0;
   double screenWidth = 0.0;
   Color color;
-  User info = User();
 
   // Business
   @override
   void initState() {
     DataFeeder.instance.getInfo().listen(
       (documentSnapshot) {
-        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
       },
     );
     super.initState();
@@ -62,8 +61,8 @@ class _GoalDetailState extends State<GoalDetail> {
           item.state = ActivityState.done;
           item.currentValue = item.targetValue;
           item.doneDate = DateTime.now().toUtc();
-          info.addExperience(this.context, 50);
-          DataFeeder.instance.overwriteInfo(info);
+          gInfo.addExperience(this.context, 50);
+          DataFeeder.instance.overwriteInfo(gInfo);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
         break;
@@ -267,8 +266,8 @@ class _GoalDetailState extends State<GoalDetail> {
               icon: Icons.check,
               onTap: () {
                 item.completeMilestone(i);
-                info.addExperience(context, 10);
-                DataFeeder.instance.overwriteInfo(info);
+                gInfo.addExperience(context, 10);
+                DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);
                 setState(() {});
               },

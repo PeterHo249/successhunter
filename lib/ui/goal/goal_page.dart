@@ -35,14 +35,13 @@ class _GoalPageState extends State<GoalPage> {
   var attainedGoals = <GoalDocument>[];
   var failedGoals = <GoalDocument>[];
 
-  User info = User();
 
   // Business
   @override
   void initState() {
     DataFeeder.instance.getInfo().listen(
       (documentSnapshot) {
-        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
       },
     );
     super.initState();

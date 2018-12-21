@@ -4,6 +4,7 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/hero_dialog_route.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
 
 class Gallery extends StatelessWidget {
   double screenHeight = 0.0;
@@ -11,10 +12,25 @@ class Gallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          _buildHeader(context, Container()),
+          _buildHeader2(context),
+          /*_buildHeader(
+              context,
+              Container(
+                child: Center(
+                  child: Text(
+                    'Gallery',
+                    style: Theme.header1Style.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              )),*/
           _buildSectionHeader(context, 'Avatars'),
           _buildAvatarSection(context),
           _buildSectionHeader(context, 'Achivements'),
@@ -24,19 +40,39 @@ class Gallery extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, Widget child) {
-    return CustomSliverAppBar(
-      backgroundColor: Theme.Colors.mainColor,
-      foregroundColor: Colors.white,
-      height: screenHeight * 0.3,
-      width: screenWidth,
-      flexibleChild: child,
-      title: 'Gallery',
+  Widget _buildHeader2(BuildContext context) {
+    return SliverAppBar(
+      pinned: true,
+      expandedHeight: screenHeight * 0.2,
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context);
         },
+      ),
+      backgroundColor: Theme.Colors.mainColor,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(
+          'Gallery',
+          style: Theme.header1Style.copyWith(
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        background: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              Container(
+                width: screenWidth,
+                height: screenHeight * 0.2,
+                color: Colors.white,
+              ),
+              Helper.buildHeaderBackground(context, height: screenHeight * 0.2),
+            ],
+          ),
+        ),
       ),
     );
   }

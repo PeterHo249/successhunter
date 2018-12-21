@@ -30,14 +30,13 @@ class _HabitDetailState extends State<HabitDetail> {
   double screenHeight = 0.0;
   double screenWidth = 0.0;
   Color color;
-  User info = User();
 
   // Business
   @override
   void initState() {
     DataFeeder.instance.getInfo().listen(
       (documentSnapshot) {
-        info = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
       },
     );
     super.initState();
@@ -50,8 +49,8 @@ class _HabitDetailState extends State<HabitDetail> {
           break;
         }
         item.completeToday();
-        info.addExperience(this.context, 10);
-        DataFeeder.instance.overwriteInfo(info);
+        gInfo.addExperience(this.context, 10);
+        DataFeeder.instance.overwriteInfo(gInfo);
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
       case 1:
@@ -303,8 +302,8 @@ class _HabitDetailState extends State<HabitDetail> {
                 item.currentValue = value.toInt();
                 if (item.currentValue == item.targetValue) {
                   item.completeToday();
-                  info.addExperience(context, 10);
-                  DataFeeder.instance.overwriteInfo(info);
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance.overwriteHabit(widget.documentId, item);
                 setState(() {});
@@ -326,8 +325,8 @@ class _HabitDetailState extends State<HabitDetail> {
         return InkWell(
           onTap: () {
             item.completeToday();
-            info.addExperience(context, 10);
-            DataFeeder.instance.overwriteInfo(info);
+            gInfo.addExperience(context, 10);
+            DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance.overwriteHabit(widget.documentId, item);
           },
           child: Helper.buildCircularIcon(

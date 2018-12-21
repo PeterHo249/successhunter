@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   double screenHeight;
   double screenWidth;
 
-  User info;
 
   var goals = <GoalDocument>[];
 
@@ -70,15 +69,15 @@ class _HomePageState extends State<HomePage> {
           );
         }
 
-        info = User.fromJson(json.decode(json.encode(snapshot.data.data)));
+        gInfo = User.fromJson(json.decode(json.encode(snapshot.data.data)));
 
         return CustomSliverAppBar(
           backgroundColor: Theme.Colors.mainColor,
           foregroundColor: Colors.white,
           height: screenHeight * 0.3,
           width: screenWidth,
-          flexibleChild: _buildInfoSection(context, info),
-          title: info.displayName,
+          flexibleChild: _buildInfoSection(context, gInfo),
+          title: gInfo.displayName,
           image: AssetImage('assets/img/statistics.png'),
         );
       },
@@ -438,8 +437,8 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: () {
                 document.item.completeToday();
-                info.addExperience(context, 10);
-                DataFeeder.instance.overwriteInfo(info);
+                gInfo.addExperience(context, 10);
+                DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);
               },
@@ -506,8 +505,8 @@ class _HomePageState extends State<HomePage> {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday();
-                  info.addExperience(context, 10);
-                  DataFeeder.instance.overwriteInfo(info);
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);

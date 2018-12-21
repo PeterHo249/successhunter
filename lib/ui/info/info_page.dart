@@ -24,7 +24,6 @@ class _InfoPageState extends State<InfoPage> {
   // Variable
   double screenHeight;
   double screenWidth;
-  User info = User();
   TextEditingController controller;
 
   // Business
@@ -75,8 +74,8 @@ class _InfoPageState extends State<InfoPage> {
               child: Text('Ok', style: Theme.header4Style,),
               onPressed: () {
                 if (controller.text != null) {
-                  info.displayName = controller.text;
-                  DataFeeder.instance.overwriteInfo(info);
+                  gInfo.displayName = controller.text;
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 Navigator.of(context).pop();
               },
@@ -113,7 +112,7 @@ class _InfoPageState extends State<InfoPage> {
           );
         }
 
-        info = User.fromJson(json.decode(json.encode(snapshot.data.data)));
+        gInfo = User.fromJson(json.decode(json.encode(snapshot.data.data)));
 
         return CustomScrollView(
           slivers: <Widget>[
@@ -138,8 +137,8 @@ class _InfoPageState extends State<InfoPage> {
       foregroundColor: Colors.white,
       height: screenHeight * 0.3,
       width: screenWidth,
-      flexibleChild: _buildInfoSection(context, info),
-      title: info.displayName,
+      flexibleChild: _buildInfoSection(context, gInfo),
+      title: gInfo.displayName,
       image: AssetImage('assets/img/statistics.png'),
       action: IconButton(
         icon: Icon(
@@ -301,11 +300,11 @@ class _InfoPageState extends State<InfoPage> {
   Widget _buildAvatarSection(BuildContext context) {
     return SliverGrid.count(
       crossAxisCount: 3,
-      children: info.availableAvatars.map((avatar) {
+      children: gInfo.availableAvatars.map((avatar) {
         return InkWell(
           onTap: () {
-            info.currentAvatar = avatar;
-            DataFeeder.instance.overwriteInfo(info);
+            gInfo.currentAvatar = avatar;
+            DataFeeder.instance.overwriteInfo(gInfo);
           },
           child: Container(
             height: 100.0,
@@ -328,7 +327,7 @@ class _InfoPageState extends State<InfoPage> {
   Widget _buildAchivementSection(BuildContext context) {
     return SliverGrid.count(
       crossAxisCount: 3,
-      children: info.badges.map((badge) {
+      children: gInfo.badges.map((badge) {
         return InkWell(
           onTap: () {
             Navigator.push(
@@ -409,7 +408,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   Widget _buildGoalChart(context) {
-    var data = info.goalCounts ?? List<TaskCountPerDate>();
+    var data = gInfo.goalCounts ?? List<TaskCountPerDate>();
     var currentDate = DateTime.now();
 
     while (data.length < 10) {
@@ -439,7 +438,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   Widget _buildHabitChart(context) {
-    var data = info.habitCounts ?? List<TaskCountPerDate>();
+    var data = gInfo.habitCounts ?? List<TaskCountPerDate>();
     var currentDate = DateTime.now();
 
     while (data.length < 10) {
