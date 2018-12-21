@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:share/share.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
@@ -31,6 +32,16 @@ class _HabitDetailState extends State<HabitDetail> {
   Color color;
 
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
+
   void _fabIconPressed(int index) {
     switch (index) {
       case 0:
@@ -38,6 +49,8 @@ class _HabitDetailState extends State<HabitDetail> {
           break;
         }
         item.completeToday();
+        gInfo.addExperience(this.context, 10);
+        DataFeeder.instance.overwriteInfo(gInfo);
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
       case 1:
@@ -289,6 +302,8 @@ class _HabitDetailState extends State<HabitDetail> {
                 item.currentValue = value.toInt();
                 if (item.currentValue == item.targetValue) {
                   item.completeToday();
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance.overwriteHabit(widget.documentId, item);
                 setState(() {});
@@ -310,6 +325,8 @@ class _HabitDetailState extends State<HabitDetail> {
         return InkWell(
           onTap: () {
             item.completeToday();
+            gInfo.addExperience(context, 10);
+            DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance.overwriteHabit(widget.documentId, item);
           },
           child: Helper.buildCircularIcon(
@@ -384,8 +401,10 @@ class _HabitDetailState extends State<HabitDetail> {
           markedDateWidget: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.green, width: 4.0,),
-              
+              border: Border.all(
+                color: Colors.green,
+                width: 4.0,
+              ),
             ),
           ),
         ),

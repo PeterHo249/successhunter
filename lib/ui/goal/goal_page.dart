@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/chart/pie_chart.dart';
 
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -34,7 +35,17 @@ class _GoalPageState extends State<GoalPage> {
   var attainedGoals = <GoalDocument>[];
   var failedGoals = <GoalDocument>[];
 
+
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
 
   // Layout
   @override
@@ -51,7 +62,7 @@ class _GoalPageState extends State<GoalPage> {
               _buildHeader(context, Container()),
               SliverFillRemaining(
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Helper.buildFlareLoading(),
                 ),
               ),
             ],

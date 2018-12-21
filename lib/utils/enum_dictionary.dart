@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:successhunter/model/user.dart';
+
+User gInfo = User();
 
 class ActivityTypeEnum {
   static const String career = 'Career';
@@ -131,3 +134,61 @@ class DayOfWeekEnum {
     sunday,
   ];
 }
+
+const Map<String, int> avatarNames = {
+  'kid_1.png': 1,
+  'kid_2.png': 4,
+  'kid_3.png': 7,
+  'kid_4.png': 1,
+  'kid_5.png': 4,
+  'kid_6.png': 7,
+  'student_1.png': 10,
+  'student_2.png': 14,
+  'student_3.png': 17,
+  'student_4.png': 10,
+  'student_5.png': 14,
+  'student_6.png': 17,
+  'teenager_1.png': 20,
+  'teenager_2.png': 24,
+  'teenager_3.png': 27,
+  'teenager_4.png': 20,
+  'teenager_5.png': 24,
+  'teenager_6.png': 27,
+  'officer_1.png': 30,
+  'officer_2.png': 34,
+  'officer_3.png': 37,
+  'officer_4.png': 30,
+  'officer_5.png': 34,
+  'officer_6.png': 37,
+  'boss_1.png': 40,
+  'boss_2.png': 45,
+  'boss_3.png': 40,
+};
+
+const Map<String, String> badgeNames = {
+  'coop_1.png': 'You have finished a co-op goal.',
+  'coop_5.png': 'You have finished 5 co-op goals.',
+  'coop_10.png': 'You have finished 10 co-op goals.',
+  'coop_50.png': 'You have finished 50 co-op goals.',
+  'coop_100.png': 'You have finished 100 co-op goals.',
+  'goal_1.png': 'You have finished a goal.',
+  'goal_5.png': 'You have finished 5 goals.',
+  'goal_10.png': 'You have finished 10 goals.',
+  'goal_50.png': 'You have finished 50 goals.',
+  'goal_100.png': 'You have finished 100 goals.',
+  'habit_1.png': 'You have finished a habit task.',
+  'habit_5.png': 'You have finished 5 habit tasks.',
+  'habit_10.png': 'You have finished 10 habit tasks.',
+  'habit_50.png': 'You have finished 50 habit tasks.',
+  'habit_100.png': 'You have finished 100 habit tasks.',
+  'streak_5.png': 'You have completed a 5-time streak.',
+  'streak_10.png': 'You have completed a 10-time streak.',
+  'streak_50.png': 'You have completed a 50-time streak.',
+  'streak_100.png': 'You have completed a 100-time streak.',
+  'level_1.png': 'You have leveled up',
+  'level_10.png': 'You have reached level 10.',
+  'level_20.png': 'You have reached level 20.',
+  'level_30.png': 'You have reached level 30.',
+  'level_40.png': 'You have reached level 40.',
+  'level_50.png': 'You have reached level 50.',
+};

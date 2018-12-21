@@ -42,7 +42,7 @@ class _HabitFormState extends State<HabitForm> {
           if (!snapshot.hasData)
             return Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: Helper.buildFlareLoading(),
               ),
             );
 

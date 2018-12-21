@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/diary.dart';
 
@@ -51,7 +49,7 @@ class _DiaryPageState extends State<DiaryPage> {
               _buildHeader(context, Container()),
               SliverFillRemaining(
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Helper.buildFlareLoading(),
                 ),
               ),
             ],

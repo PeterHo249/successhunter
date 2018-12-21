@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   // Variable
   double screenHeight;
   double screenWidth;
+
 
   var goals = <GoalDocument>[];
 
@@ -53,18 +54,37 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return CustomSliverAppBar(
-      backgroundColor: Theme.Colors.mainColor,
-      foregroundColor: Colors.white,
-      height: screenHeight * 0.3,
-      width: screenWidth,
-      flexibleChild: _buildInfoSection(context),
-      title: 'Display Name',
-      image: AssetImage('assets/img/statistics.png'),
+    return StreamBuilder(
+      stream: DataFeeder.instance.getInfo(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return CustomSliverAppBar(
+            backgroundColor: Theme.Colors.mainColor,
+            foregroundColor: Colors.white,
+            height: screenHeight * 0.3,
+            width: screenWidth,
+            flexibleChild: Helper.buildFlareLoading(),
+            title: 'Display Name',
+            image: AssetImage('assets/img/statistics.png'),
+          );
+        }
+
+        gInfo = User.fromJson(json.decode(json.encode(snapshot.data.data)));
+
+        return CustomSliverAppBar(
+          backgroundColor: Theme.Colors.mainColor,
+          foregroundColor: Colors.white,
+          height: screenHeight * 0.3,
+          width: screenWidth,
+          flexibleChild: _buildInfoSection(context, gInfo),
+          title: gInfo.displayName,
+          image: AssetImage('assets/img/statistics.png'),
+        );
+      },
     );
   }
 
-  Widget _buildInfoSection(BuildContext context) {
+  Widget _buildInfoSection(BuildContext context, User info) {
     return Container(
       width: screenWidth,
       child: Padding(
@@ -78,12 +98,21 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Container(
-                // TODO: Implement avatar here
                 height: screenHeight * 0.3 - 100.0,
                 width: screenHeight * 0.3 - 100.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.grey,
+                  image: DecorationImage(
+                    image: AssetImage('assets/background/background_1.jpg'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.asset(
+                    'assets/avatar/${info.currentAvatar}',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
@@ -97,35 +126,15 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Lv: 50',
+                            'Lv: ${info.level}',
                             style: Theme.contentStyle.copyWith(
                               color: Colors.white,
                               fontSize: 20.0,
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Icon(
-                                  FontAwesomeIcons.coins,
-                                  color: Colors.yellow,
-                                ),
-                              ),
-                              Text(
-                                '3500',
-                                style: Theme.contentStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -146,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 Text(
-                                  '230/1000',
+                                  '${info.experience}/${info.level * 50}',
                                   style: Theme.contentStyle.copyWith(
                                     color: Colors.white,
                                     fontSize: 20.0,
@@ -158,7 +167,8 @@ class _HomePageState extends State<HomePage> {
                           LinearPercentIndicator(
                             width: screenWidth - screenHeight * 0.23,
                             lineHeight: 10.0,
-                            percent: 0.5,
+                            percent: info.experience.toDouble() /
+                                (info.level * 50).toDouble(),
                             progressColor: Colors.deepOrange,
                             padding: const EdgeInsets.all(0.0),
                             backgroundColor: Colors.blueGrey,
@@ -173,23 +183,20 @@ class _HomePageState extends State<HomePage> {
                         spacing: 10.0,
                         runSpacing: 5.0,
                         runAlignment: WrapAlignment.center,
-                        children: <Widget>[
-                          Container(
+                        children: info.badges
+                            .sublist(info.badges.length - 4 < 0
+                                ? 0
+                                : info.badges.length - 4)
+                            .map((badge) {
+                          return Container(
                             width: 50.0,
                             height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                        ],
+                            child: Image.asset(
+                              'assets/badge/$badge',
+                              fit: BoxFit.contain,
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),
@@ -233,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 120.0,
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: Helper.buildFlareLoading(),
                   ),
                 ),
               ],
@@ -430,6 +437,8 @@ class _HomePageState extends State<HomePage> {
             InkWell(
               onTap: () {
                 document.item.completeToday();
+                gInfo.addExperience(context, 10);
+                DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);
               },
@@ -496,6 +505,8 @@ class _HomePageState extends State<HomePage> {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday();
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);
@@ -525,7 +536,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 120.0,
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: Helper.buildFlareLoading(),
                   ),
                 ),
               ],

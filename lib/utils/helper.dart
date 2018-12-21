@@ -1,4 +1,7 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:tinycolor/tinycolor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
@@ -18,30 +21,41 @@ Color getStateColor(int state) {
 }
 
 IconData getStateIcon(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return Icons.check;
-      case ActivityState.doing:
-        return Icons.flag;
-      case ActivityState.failed:
-        return Icons.clear;
-    }
-
-    return Icons.flag;
+  switch (state) {
+    case ActivityState.done:
+      return Icons.check;
+    case ActivityState.doing:
+      return Icons.flag;
+    case ActivityState.failed:
+      return Icons.clear;
   }
 
-  String getStateString(int state) {
-    switch (state) {
-      case ActivityState.done:
-        return 'Attained';
-      case ActivityState.doing:
-        return 'In Process';
-      case ActivityState.failed:
-        return 'Failed';
-    }
+  return Icons.flag;
+}
 
-    return 'Error';
+String getStateString(int state) {
+  switch (state) {
+    case ActivityState.done:
+      return 'Attained';
+    case ActivityState.doing:
+      return 'In Process';
+    case ActivityState.failed:
+      return 'Failed';
   }
+
+  return 'Error';
+}
+
+Widget buildFlareLoading() {
+  return Container(
+    height: 30.0,
+    width: 170.0,
+    child: FlareActor(
+      'assets/flare/loading.flr',
+      animation: 'loading',
+    ),
+  );
+}
 
 Widget buildHeaderBackground(BuildContext context,
     {Color color, double height, double width, ImageProvider image}) {
@@ -67,11 +81,15 @@ Widget buildHeaderBackground(BuildContext context,
         height: height,
         width: width,
         decoration: BoxDecoration(
-          image: image == null ? null : DecorationImage(
-            image: image,
-            fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(color.withOpacity(0.4), BlendMode.dstIn)
-          ),
+          image: image == null
+              ? null
+              : DecorationImage(
+                  image: image,
+                  fit: BoxFit.contain,
+                  colorFilter: ColorFilter.mode(
+                    color.withOpacity(0.4),
+                    BlendMode.dstIn,
+                  )),
           gradient: LinearGradient(
             colors: [
               color,
@@ -129,7 +147,10 @@ void showInSnackBar(ScaffoldState scaffoldState, String message) {
   scaffoldState.showSnackBar(snackBar);
 }
 
-Widget buildCircularIcon({@required TypeDecoration data, double size: 80.0,}) {
+Widget buildCircularIcon({
+  @required TypeDecoration data,
+  double size: 80.0,
+}) {
   return Container(
     height: size,
     width: size,
@@ -142,5 +163,98 @@ Widget buildCircularIcon({@required TypeDecoration data, double size: 80.0,}) {
       color: data.color,
       size: size * 0.4,
     ),
+  );
+}
+
+void showLevelUpDialog(
+  BuildContext context,
+  User info, {
+  String content,
+  List<String> imagePaths,
+}) {
+  List<Widget> imagesRow = <Widget>[];
+  if (imagePaths != null) {
+    imagesRow = imagePaths.map((imagePath) {
+      return Container(
+        height: 100.0,
+        width: 100.0,
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.contain,
+        ),
+      );
+    }).toList();
+  }
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Level Up',
+          style: Theme.header2Style,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            imagePaths == null
+                ? Container(
+                    padding: EdgeInsets.all(10.0),
+                    height: 300.0,
+                    width: 200.0,
+                    child: FlareActor(
+                      'assets/flare/firework.flr',
+                      animation: 'fired',
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Wrap(
+                      children: imagesRow,
+                      runAlignment: WrapAlignment.center,
+                      alignment: WrapAlignment.center,
+                      spacing: 10.0,
+                      runSpacing: 5.0,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                    )),
+            Text(
+              content == null
+                  ? 'Congratulation! You\'ve just reached level ${info.level}'
+                  : content,
+              style: Theme.contentStyle,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          RaisedButton(
+            textColor: Colors.white,
+            child: Text(
+              'Ok',
+              style: Theme.header4Style,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          RaisedButton(
+            textColor: Colors.white,
+            child: Text(
+              'Share',
+              style: Theme.header4Style,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Share.share('I\'ve just reached level ${info.level}. Hurrrray!');
+            },
+          ),
+        ],
+      );
+    },
   );
 }

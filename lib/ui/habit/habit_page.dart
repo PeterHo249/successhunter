@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/chart/pie_chart.dart';
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
@@ -35,6 +36,15 @@ class _HabitPageState extends State<HabitPage> {
   final SlidableController slidableController = SlidableController();
 
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
 
   // Layout
   @override
@@ -393,6 +403,8 @@ class _HabitPageState extends State<HabitPage> {
         iconButton = InkWell(
           onTap: () {
             document.item.completeToday();
+            gInfo.addExperience(context, 10);
+            DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance
                 .overwriteHabit(document.documentId, document.item);
           },
@@ -528,6 +540,8 @@ class _HabitPageState extends State<HabitPage> {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday();
+                  gInfo.addExperience(context, 10);
+                  DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);

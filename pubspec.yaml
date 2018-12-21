@@ -36,6 +36,7 @@ dependencies:
   tinycolor: ^1.0.2
   flutter_charts: ^0.1.10
   charts_flutter: ^0.5.0
+  flare_flutter: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -48,12 +49,72 @@ flutter:
   uses-material-design: true
 
   assets:
+        # background for header
         - assets/img/book.png
         - assets/img/calendar.png
         - assets/img/multitarget.png
         - assets/img/person.png
         - assets/img/statistics.png
         - assets/img/target.png
+        # avatar
+        - assets/avatar/boss_1.png
+        - assets/avatar/boss_2.png
+        - assets/avatar/boss_3.png
+        - assets/avatar/kid_1.png
+        - assets/avatar/kid_2.png
+        - assets/avatar/kid_3.png
+        - assets/avatar/kid_4.png
+        - assets/avatar/kid_5.png
+        - assets/avatar/kid_6.png
+        - assets/avatar/student_1.png
+        - assets/avatar/student_2.png
+        - assets/avatar/student_3.png
+        - assets/avatar/student_4.png
+        - assets/avatar/student_5.png
+        - assets/avatar/student_6.png
+        - assets/avatar/teenager_1.png
+        - assets/avatar/teenager_2.png
+        - assets/avatar/teenager_3.png
+        - assets/avatar/teenager_4.png
+        - assets/avatar/teenager_5.png
+        - assets/avatar/teenager_6.png
+        - assets/avatar/officer_1.png
+        - assets/avatar/officer_2.png
+        - assets/avatar/officer_3.png
+        - assets/avatar/officer_4.png
+        - assets/avatar/officer_5.png
+        - assets/avatar/officer_6.png
+        # badge
+        - assets/badge/coop_1.png
+        - assets/badge/coop_5.png
+        - assets/badge/coop_10.png
+        - assets/badge/coop_50.png
+        - assets/badge/coop_100.png
+        - assets/badge/goal_1.png
+        - assets/badge/goal_5.png
+        - assets/badge/goal_10.png
+        - assets/badge/goal_50.png
+        - assets/badge/goal_100.png
+        - assets/badge/habit_1.png
+        - assets/badge/habit_5.png
+        - assets/badge/habit_10.png
+        - assets/badge/habit_50.png
+        - assets/badge/habit_100.png
+        - assets/badge/streak_5.png
+        - assets/badge/streak_10.png
+        - assets/badge/streak_50.png
+        - assets/badge/streak_100.png
+        - assets/badge/level_1.png
+        - assets/badge/level_10.png
+        - assets/badge/level_20.png
+        - assets/badge/level_30.png
+        - assets/badge/level_40.png
+        - assets/badge/level_50.png
+        # flare animation
+        - assets/flare/loading.flr
+        - assets/flare/firework.flr
+        # avatar background
+        - assets/background/background_1.jpg
 
   fonts:
       - family: RobotoBold

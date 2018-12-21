@@ -44,7 +44,7 @@ class _GoalFormState extends State<GoalForm> {
           if (!snapshot.hasData)
             return Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: Helper.buildFlareLoading(),
               ),
             );
 

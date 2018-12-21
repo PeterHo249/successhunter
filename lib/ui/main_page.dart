@@ -14,6 +14,7 @@ import 'package:successhunter/ui/habit/habit_form.dart';
 import 'package:successhunter/ui/habit/habit_page.dart';
 import 'package:successhunter/ui/home/home_page.dart';
 import 'package:successhunter/auth/auth.dart';
+import 'package:successhunter/ui/info/gallery.dart';
 import 'package:successhunter/ui/info/info_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -116,8 +117,12 @@ class _MainPageState extends State<MainPage> {
   void _selectedTab(int index) {
     setState(() {
       currentIndex = index;
-      pageController.jumpToPage(
+      pageController.animateToPage(
         index,
+        duration: Duration(
+          milliseconds: 300,
+        ),
+        curve: Curves.linear,
       );
     });
   }
@@ -156,6 +161,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: fabs[currentIndex],
       bottomNavigationBar: bottomAppBar,
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: pageController,
         children: <Widget>[
           HomePage(),
@@ -237,6 +243,14 @@ class _MainPageState extends State<MainPage> {
           ListTile(
             title: Text('Settings'),
             onTap: () {},
+          ),
+          ListTile(
+            title: Text('Gallery'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => Gallery()));
+            },
           ),
           ListTile(
             title: Text('Log out'),

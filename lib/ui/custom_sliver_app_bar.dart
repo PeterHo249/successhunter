@@ -14,6 +14,7 @@ class CustomSliverAppBar extends StatefulWidget {
   final double width;
   final ImageProvider image;
   final Widget leading;
+  final Widget action;
   String heroTag;
 
   CustomSliverAppBar({
@@ -26,6 +27,7 @@ class CustomSliverAppBar extends StatefulWidget {
     this.image,
     this.leading,
     this.heroTag,
+    this.action,
   }) {
     if (heroTag == null) {
       var rnd = Random();
@@ -41,6 +43,7 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      actions: widget.action == null ? <Widget>[] : <Widget>[widget.action],
       leading: widget.leading == null
           ? IconButton(
               icon: Icon(

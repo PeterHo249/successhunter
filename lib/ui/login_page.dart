@@ -81,7 +81,6 @@ class _LoginPageState extends State<LoginPage> {
     final FormState formState = _loginFormKey.currentState;
 
     if (formState.validate()) {
-      // TODO: Implement login here
       Auth.instance
           .signInWithEmail(
             email: _loginEmailController.text,
@@ -104,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
     final FormState formState = _signupFormKey.currentState;
 
     if (formState.validate()) {
-      // TODO: Implement signup here
       Auth.instance
           .createNewUser(
             email: _signupEmailController.text,

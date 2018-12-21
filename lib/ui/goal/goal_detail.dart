@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
@@ -33,6 +34,16 @@ class _GoalDetailState extends State<GoalDetail> {
   Color color;
 
   // Business
+  @override
+  void initState() {
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
+    super.initState();
+  }
+
   void _fabIconPressed(int index) {
     switch (index) {
       case 0:
@@ -46,10 +57,14 @@ class _GoalDetailState extends State<GoalDetail> {
         );
         break;
       case 1:
-        item.state = ActivityState.done;
-        item.currentValue = item.targetValue;
-        item.doneDate = DateTime.now().toUtc();
-        DataFeeder.instance.overwriteGoal(widget.documentId, item);
+        if (item.state == ActivityState.doing) {
+          item.state = ActivityState.done;
+          item.currentValue = item.targetValue;
+          item.doneDate = DateTime.now().toUtc();
+          gInfo.addExperience(this.context, 50);
+          DataFeeder.instance.overwriteInfo(gInfo);
+          DataFeeder.instance.overwriteGoal(widget.documentId, item);
+        }
         break;
       case 2:
         Navigator.push(
@@ -190,7 +205,7 @@ class _GoalDetailState extends State<GoalDetail> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    'Target date: ${Formatter.getDateString(item.targetDate)}\nRemain day: ${remainDay}\nType: ${item.type}\nStatus: ${Helper.getStateString(item.state)}',
+                    'Target date: ${Formatter.getDateString(item.targetDate)}\nRemain day: $remainDay\nType: ${item.type}\nStatus: ${Helper.getStateString(item.state)}',
                     style: Theme.contentStyle.copyWith(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -251,6 +266,8 @@ class _GoalDetailState extends State<GoalDetail> {
               icon: Icons.check,
               onTap: () {
                 item.completeMilestone(i);
+                gInfo.addExperience(context, 10);
+                DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);
                 setState(() {});
               },
