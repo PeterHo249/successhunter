@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PinInput extends StatefulWidget {
-  final String pin;
-  final void Function() onPassed;
-  final void Function() onFailed;
+  final void Function(String) onSubmited;
+  final int length;
 
-  PinInput({@required this.pin, @required this.onPassed, this.onFailed});
+  PinInput({
+    @required this.onSubmited,
+    this.length = 4,
+  });
 
   _PinInputState createState() => _PinInputState();
 }
@@ -23,7 +25,7 @@ class _PinInputState extends State<PinInput> {
     _pin = List<String>();
     _focusNodes = List<FocusNode>();
     _textControllers = List<TextEditingController>();
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < widget.length; i++) {
       _focusNodes.add(FocusNode());
       _textControllers.add(TextEditingController());
     }
@@ -54,7 +56,7 @@ class _PinInputState extends State<PinInput> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: List.generate(
-          4,
+          widget.length,
           (int index) {
             return _buildTextField(context, index);
           },
@@ -81,22 +83,14 @@ class _PinInputState extends State<PinInput> {
             FocusScope.of(context).requestFocus(_focusNodes[_currentFocusNode]);
           } else {
             _pin.add(value);
-            if (_currentFocusNode == 3) {
-              if (_pin.join() == widget.pin) {
-                // Pass
-                widget.onPassed();
-              } else {
-                // Failed
-                for (int i = 0; i < 4; i++) {
-                  _textControllers[i].clear();
-                }
-                _currentFocusNode = 0;
-                FocusScope.of(context)
-                    .requestFocus(_focusNodes[_currentFocusNode]);
-                if (widget.onFailed != null) {
-                  widget.onFailed();
-                }
+            if (_currentFocusNode == widget.length - 1) {
+              for (int i = 0; i < widget.length; i++) {
+                _textControllers[i].clear();
               }
+              _currentFocusNode = 0;
+              FocusScope.of(context)
+                  .requestFocus(_focusNodes[_currentFocusNode]);
+              widget.onSubmited(_pin.join());
               _pin.clear();
             } else {
               _currentFocusNode += 1;
