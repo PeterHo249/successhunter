@@ -85,26 +85,6 @@ class _MainPageState extends State<MainPage> {
         ),
         backgroundColor: Theme.Colors.mainColor,
       ),
-      FloatingActionButton(
-        onPressed: () {
-          Navigator.push(this.context,
-              MaterialPageRoute(builder: (context) => DiaryForm()));
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.Colors.mainColor,
-      ),
-      FloatingActionButton(
-        // TODO: What can we do here, Peter????
-        onPressed: null,
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.Colors.mainColor,
-      ),
     ];
   }
 
@@ -168,8 +148,6 @@ class _MainPageState extends State<MainPage> {
           GoalPage(),
           CoopPage(),
           HabitPage(),
-          DiaryPage(),
-          InfoPage(),
         ],
         onPageChanged: (index) {
           setState(() {
@@ -192,8 +170,6 @@ class _MainPageState extends State<MainPage> {
         FABBottomAppBarItem(icon: FontAwesomeIcons.bullseye, label: 'Goal'),
         FABBottomAppBarItem(icon: Icons.people_outline, label: 'Co-op'),
         FABBottomAppBarItem(icon: Icons.calendar_today, label: 'Habit'),
-        FABBottomAppBarItem(icon: FontAwesomeIcons.bookOpen, label: 'Diary'),
-        FABBottomAppBarItem(icon: Icons.person_outline, label: 'Info'),
       ],
     );
   }
@@ -241,19 +217,56 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           ListTile(
-            title: Text('Settings'),
-            onTap: () {},
+            title: Text(
+              'Information',
+              style: Theme.header3Style,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => InfoPage()));
+            },
           ),
           ListTile(
-            title: Text('Gallery'),
+            title: Text(
+              'Gallery',
+              style: Theme.header3Style,
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(this.context,
                   MaterialPageRoute(builder: (context) => Gallery()));
             },
           ),
+          Divider(
+            color: Colors.grey,
+          ),
           ListTile(
-            title: Text('Log out'),
+            title: Text(
+              'Diary',
+              style: Theme.header3Style,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => DiaryPage()));
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Diary PIN Setting',
+              style: Theme.header3Style,
+            ),
+            onTap: () {},
+          ),
+          Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            title: Text(
+              'Log out',
+              style: Theme.header3Style,
+            ),
             onTap: () {
               Auth.instance.signOut();
             },

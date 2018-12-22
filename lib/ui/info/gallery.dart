@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/hero_dialog_route.dart';
@@ -18,19 +17,7 @@ class Gallery extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          _buildHeader2(context),
-          /*_buildHeader(
-              context,
-              Container(
-                child: Center(
-                  child: Text(
-                    'Gallery',
-                    style: Theme.header1Style.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              )),*/
+          _buildHeader(context),
           _buildSectionHeader(context, 'Avatars'),
           _buildAvatarSection(context),
           _buildSectionHeader(context, 'Achivements'),
@@ -40,7 +27,7 @@ class Gallery extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader2(BuildContext context) {
+  Widget _buildHeader(BuildContext context) {
     return SliverAppBar(
       pinned: true,
       expandedHeight: screenHeight * 0.2,

@@ -15,6 +15,7 @@ import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
 import 'package:successhunter/ui/habit/habit_form.dart';
+import 'package:successhunter/ui/info/info_page.dart';
 import 'package:successhunter/utils/formatter.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -28,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   // Variable
   double screenHeight;
   double screenWidth;
-
 
   var goals = <GoalDocument>[];
 
@@ -85,125 +85,132 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildInfoSection(BuildContext context, User info) {
-    return Container(
-      width: screenWidth,
-      child: Padding(
-        padding:
-            EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Container(
-                height: screenHeight * 0.3 - 100.0,
-                width: screenHeight * 0.3 - 100.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  image: DecorationImage(
-                    image: AssetImage('assets/background/background_1.jpg'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Image.asset(
-                    'assets/avatar/${info.currentAvatar}',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InfoPage()));
+      },
+      child: Container(
+        width: screenWidth,
+        child: Padding(
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
                 child: Container(
-                  height: screenHeight * 0.3 - 60.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Lv: ${info.level}',
-                            style: Theme.contentStyle.copyWith(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Experience:',
-                                  style: Theme.contentStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                                Text(
-                                  '${info.experience}/${info.level * 50}',
-                                  style: Theme.contentStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          LinearPercentIndicator(
-                            width: screenWidth - screenHeight * 0.23,
-                            lineHeight: 10.0,
-                            percent: info.experience.toDouble() /
-                                (info.level * 50).toDouble(),
-                            progressColor: Colors.deepOrange,
-                            padding: const EdgeInsets.all(0.0),
-                            backgroundColor: Colors.blueGrey,
-                            linearStrokeCap: LinearStrokeCap.roundAll,
-                            animation: true,
-                            animationDuration: 700,
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
-                        spacing: 10.0,
-                        runSpacing: 5.0,
-                        runAlignment: WrapAlignment.center,
-                        children: info.badges
-                            .sublist(info.badges.length - 4 < 0
-                                ? 0
-                                : info.badges.length - 4)
-                            .map((badge) {
-                          return Container(
-                            width: 50.0,
-                            height: 50.0,
-                            child: Image.asset(
-                              'assets/badge/$badge',
-                              fit: BoxFit.contain,
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                  height: screenHeight * 0.3 - 100.0,
+                  width: screenHeight * 0.3 - 100.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    image: DecorationImage(
+                      image: AssetImage('assets/background/background_1.jpg'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                      'assets/avatar/${info.currentAvatar}',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+                  child: Container(
+                    height: screenHeight * 0.3 - 60.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Lv: ${info.level}',
+                              style: Theme.contentStyle.copyWith(
+                                color: Colors.white,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Experience:',
+                                    style: Theme.contentStyle.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${info.experience}/${info.level * 50}',
+                                    style: Theme.contentStyle.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            LinearPercentIndicator(
+                              width: screenWidth - screenHeight * 0.23,
+                              lineHeight: 10.0,
+                              percent: info.experience.toDouble() /
+                                  (info.level * 50).toDouble(),
+                              progressColor: Colors.deepOrange,
+                              padding: const EdgeInsets.all(0.0),
+                              backgroundColor: Colors.blueGrey,
+                              linearStrokeCap: LinearStrokeCap.roundAll,
+                              animation: true,
+                              animationDuration: 700,
+                            ),
+                          ],
+                        ),
+                        Wrap(
+                          alignment: WrapAlignment.spaceEvenly,
+                          spacing: 10.0,
+                          runSpacing: 5.0,
+                          runAlignment: WrapAlignment.center,
+                          children: info.badges
+                              .sublist(info.badges.length - 4 < 0
+                                  ? 0
+                                  : info.badges.length - 4)
+                              .map((badge) {
+                            return Container(
+                              width: 50.0,
+                              height: 50.0,
+                              child: Image.asset(
+                                'assets/badge/$badge',
+                                fit: BoxFit.contain,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
