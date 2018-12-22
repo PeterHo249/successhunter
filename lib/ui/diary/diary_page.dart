@@ -8,8 +8,8 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/diary.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
-import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/chart/pie_chart.dart';
 import 'package:successhunter/ui/diary/diary_detail.dart';
 import 'package:successhunter/ui/diary/diary_form.dart';

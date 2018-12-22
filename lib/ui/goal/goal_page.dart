@@ -10,8 +10,8 @@ import 'package:successhunter/ui/chart/pie_chart.dart';
 
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
-import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/model/goal.dart';

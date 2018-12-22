@@ -17,6 +17,7 @@ class User {
   String email;
   List<TaskCountPerDate> goalCounts;
   List<TaskCountPerDate> habitCounts;
+  String diaryPin;
 
   User({
     this.displayName = '',
@@ -29,6 +30,7 @@ class User {
     this.goalCounts,
     this.habitCounts,
     this.email = '',
+    this.diaryPin = '',
   }) {
     if (badges == null) {
       badges = List<String>();

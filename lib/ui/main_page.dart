@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/ui/FAB_bottom_app_bar.dart';
-import 'package:successhunter/ui/FAB_with_icon.dart';
+import 'package:successhunter/ui/custom_ui/FAB_bottom_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/coop/coop_page.dart';
 import 'package:successhunter/ui/diary/diary_form.dart';
 import 'package:successhunter/ui/diary/diary_page.dart';
+import 'package:successhunter/ui/diary/diary_pin.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/goal/goal_page.dart';
 import 'package:successhunter/ui/habit/habit_form.dart';
@@ -16,6 +17,7 @@ import 'package:successhunter/ui/home/home_page.dart';
 import 'package:successhunter/auth/auth.dart';
 import 'package:successhunter/ui/info/gallery.dart';
 import 'package:successhunter/ui/info/info_page.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class MainPage extends StatefulWidget {
   final FirebaseUser user;
@@ -248,8 +250,13 @@ class _MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(this.context,
-                  MaterialPageRoute(builder: (context) => DiaryPage()));
+              if (gInfo.diaryPin == null || gInfo.diaryPin == '') {
+                Navigator.push(this.context,
+                    MaterialPageRoute(builder: (context) => DiaryPage()));
+              } else {
+                Navigator.push(this.context,
+                    MaterialPageRoute(builder: (context) => DiaryPin()));
+              }
             },
           ),
           ListTile(

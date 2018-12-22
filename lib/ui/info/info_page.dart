@@ -8,10 +8,10 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/ui/hero_dialog_route.dart';
+import 'package:successhunter/ui/custom_ui/hero_dialog_route.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
-import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/ui/chart/stacked_area_chart.dart';
 
