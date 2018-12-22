@@ -64,14 +64,20 @@ class _InfoPageState extends State<InfoPage> {
           actions: <Widget>[
             RaisedButton(
               textColor: Colors.white,
-              child: Text('Cancel', style: Theme.header4Style,),
+              child: Text(
+                'Cancel',
+                style: Theme.header4Style,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             RaisedButton(
               textColor: Colors.white,
-              child: Text('Ok', style: Theme.header4Style,),
+              child: Text(
+                'Ok',
+                style: Theme.header4Style,
+              ),
               onPressed: () {
                 if (controller.text != null) {
                   gInfo.displayName = controller.text;
@@ -96,36 +102,47 @@ class _InfoPageState extends State<InfoPage> {
       stream: DataFeeder.instance.getInfo(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (!snapshot.hasData) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              CustomSliverAppBar(
-                backgroundColor: Theme.Colors.mainColor,
-                foregroundColor: Colors.white,
-                height: screenHeight * 0.3,
-                width: screenWidth,
-                flexibleChild: Helper.buildFlareLoading(),
-                title: 'Display Name',
-                image: AssetImage('assets/img/statistics.png'),
-              ),
-              SliverFillRemaining(),
-            ],
+          return Scaffold(
+            body: CustomScrollView(
+              slivers: <Widget>[
+                CustomSliverAppBar(
+                  backgroundColor: Theme.Colors.mainColor,
+                  foregroundColor: Colors.white,
+                  height: screenHeight * 0.3,
+                  width: screenWidth,
+                  flexibleChild: Helper.buildFlareLoading(),
+                  title: 'Display Name',
+                  image: AssetImage('assets/img/statistics.png'),
+                ),
+                SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      'Something was wrong!',
+                      style: Theme.contentStyle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
         gInfo = User.fromJson(json.decode(json.encode(snapshot.data.data)));
 
-        return CustomScrollView(
-          slivers: <Widget>[
-            _buildHeader(context),
-            _buildSectionHeader(context, 'Avatars'),
-            _buildAvatarSection(context),
-            _buildSectionHeader(context, 'Achivements'),
-            _buildAchivementSection(context),
-            _buildSectionHeader(context, 'Goal last 10 days'),
-            _buildGoalChart(context),
-            _buildSectionHeader(context, 'Habit last 10 days'),
-            _buildHabitChart(context),
-          ],
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: <Widget>[
+              _buildHeader(context),
+              _buildSectionHeader(context, 'Avatars'),
+              _buildAvatarSection(context),
+              _buildSectionHeader(context, 'Achivements'),
+              _buildAchivementSection(context),
+              _buildSectionHeader(context, 'Goal last 10 days'),
+              _buildGoalChart(context),
+              _buildSectionHeader(context, 'Habit last 10 days'),
+              _buildHabitChart(context),
+            ],
+          ),
         );
       },
     );
@@ -147,6 +164,12 @@ class _InfoPageState extends State<InfoPage> {
         ),
         onPressed: () {
           showEditNameDialog(context);
+        },
+      ),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
         },
       ),
     );

@@ -44,49 +44,75 @@ class _DiaryPageState extends State<DiaryPage> {
       stream: DataFeeder.instance.getDairyList(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              _buildHeader(context, Container()),
-              SliverFillRemaining(
-                child: Center(
-                  child: Helper.buildFlareLoading(),
-                ),
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(this.context,
+                    MaterialPageRoute(builder: (context) => DiaryForm()));
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
               ),
-            ],
+              backgroundColor: Theme.Colors.mainColor,
+            ),
+            body: CustomScrollView(
+              slivers: <Widget>[
+                _buildHeader(context, Container()),
+                SliverFillRemaining(
+                  child: Center(
+                    child: Helper.buildFlareLoading(),
+                  ),
+                ),
+              ],
+            ),
           );
         }
 
         if (snapshot.data.documents.length == 0) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              _buildHeader(context, Container()),
-              SliverFillRemaining(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(this.context,
-                        MaterialPageRoute(builder: (context) => DiaryForm()));
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.add,
-                        size: 50.0,
-                        color: Colors.grey,
-                      ),
-                      Text(
-                        'You don\'t have any note.\n Press + to create a new one.',
-                        style: Theme.contentStyle.copyWith(
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(this.context,
+                    MaterialPageRoute(builder: (context) => DiaryForm()));
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              backgroundColor: Theme.Colors.mainColor,
+            ),
+            body: CustomScrollView(
+              slivers: <Widget>[
+                _buildHeader(context, Container()),
+                SliverFillRemaining(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(this.context,
+                          MaterialPageRoute(builder: (context) => DiaryForm()));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.add,
+                          size: 50.0,
                           color: Colors.grey,
                         ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
+                        Text(
+                          'You don\'t have any note.\n Press + to create a new one.',
+                          style: Theme.contentStyle.copyWith(
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
 
@@ -109,14 +135,27 @@ class _DiaryPageState extends State<DiaryPage> {
           }
         }
 
-        return CustomScrollView(
-          slivers: <Widget>[
-            _buildHeader(context, _buildInfoSection(context)),
-            _buildSectionHeader(context, 'Your Note'),
-            _buildDiaryList(context, manualDiaries),
-            _buildSectionHeader(context, 'Automated Note'),
-            _buildDiaryList(context, automatedDiaries),
-          ],
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => DiaryForm()));
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            backgroundColor: Theme.Colors.mainColor,
+          ),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              _buildHeader(context, _buildInfoSection(context)),
+              _buildSectionHeader(context, 'Your Note'),
+              _buildDiaryList(context, manualDiaries),
+              _buildSectionHeader(context, 'Automated Note'),
+              _buildDiaryList(context, automatedDiaries),
+            ],
+          ),
         );
       },
     );
@@ -131,6 +170,12 @@ class _DiaryPageState extends State<DiaryPage> {
       flexibleChild: child,
       title: 'My Diary',
       image: AssetImage('assets/img/book.png'),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
