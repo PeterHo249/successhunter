@@ -6,8 +6,8 @@ import 'package:share/share.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/diary.dart';
-import 'package:successhunter/ui/FAB_with_icon.dart';
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/diary/diary_form.dart';
 import 'package:successhunter/utils/formatter.dart';
 

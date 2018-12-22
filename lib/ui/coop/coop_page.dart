@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
-import 'package:successhunter/ui/custom_sliver_app_bar.dart';
-import 'package:successhunter/ui/custom_sliver_persistent_header_delegate.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
+import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 
 class CoopPage extends StatefulWidget {
   @override
@@ -53,7 +52,7 @@ class _CoopPageState extends State<CoopPage> {
       width: screenWidth,
       child: Padding(
         padding:
-        EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
+            EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -204,5 +203,4 @@ class _CoopPageState extends State<CoopPage> {
       ),
     );
   }
-
 }
