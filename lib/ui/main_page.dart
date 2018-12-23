@@ -9,6 +9,7 @@ import 'package:successhunter/ui/coop/coop_page.dart';
 import 'package:successhunter/ui/diary/diary_form.dart';
 import 'package:successhunter/ui/diary/diary_page.dart';
 import 'package:successhunter/ui/diary/diary_pin.dart';
+import 'package:successhunter/ui/diary/pin_setting.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
 import 'package:successhunter/ui/goal/goal_page.dart';
 import 'package:successhunter/ui/habit/habit_form.dart';
@@ -264,7 +265,11 @@ class _MainPageState extends State<MainPage> {
               'Diary PIN Setting',
               style: Theme.header3Style,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(this.context,
+                  MaterialPageRoute(builder: (context) => PinSetting()));
+            },
           ),
           Divider(
             color: Colors.grey,

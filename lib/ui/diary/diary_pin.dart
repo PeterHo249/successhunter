@@ -21,6 +21,14 @@ class DiaryPinState extends State<DiaryPin> {
   Timer timer;
 
   @override
+  void dispose() {
+    if (timer != null && timer.isActive) {
+      timer.cancel();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -29,9 +37,11 @@ class DiaryPinState extends State<DiaryPin> {
       isLockPin = false;
     } else {
       timer = Timer(lockTime.difference(DateTime.now()), () {
-        setState(() {
-          isLockPin = false;
-        });
+        if (mounted) {
+          setState(() {
+            isLockPin = false;
+          });
+        }
       });
     }
 
@@ -105,16 +115,18 @@ class DiaryPinState extends State<DiaryPin> {
                 } else {
                   retryTimes++;
                   if (retryTimes == 5) {
-                    setState(() {
-                      isLockPin = true;
-                      retryTimes = 0;
-                      lockTime = DateTime.now().add(Duration(minutes: 1));
-                      timer = Timer(Duration(minutes: 1), () {
-                        setState(() {
-                          isLockPin = false;
+                    if (mounted) {
+                      setState(() {
+                        isLockPin = true;
+                        retryTimes = 0;
+                        lockTime = DateTime.now().add(Duration(minutes: 1));
+                        timer = Timer(Duration(minutes: 1), () {
+                          setState(() {
+                            isLockPin = false;
+                          });
                         });
                       });
-                    });
+                    }
                   }
                 }
               } else {
