@@ -37,7 +37,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void initState() {
     _isAlreadyIntro = _prefs.then((SharedPreferences prefs) {
-      print('in get init state');
       return prefs.getBool('isAlreadyIntro') ?? false;
     });
     super.initState();
@@ -45,7 +44,6 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('in build');
     return _buildHome(context);
   }
 
@@ -53,12 +51,10 @@ class _HomeWidgetState extends State<HomeWidget> {
     return FutureBuilder(
       future: _isAlreadyIntro,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        print('in future builder');
-        print(snapshot.data);
         if (ConnectionState.waiting == snapshot.connectionState) {
           return SplashPage();
         } else {
-          if (snapshot.data) {
+          if (snapshot.data) { // change condition here to show intro
             return _handleCurrentScreen();
           } else {
             return _buildIntro(context);
@@ -89,7 +85,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Widget _buildIntro(BuildContext context) {
-    print('in build intro');
     return IntroViewsFlutter(
       _buildPageViewModel(context),
       onTapDoneButton: () {
@@ -107,7 +102,43 @@ class _HomeWidgetState extends State<HomeWidget> {
     return <PageViewModel>[
       PageViewModel(
         pageColor: Colors.amber,
-        title: Text('Test Intro'),
+        title: Text('Habits'),
+        mainImage: Image.asset(
+          'assets/avatar/boss_1.png',
+          height: 250.0,
+          width: 250.0,
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+        ),
+        body: Text('Something to intro my app'),
+      ),
+      PageViewModel(
+        pageColor: Colors.green[600],
+        title: Text('Goals'),
+        mainImage: Image.asset(
+          'assets/avatar/boss_1.png',
+          height: 250.0,
+          width: 250.0,
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+        ),
+        body: Text('Something to intro my app'),
+      ),
+      PageViewModel(
+        pageColor: Colors.red,
+        title: Text('Co-operative Goals'),
+        mainImage: Image.asset(
+          'assets/avatar/boss_1.png',
+          height: 250.0,
+          width: 250.0,
+          alignment: Alignment.center,
+          fit: BoxFit.contain,
+        ),
+        body: Text('Something to intro my app'),
+      ),
+      PageViewModel(
+        pageColor: Colors.blue[600],
+        title: Text('Diaries'),
         mainImage: Image.asset(
           'assets/avatar/boss_1.png',
           height: 250.0,
