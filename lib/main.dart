@@ -21,47 +21,45 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',
       ),
-      home: HomeWidget(),
+      home: HomeApp(),
     );
   }
 }
 
-class HomeWidget extends StatefulWidget {
-  _HomeWidgetState createState() => _HomeWidgetState();
+class HomeApp extends StatefulWidget {
+  _HomeAppState createState() => _HomeAppState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Future<bool> _isAlreadyIntro;
+class _HomeAppState extends State<HomeApp> {
+  Future checkAlreadyIntro() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _isAlreadyIntro = prefs.getBool('isAlreadyIntro') ?? false;
+
+    if (!_isAlreadyIntro) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeWidget()));
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => IntroPage()));
+    }
+  }
 
   @override
   void initState() {
-    _isAlreadyIntro = _prefs.then((SharedPreferences prefs) {
-      return prefs.getBool('isAlreadyIntro') ?? false;
-    });
     super.initState();
+    checkAlreadyIntro();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildHome(context);
+    return Scaffold();
   }
+}
 
-  Widget _buildHome(BuildContext context) {
-    return FutureBuilder(
-      future: _isAlreadyIntro,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (ConnectionState.waiting == snapshot.connectionState) {
-          return SplashPage();
-        } else {
-          if (snapshot.data) { // change condition here to show intro
-            return _handleCurrentScreen();
-          } else {
-            return _buildIntro(context);
-          }
-        }
-      },
-    );
+class HomeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _handleCurrentScreen();
   }
 
   Widget _handleCurrentScreen() {
@@ -83,6 +81,15 @@ class _HomeWidgetState extends State<HomeWidget> {
       },
     );
   }
+}
+
+class IntroPage extends StatelessWidget {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildIntro(context);
+  }
 
   Widget _buildIntro(BuildContext context) {
     return IntroViewsFlutter(
@@ -91,8 +98,8 @@ class _HomeWidgetState extends State<HomeWidget> {
         _prefs.then((SharedPreferences prefs) {
           prefs.setBool('isAlreadyIntro', true);
         });
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => _handleCurrentScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeApp()));
       },
       showSkipButton: false,
     );
@@ -104,25 +111,31 @@ class _HomeWidgetState extends State<HomeWidget> {
         pageColor: Colors.amber,
         title: Text('Habits'),
         mainImage: Image.asset(
-          'assets/avatar/boss_1.png',
+          'assets/img/habit_intro.png',
           height: 250.0,
           width: 250.0,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
-        body: Text('Something to intro my app'),
+        body: Text(
+          'Scheduling good habit to do every day, period or some day in week.',
+          textAlign: TextAlign.center,
+        ),
       ),
       PageViewModel(
         pageColor: Colors.green[600],
         title: Text('Goals'),
         mainImage: Image.asset(
-          'assets/avatar/boss_1.png',
-          height: 250.0,
+          'assets/img/goal_intro.png',
+          height: 300.0,
           width: 250.0,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
-        body: Text('Something to intro my app'),
+        body: Text(
+          'Planning some goals to reach.',
+          textAlign: TextAlign.center,
+        ),
       ),
       PageViewModel(
         pageColor: Colors.red,
@@ -134,19 +147,25 @@ class _HomeWidgetState extends State<HomeWidget> {
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
-        body: Text('Something to intro my app'),
+        body: Text(
+          'And also attaining these goal with friend.',
+          textAlign: TextAlign.center,
+        ),
       ),
       PageViewModel(
         pageColor: Colors.blue[600],
         title: Text('Diaries'),
         mainImage: Image.asset(
-          'assets/avatar/boss_1.png',
+          'assets/img/diary_intro.png',
           height: 250.0,
           width: 250.0,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
-        body: Text('Something to intro my app'),
+        body: Text(
+          'Writing your diary every day and protecting it with PIN.',
+          textAlign: TextAlign.center,
+        ),
       ),
     ];
   }
