@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:successhunter/model/notification.dart';
 
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
@@ -47,6 +48,7 @@ class _HomeAppState extends State<HomeApp> {
   @override
   void initState() {
     super.initState();
+    FirebaseNotification.instance.firebaseCloudMessagingListeners();
     checkAlreadyIntro();
   }
 
