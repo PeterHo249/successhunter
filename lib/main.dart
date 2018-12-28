@@ -35,7 +35,7 @@ class _HomeAppState extends State<HomeApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _isAlreadyIntro = prefs.getBool('isAlreadyIntro') ?? false;
 
-    if (!_isAlreadyIntro) {
+    if (_isAlreadyIntro) { // Change this condition to check intro
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeWidget()));
     } else {
