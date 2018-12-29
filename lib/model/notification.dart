@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/user.dart';
 
 class FirebaseNotification {
   static final FirebaseNotification _singleton =
@@ -38,6 +42,21 @@ class FirebaseNotification {
         print('Settings registered: $settings');
       },
     );
+  }
+
+  void addFCMToken() {
+    DataFeeder.instance
+        .getInfo()
+        .listen((DocumentSnapshot documentSnapshot) {
+      User info =
+          User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      firebaseMessaging.getToken().then((token) {
+        if (info.fcmToken.indexOf(token) == -1) {
+          info.fcmToken.add(token);
+          DataFeeder.instance.overwriteInfo(info);
+        }
+      });
+    });
   }
 
   void firebaseCloudMessagingListeners() {

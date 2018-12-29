@@ -74,6 +74,7 @@ class HomeWidget extends StatelessWidget {
           if (snapshot.hasData) {
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
             DataFeeder.instance.initUserInfo(snapshot.data);
+            FirebaseNotification.instance.addFCMToken();
             return MainPage(
               user: snapshot.data,
             );
