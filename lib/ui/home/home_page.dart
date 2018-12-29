@@ -7,6 +7,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/notification.dart';
 import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
@@ -35,12 +36,18 @@ class _HomePageState extends State<HomePage> {
   var habits = <HabitDocument>[];
 
   // Business
+  @override
+    void initState() {
+      super.initState();
+      FirebaseNotification.instance.context = context;
+    }
 
   // Layout
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+    FirebaseNotification.instance.context = context;
 
     return CustomScrollView(
       slivers: <Widget>[

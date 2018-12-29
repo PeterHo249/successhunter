@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
+import 'package:successhunter/ui/goal/goal_detail.dart';
+import 'package:successhunter/ui/habit/habit_detail.dart';
 
 class FirebaseNotification {
   static final FirebaseNotification _singleton =
@@ -15,18 +17,7 @@ class FirebaseNotification {
   static FirebaseNotification get instance => _singleton;
 
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
-
-  Future onMessageCallback(Map<String, dynamic> message) async {
-    print('on message $message');
-  }
-
-  Future onResumeCallback(Map<String, dynamic> message) async {
-    print('on message $message');
-  }
-
-  Future onLaunchCallback(Map<String, dynamic> message) async {
-    print('on message $message');
-  }
+  BuildContext context;
 
   void iOSPermission() {
     firebaseMessaging.requestNotificationPermissions(
@@ -45,9 +36,7 @@ class FirebaseNotification {
   }
 
   void addFCMToken() {
-    DataFeeder.instance
-        .getInfo()
-        .listen((DocumentSnapshot documentSnapshot) {
+    DataFeeder.instance.getInfo().listen((DocumentSnapshot documentSnapshot) {
       User info =
           User.fromJson(json.decode(json.encode(documentSnapshot.data)));
       firebaseMessaging.getToken().then((token) {
@@ -61,17 +50,73 @@ class FirebaseNotification {
 
   void firebaseCloudMessagingListeners() {
     if (Platform.isIOS) {
-      iOSPermission();
+      FirebaseNotification.instance.iOSPermission();
     }
 
-    firebaseMessaging.getToken().then((token) {
+    FirebaseNotification.instance.firebaseMessaging.getToken().then((token) {
       print(token);
     });
 
-    firebaseMessaging.configure(
+    FirebaseNotification.instance.firebaseMessaging.configure(
       onMessage: onMessageCallback,
       onResume: onResumeCallback,
       onLaunch: onLaunchCallback,
     );
+  }
+
+  Future onMessageCallback(Map<String, dynamic> message) async {
+    print('On message $message');
+    print(context);
+  }
+
+  Future onResumeCallback(Map<String, dynamic> message) async {
+    print('On Resume $message');
+
+    String category = message['category'];
+    String documentId = message['documentId'];
+    switch (category) {
+      case 'Goal':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GoalDetail(
+                      documentId: documentId,
+                    )));
+        break;
+      case 'Habit':
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return HabitDetail(
+            documentId: documentId,
+          );
+        }));
+        break;
+      default:
+    }
+  }
+
+  Future onLaunchCallback(Map<String, dynamic> message) async {
+    print('On Launch $message');
+
+    String category = message['category'];
+    String documentId = message['documentId'];
+    switch (category) {
+      case 'Goal':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GoalDetail(
+                      documentId: documentId,
+                    )));
+        break;
+      case 'Habit':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HabitDetail(
+                      documentId: documentId,
+                    )));
+        break;
+      default:
+    }
   }
 }
