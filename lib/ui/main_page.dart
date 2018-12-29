@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:successhunter/model/notification.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_ui/FAB_bottom_app_bar.dart';
@@ -138,6 +139,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     FABBottomAppBar bottomAppBar = _buildFABBottomAppBar(context);
+    FirebaseNotification.instance.context = context;
     return Scaffold(
       key: scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
   @override
     void initState() {
       super.initState();
-      FirebaseNotification.instance.context = context;
     }
 
   // Layout
@@ -47,7 +46,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    FirebaseNotification.instance.context = context;
 
     return CustomScrollView(
       slivers: <Widget>[

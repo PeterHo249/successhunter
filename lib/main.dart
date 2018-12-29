@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:successhunter/model/notification.dart';
-import 'package:successhunter/ui/goal/goal_detail.dart';
-import 'package:successhunter/ui/habit/habit_detail.dart';
 
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
@@ -53,7 +49,6 @@ class _HomeAppState extends State<HomeApp> {
   @override
   void initState() {
     super.initState();
-    FirebaseNotification.instance.context = this.context;
     FirebaseNotification.instance.firebaseCloudMessagingListeners();
     checkAlreadyIntro();
   }
