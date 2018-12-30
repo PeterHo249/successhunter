@@ -18,6 +18,7 @@ class User {
   List<TaskCountPerDate> goalCounts;
   List<TaskCountPerDate> habitCounts;
   String diaryPin;
+  List<String> fcmToken;
 
   User({
     this.displayName = '',
@@ -31,6 +32,7 @@ class User {
     this.habitCounts,
     this.email = '',
     this.diaryPin = '',
+    this.fcmToken,
   }) {
     if (badges == null) {
       badges = List<String>();
@@ -43,6 +45,9 @@ class User {
     }
     if (habitCounts == null) {
       habitCounts = List<TaskCountPerDate>();
+    }
+    if (fcmToken == null) {
+      fcmToken = List<String>();
     }
   }
 

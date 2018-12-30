@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:successhunter/model/notification.dart';
 
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
@@ -35,7 +36,8 @@ class _HomeAppState extends State<HomeApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _isAlreadyIntro = prefs.getBool('isAlreadyIntro') ?? false;
 
-    if (_isAlreadyIntro) { // Change this condition to check intro
+    if (_isAlreadyIntro) {
+      // Change this condition to check intro
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeWidget()));
     } else {
@@ -47,6 +49,7 @@ class _HomeAppState extends State<HomeApp> {
   @override
   void initState() {
     super.initState();
+    FirebaseNotification.instance.firebaseCloudMessagingListeners();
     checkAlreadyIntro();
   }
 
@@ -72,6 +75,7 @@ class HomeWidget extends StatelessWidget {
           if (snapshot.hasData) {
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
             DataFeeder.instance.initUserInfo(snapshot.data);
+            FirebaseNotification.instance.addFCMToken();
             return MainPage(
               user: snapshot.data,
             );

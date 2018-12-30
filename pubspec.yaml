@@ -31,7 +31,7 @@ dependencies:
   flutter_slidable: ^0.4.9
   json_annotation: ^2.0.0
   share: ^0.5.3
-  firebase_messaging: ^2.0.3
+  firebase_messaging: ^2.1.0
   flutter_calendar_carousel: ^1.1.10
   tinycolor: ^1.0.2
   flutter_charts: ^0.1.10

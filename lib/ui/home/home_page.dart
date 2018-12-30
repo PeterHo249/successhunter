@@ -35,6 +35,10 @@ class _HomePageState extends State<HomePage> {
   var habits = <HabitDocument>[];
 
   // Business
+  @override
+    void initState() {
+      super.initState();
+    }
 
   // Layout
   @override
@@ -658,10 +662,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Helper.buildCircularIcon(
-                      data: TypeDecorationEnum.typeDecorations[
-                          ActivityTypeEnum.getIndex(document.item.type)],
-                      size: 70.0,
+                    Hero(
+                      tag: document.documentId,
+                      child: Helper.buildCircularIcon(
+                        data: TypeDecorationEnum.typeDecorations[
+                            ActivityTypeEnum.getIndex(document.item.type)],
+                        size: 70.0,
+                      ),
                     ),
                     _buildGoalInfo(context, document),
                   ],
