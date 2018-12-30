@@ -7,7 +7,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
-import 'package:successhunter/model/notification.dart';
 import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
