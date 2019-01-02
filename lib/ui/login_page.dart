@@ -8,8 +8,13 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
 
 class LoginPage extends StatefulWidget {
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _loginScreenKey = GlobalKey<ScaffoldState>();
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPageState createState() =>
+      _LoginPageState(_loginFormKey, _signupFormKey, _loginScreenKey);
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -33,10 +38,12 @@ class _LoginPageState extends State<LoginPage> {
   bool _loginAutoValidate;
   bool _signupAutoValidate;
 
-  final GlobalKey<FormState> _loginFormKey = new GlobalKey<FormState>();
-  final GlobalKey<FormState> _signupFormKey = new GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _loginScreenKey =
-      new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _loginFormKey;
+  final GlobalKey<FormState> _signupFormKey;
+  final GlobalKey<ScaffoldState> _loginScreenKey;
+
+  _LoginPageState(
+      this._loginFormKey, this._signupFormKey, this._loginScreenKey);
 
   // Business
   @override
@@ -266,10 +273,7 @@ class _LoginPageState extends State<LoginPage> {
               width: screenWidth * 0.4,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Theme.Colors.mainColor,
-                    Theme.Colors.secondaryColor
-                  ],
+                  colors: [Theme.Colors.mainColor, Theme.Colors.secondaryColor],
                   stops: [0.5, 1.0],
                   tileMode: TileMode.clamp,
                 ),
@@ -512,10 +516,7 @@ class _LoginPageState extends State<LoginPage> {
               width: screenWidth * 0.4,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Theme.Colors.mainColor,
-                    Theme.Colors.secondaryColor
-                  ],
+                  colors: [Theme.Colors.mainColor, Theme.Colors.secondaryColor],
                   stops: [0.5, 1.0],
                   tileMode: TileMode.clamp,
                 ),
