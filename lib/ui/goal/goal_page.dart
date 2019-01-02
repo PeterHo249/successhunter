@@ -35,7 +35,6 @@ class _GoalPageState extends State<GoalPage> {
   var attainedGoals = <GoalDocument>[];
   var failedGoals = <GoalDocument>[];
 
-
   // Business
   @override
   void initState() {
@@ -159,6 +158,15 @@ class _GoalPageState extends State<GoalPage> {
   }
 
   Widget _buildInfoSection(BuildContext context) {
+    String infoString;
+
+    if (screenWidth > 768.0) {
+      infoString =
+          'Total Goals: ${goals.length}\n\nYou have ${processGoals.length} goals in process\nAnd ${attainedGoals.length} attained goals\nBut ${failedGoals.length} failed goals.';
+    } else {
+      infoString =
+          'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
+    }
     return Container(
       width: screenWidth,
       child: Padding(
@@ -172,7 +180,7 @@ class _GoalPageState extends State<GoalPage> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                'Total Goals: ${goals.length}\n\nYou have ${processGoals.length} goals in process\nAnd ${attainedGoals.length} attained goals\nBut ${failedGoals.length} failed goals.',
+                infoString,
                 style: Theme.contentStyle.copyWith(
                   color: Colors.white,
                   fontSize: 20.0,

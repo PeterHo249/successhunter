@@ -193,19 +193,17 @@ class _LoginPageState extends State<LoginPage> {
       key: _loginFormKey,
       autovalidate: _loginAutoValidate,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              'LOGIN',
-              style: Theme.header2Style.copyWith(
-                color: Theme.Colors.mainColor,
-              ),
+          Text(
+            'LOGIN',
+            style: Theme.header2Style.copyWith(
+              color: Theme.Colors.mainColor,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _loginEmailController,
               keyboardType: TextInputType.emailAddress,
@@ -233,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _loginPasswordController,
               obscureText: _obscureLoginPassword,
@@ -262,43 +260,40 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: InkWell(
-              onTap: () => _loginWithEmail(context),
-              child: Container(
-                width: screenWidth * 0.4,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.Colors.mainColor,
-                      Theme.Colors.secondaryColor
-                    ],
-                    stops: [0.5, 1.0],
-                    tileMode: TileMode.clamp,
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Theme.Colors.mainColor,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 3.0,
-                    ),
-                    BoxShadow(
-                      color: Theme.Colors.secondaryColor,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 3.0,
-                    ),
+          InkWell(
+            onTap: () => _loginWithEmail(context),
+            child: Container(
+              width: screenWidth * 0.4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.Colors.mainColor,
+                    Theme.Colors.secondaryColor
                   ],
-                  borderRadius: BorderRadius.circular(30.0),
+                  stops: [0.5, 1.0],
+                  tileMode: TileMode.clamp,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: Theme.header3Style.copyWith(
-                        color: Colors.white,
-                      ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Theme.Colors.mainColor,
+                    offset: Offset(1.0, 6.0),
+                    blurRadius: 3.0,
+                  ),
+                  BoxShadow(
+                    color: Theme.Colors.secondaryColor,
+                    offset: Offset(1.0, 6.0),
+                    blurRadius: 3.0,
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
+                  child: Text(
+                    'LOGIN',
+                    style: Theme.header3Style.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -367,19 +362,16 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: GestureDetector(
-              onTap: () {
-                _pageController.animateToPage(1,
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.decelerate);
-              },
-              child: Text(
-                'Don\'t have an account? Sign up',
-                style: Theme.contentStyle.copyWith(
-                  color: Theme.Colors.mainColor,
-                ),
+          GestureDetector(
+            onTap: () {
+              _pageController.animateToPage(1,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.decelerate);
+            },
+            child: Text(
+              'Don\'t have an account? Sign up',
+              style: Theme.contentStyle.copyWith(
+                color: Theme.Colors.mainColor,
               ),
             ),
           ),
@@ -393,19 +385,17 @@ class _LoginPageState extends State<LoginPage> {
       key: _signupFormKey,
       autovalidate: _signupAutoValidate,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(
-              'SIGN UP',
-              style: Theme.header2Style.copyWith(
-                color: Theme.Colors.mainColor,
-              ),
+          Text(
+            'SIGN UP',
+            style: Theme.header2Style.copyWith(
+              color: Theme.Colors.mainColor,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _signupUsernameController,
               decoration: InputDecoration(
@@ -425,7 +415,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _signupEmailController,
               keyboardType: TextInputType.emailAddress,
@@ -453,7 +443,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _signupPasswordController,
               obscureText: _obscureSignupPassword,
@@ -483,7 +473,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: TextFormField(
               controller: _signupConfirmPasswordController,
               obscureText: _obscureSignupConfirm,
@@ -516,43 +506,40 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: InkWell(
-              onTap: () => _signup(context),
-              child: Container(
-                width: screenWidth * 0.4,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.Colors.mainColor,
-                      Theme.Colors.secondaryColor
-                    ],
-                    stops: [0.5, 1.0],
-                    tileMode: TileMode.clamp,
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Theme.Colors.mainColor,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 3.0,
-                    ),
-                    BoxShadow(
-                      color: Theme.Colors.secondaryColor,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 3.0,
-                    ),
+          InkWell(
+            onTap: () => _signup(context),
+            child: Container(
+              width: screenWidth * 0.4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.Colors.mainColor,
+                    Theme.Colors.secondaryColor
                   ],
-                  borderRadius: BorderRadius.circular(30.0),
+                  stops: [0.5, 1.0],
+                  tileMode: TileMode.clamp,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Center(
-                    child: Text(
-                      'SIGN UP',
-                      style: Theme.header3Style.copyWith(
-                        color: Colors.white,
-                      ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Theme.Colors.mainColor,
+                    offset: Offset(1.0, 6.0),
+                    blurRadius: 3.0,
+                  ),
+                  BoxShadow(
+                    color: Theme.Colors.secondaryColor,
+                    offset: Offset(1.0, 6.0),
+                    blurRadius: 3.0,
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
+                  child: Text(
+                    'SIGN UP',
+                    style: Theme.header3Style.copyWith(
+                      color: Colors.white,
                     ),
                   ),
                 ),

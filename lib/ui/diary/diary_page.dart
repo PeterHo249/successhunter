@@ -191,6 +191,16 @@ class _DiaryPageState extends State<DiaryPage> {
       }
     }
 
+    String infoString;
+
+    if (screenWidth > 768.0) {
+      infoString =
+          'You have ${manualDiaries.length} notes\nand ${automatedDiaries.length} automated notes.';
+    } else {
+      infoString =
+          '${manualDiaries.length} notes\n${automatedDiaries.length} automated notes.';
+    }
+
     return Container(
       width: screenWidth,
       child: Padding(
@@ -203,7 +213,7 @@ class _DiaryPageState extends State<DiaryPage> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-                'You have ${manualDiaries.length} notes\nand ${automatedDiaries.length} automated notes.',
+                infoString,
                 style: Theme.contentStyle.copyWith(
                   color: Colors.white,
                   fontSize: 20.0,
