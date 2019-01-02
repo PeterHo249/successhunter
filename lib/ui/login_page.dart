@@ -136,6 +136,10 @@ class _LoginPageState extends State<LoginPage> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
 
+    if (screenHeight < 1280.0) {
+      screenHeight = 1280.0;
+    }
+
     return Scaffold(
       key: _loginScreenKey,
       body: SingleChildScrollView(
@@ -210,75 +214,64 @@ class _LoginPageState extends State<LoginPage> {
               color: Theme.Colors.mainColor,
             ),
           ),
-          CardSettings(
-            cardElevation: 0.0,
-            children: <Widget>[
-              CardSettingsText(
-                label: 'Email:',
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: TextFormField(
+              controller: _loginEmailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'someone@email.com',
+                labelText: 'Email',
+                labelStyle: Theme.contentStyle.copyWith(
+                  color: Theme.Colors.thirdColor,
+                ),
               ),
-              CardSettingsText(
-                label: 'Password:',
-              ),
-            ],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email is required.';
+                }
+
+                Pattern pattern =
+                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                RegExp regex = new RegExp(pattern);
+                if (!regex.hasMatch(value)) {
+                  return 'Enter valid email.';
+                }
+
+                return null;
+              },
+            ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          //   child: TextFormField(
-          //     controller: _loginEmailController,
-          //     keyboardType: TextInputType.emailAddress,
-          //     decoration: InputDecoration(
-          //       hintText: 'someone@email.com',
-          //       labelText: 'Email',
-          //       labelStyle: Theme.contentStyle.copyWith(
-          //         color: Theme.Colors.thirdColor,
-          //       ),
-          //     ),
-          //     validator: (value) {
-          //       if (value == null || value.isEmpty) {
-          //         return 'Email is required.';
-          //       }
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: TextFormField(
+              controller: _loginPasswordController,
+              obscureText: _obscureLoginPassword,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: Theme.contentStyle.copyWith(
+                  color: Theme.Colors.thirdColor,
+                ),
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _obscureLoginPassword = !_obscureLoginPassword;
+                    });
+                  },
+                  child: Icon(_obscureLoginPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password is required.';
+                }
 
-          //       Pattern pattern =
-          //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-          //       RegExp regex = new RegExp(pattern);
-          //       if (!regex.hasMatch(value)) {
-          //         return 'Enter valid email.';
-          //       }
-
-          //       return null;
-          //     },
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          //   child: TextFormField(
-          //     controller: _loginPasswordController,
-          //     obscureText: _obscureLoginPassword,
-          //     decoration: InputDecoration(
-          //       labelText: 'Password',
-          //       labelStyle: Theme.contentStyle.copyWith(
-          //         color: Theme.Colors.thirdColor,
-          //       ),
-          //       suffixIcon: GestureDetector(
-          //         onTap: () {
-          //           setState(() {
-          //             _obscureLoginPassword = !_obscureLoginPassword;
-          //           });
-          //         },
-          //         child: Icon(_obscureLoginPassword
-          //             ? Icons.visibility
-          //             : Icons.visibility_off),
-          //       ),
-          //     ),
-          //     validator: (value) {
-          //       if (value == null || value.isEmpty) {
-          //         return 'Password is required.';
-          //       }
-
-          //       return null;
-          //     },
-          //   ),
-          // ),
+                return null;
+              },
+            ),
+          ),
           InkWell(
             onTap: () => _loginWithEmail(context),
             child: Container(
