@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'package:successhunter/auth/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:card_settings/card_settings.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -135,10 +134,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-
-    if (screenHeight < 1280.0) {
-      screenHeight = 1280.0;
-    }
 
     return Scaffold(
       key: _loginScreenKey,
