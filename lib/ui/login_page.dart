@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:successhunter/auth/auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:card_settings/card_settings.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -209,64 +210,75 @@ class _LoginPageState extends State<LoginPage> {
               color: Theme.Colors.mainColor,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: TextFormField(
-              controller: _loginEmailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: 'someone@email.com',
-                labelText: 'Email',
-                labelStyle: Theme.contentStyle.copyWith(
-                  color: Theme.Colors.thirdColor,
-                ),
+          CardSettings(
+            cardElevation: 0.0,
+            children: <Widget>[
+              CardSettingsText(
+                label: 'Email:',
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Email is required.';
-                }
-
-                Pattern pattern =
-                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regex = new RegExp(pattern);
-                if (!regex.hasMatch(value)) {
-                  return 'Enter valid email.';
-                }
-
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: TextFormField(
-              controller: _loginPasswordController,
-              obscureText: _obscureLoginPassword,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: Theme.contentStyle.copyWith(
-                  color: Theme.Colors.thirdColor,
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _obscureLoginPassword = !_obscureLoginPassword;
-                    });
-                  },
-                  child: Icon(_obscureLoginPassword
-                      ? Icons.visibility
-                      : Icons.visibility_off),
-                ),
+              CardSettingsText(
+                label: 'Password:',
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Password is required.';
-                }
-
-                return null;
-              },
-            ),
+            ],
           ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //   child: TextFormField(
+          //     controller: _loginEmailController,
+          //     keyboardType: TextInputType.emailAddress,
+          //     decoration: InputDecoration(
+          //       hintText: 'someone@email.com',
+          //       labelText: 'Email',
+          //       labelStyle: Theme.contentStyle.copyWith(
+          //         color: Theme.Colors.thirdColor,
+          //       ),
+          //     ),
+          //     validator: (value) {
+          //       if (value == null || value.isEmpty) {
+          //         return 'Email is required.';
+          //       }
+
+          //       Pattern pattern =
+          //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+          //       RegExp regex = new RegExp(pattern);
+          //       if (!regex.hasMatch(value)) {
+          //         return 'Enter valid email.';
+          //       }
+
+          //       return null;
+          //     },
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //   child: TextFormField(
+          //     controller: _loginPasswordController,
+          //     obscureText: _obscureLoginPassword,
+          //     decoration: InputDecoration(
+          //       labelText: 'Password',
+          //       labelStyle: Theme.contentStyle.copyWith(
+          //         color: Theme.Colors.thirdColor,
+          //       ),
+          //       suffixIcon: GestureDetector(
+          //         onTap: () {
+          //           setState(() {
+          //             _obscureLoginPassword = !_obscureLoginPassword;
+          //           });
+          //         },
+          //         child: Icon(_obscureLoginPassword
+          //             ? Icons.visibility
+          //             : Icons.visibility_off),
+          //       ),
+          //     ),
+          //     validator: (value) {
+          //       if (value == null || value.isEmpty) {
+          //         return 'Password is required.';
+          //       }
+
+          //       return null;
+          //     },
+          //   ),
+          // ),
           InkWell(
             onTap: () => _loginWithEmail(context),
             child: Container(
