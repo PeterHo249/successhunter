@@ -36,7 +36,7 @@ android {
         applicationId "com.hoxuandung.successhunter"
         minSdkVersion 21
         multiDexEnabled true
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

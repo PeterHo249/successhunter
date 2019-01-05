@@ -17,11 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return new MaterialApp(
+
+    return MaterialApp(
       title: 'Success Hunter',
       debugShowCheckedModeBanner: false,
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData(
+        primaryColor: Colors.blue,
         fontFamily: 'Roboto',
       ),
       home: HomeApp(),
@@ -34,78 +35,44 @@ class HomeApp extends StatefulWidget {
 }
 
 class _HomeAppState extends State<HomeApp> {
-  Future checkAlreadyIntro() async {
+  Future<bool> checkAlreadyIntro() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _isAlreadyIntro = prefs.getBool('isAlreadyIntro') ?? false;
-
-    if (_isAlreadyIntro) {
-      // Change this condition to check intro
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeWidget()));
-    } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => IntroPage()));
-    }
+    print(prefs.getBool('isAlreadyIntro'));
+    return prefs.getBool('isAlreadyIntro') ?? false;
   }
 
   @override
   void initState() {
     super.initState();
     FirebaseNotification.instance.firebaseCloudMessagingListeners();
-    checkAlreadyIntro();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class HomeWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _handleCurrentScreen();
-  }
-
-  Widget _handleCurrentScreen() {
-    return StreamBuilder<FirebaseUser>(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (BuildContext context, snapshot) {
+    return FutureBuilder(
+      future: checkAlreadyIntro(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SplashPage();
+        }
+
+        if (!snapshot.data) {
+          return _buildIntro(context);
         } else {
-          if (snapshot.hasData) {
-            DataFeeder.instance.setCollectionId(snapshot.data.uid);
-            DataFeeder.instance.initUserInfo(snapshot.data);
-            FirebaseNotification.instance.addFCMToken();
-            return MainPage(
-              user: snapshot.data,
-            );
-          }
-          return LoginPage();
+          return _handleCurrentScreen();
         }
       },
     );
-  }
-}
-
-class IntroPage extends StatelessWidget {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildIntro(context);
   }
 
   Widget _buildIntro(BuildContext context) {
     return IntroViewsFlutter(
       _buildPageViewModel(context),
       onTapDoneButton: () {
-        _prefs.then((SharedPreferences prefs) {
+        SharedPreferences.getInstance().then((SharedPreferences prefs) {
           prefs.setBool('isAlreadyIntro', true);
+          setState(() {});
         });
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeApp()));
       },
       showSkipButton: false,
     );
@@ -174,5 +141,26 @@ class IntroPage extends StatelessWidget {
         ),
       ),
     ];
+  }
+
+  Widget _handleCurrentScreen() {
+    return StreamBuilder<FirebaseUser>(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SplashPage();
+        } else {
+          if (snapshot.hasData) {
+            DataFeeder.instance.setCollectionId(snapshot.data.uid);
+            DataFeeder.instance.initUserInfo(snapshot.data);
+            FirebaseNotification.instance.addFCMToken();
+            return MainPage(
+              user: snapshot.data,
+            );
+          }
+          return LoginPage();
+        }
+      },
+    );
   }
 }
