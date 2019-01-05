@@ -60,7 +60,6 @@ class _MainPageState extends State<MainPage> {
         onPressed: () {
           Navigator.push(this.context,
               MaterialPageRoute(builder: (context) => GoalForm()));
-          print('add new goal');
         },
         child: Icon(
           Icons.add,

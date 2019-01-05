@@ -394,10 +394,7 @@ class _HabitDetailState extends State<HabitDetail> {
         child: CalendarCarousel(
           daysHaveCircularBorder: true,
           height: 450.0,
-          markedDates: <DateTime>[
-            DateTime.parse('20181101'),
-            DateTime.parse('20181102')
-          ],
+          markedDates: item.streak,
           markedDateWidget: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,

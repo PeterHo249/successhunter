@@ -42,7 +42,6 @@ class HomeApp extends StatefulWidget {
 class _HomeAppState extends State<HomeApp> {
   Future<bool> checkAlreadyIntro() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getBool('isAlreadyIntro'));
     return prefs.getBool('isAlreadyIntro') ?? false;
   }
 
@@ -156,23 +155,13 @@ class _HomeAppState extends State<HomeApp> {
           return SplashPage();
         } else {
           if (snapshot.hasData) {
-            print('>>>>>>>>>>>>>>>>>> in logined');
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
             DataFeeder.instance.initUserInfo(snapshot.data);
-            // DataFeeder.instance
-            //     .getInfo()
-            //     .listen((DocumentSnapshot documentSnapshot) {
-            //   gInfo = User.fromJson(
-            //       json.decode(json.encode(documentSnapshot.data)));
-            //   FirebaseNotification.instance.addFCMToken();
-            //   print('>>>>>>>>>> add FCM token in listener');
-            // });
             final subscription = DataFeeder.instance.getInfo().listen(null);
             subscription.onData((DocumentSnapshot documentSnapshot) {
               gInfo = User.fromJson(
                   json.decode(json.encode(documentSnapshot.data)));
               FirebaseNotification.instance.addFCMToken();
-              print('>>>>>>>>>> add FCM token in listener');
               subscription.cancel();
             });
             return MainPage(

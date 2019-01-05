@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -65,7 +62,6 @@ class FirebaseNotification {
 
   Future onMessageCallback(Map<String, dynamic> message) async {
     print('On message $message');
-    print(context);
   }
 
   Future onResumeCallback(Map<String, dynamic> message) async {
