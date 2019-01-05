@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +8,8 @@ import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:successhunter/model/notification.dart';
+import 'package:successhunter/model/user.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
@@ -151,9 +156,25 @@ class _HomeAppState extends State<HomeApp> {
           return SplashPage();
         } else {
           if (snapshot.hasData) {
+            print('>>>>>>>>>>>>>>>>>> in logined');
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
             DataFeeder.instance.initUserInfo(snapshot.data);
-            FirebaseNotification.instance.addFCMToken();
+            // DataFeeder.instance
+            //     .getInfo()
+            //     .listen((DocumentSnapshot documentSnapshot) {
+            //   gInfo = User.fromJson(
+            //       json.decode(json.encode(documentSnapshot.data)));
+            //   FirebaseNotification.instance.addFCMToken();
+            //   print('>>>>>>>>>> add FCM token in listener');
+            // });
+            final subscription = DataFeeder.instance.getInfo().listen(null);
+            subscription.onData((DocumentSnapshot documentSnapshot) {
+              gInfo = User.fromJson(
+                  json.decode(json.encode(documentSnapshot.data)));
+              FirebaseNotification.instance.addFCMToken();
+              print('>>>>>>>>>> add FCM token in listener');
+              subscription.cancel();
+            });
             return MainPage(
               user: snapshot.data,
             );

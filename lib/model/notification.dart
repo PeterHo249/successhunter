@@ -7,6 +7,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class FirebaseNotification {
   static final FirebaseNotification _singleton =
@@ -18,6 +19,7 @@ class FirebaseNotification {
 
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
   BuildContext context;
+  String token;
 
   void iOSPermission() {
     firebaseMessaging.requestNotificationPermissions(
@@ -36,15 +38,12 @@ class FirebaseNotification {
   }
 
   void addFCMToken() {
-    DataFeeder.instance.getInfo().listen((DocumentSnapshot documentSnapshot) {
-      User info =
-          User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      firebaseMessaging.getToken().then((token) {
-        if (info.fcmToken.indexOf(token) == -1) {
-          info.fcmToken.add(token);
-          DataFeeder.instance.overwriteInfo(info);
-        }
-      });
+    firebaseMessaging.getToken().then((token) {
+      this.token = token;
+      if (gInfo.fcmToken.indexOf(token) == -1) {
+        gInfo.fcmToken.add(token);
+        DataFeeder.instance.overwriteInfo(gInfo);
+      }
     });
   }
 

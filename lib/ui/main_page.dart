@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/notification.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
@@ -283,6 +284,11 @@ class _MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Auth.instance.signOut();
+              int tokenIndex = gInfo.fcmToken.indexOf(FirebaseNotification.instance.token);
+              if (tokenIndex != -1) {
+                gInfo.fcmToken.removeAt(tokenIndex);
+                DataFeeder.instance.overwriteInfo(gInfo);
+              }
             },
           ),
         ],
