@@ -6,6 +6,8 @@ import 'package:tinycolor/tinycolor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 Color getStateColor(int state) {
   switch (state) {
@@ -72,10 +74,33 @@ Widget buildHeaderBackground(BuildContext context,
   return Stack(
     alignment: Alignment.topCenter,
     children: <Widget>[
-      Container(
-        color: Colors.white,
-        height: height,
-        width: width,
+      WaveWidget(
+        config: CustomConfig(
+          gradients: [
+            [Colors.white10, Colors.white70],
+            [Colors.white12, Colors.white70],
+            [Colors.white30, Colors.white70],
+          ],
+          durations: [
+            30000,
+            32000,
+            35000,
+          ],
+          heightPercentages: [
+            0.85,
+            0.87,
+            0.90,
+          ],
+          blur: MaskFilter.blur(BlurStyle.solid, 10),
+          gradientBegin: Alignment.topCenter,
+          gradientEnd: Alignment.bottomCenter,
+        ),
+        waveAmplitude: 2.0,
+        backgroundColor: color,
+        size: Size(
+          width,
+          height,
+        ),
       ),
       Container(
         height: height,
@@ -89,43 +114,8 @@ Widget buildHeaderBackground(BuildContext context,
                   colorFilter: ColorFilter.mode(
                     color.withOpacity(0.4),
                     BlendMode.dstIn,
-                  )),
-          gradient: LinearGradient(
-            colors: [
-              color,
-              TinyColor(color).lighten(30).color,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.5, 1.0],
-            tileMode: TileMode.clamp,
-          ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(50.0),
-            bottomRight: Radius.circular(50.0),
-          ),
-        ),
-      ),
-      Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: color.withAlpha(180),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(180.0),
-            bottomRight: Radius.circular(180.0),
-          ),
-        ),
-      ),
-      Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: color.withAlpha(80),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(100.0),
-            bottomRight: Radius.circular(100.0),
-          ),
+                  ),
+                ),
         ),
       ),
     ],
