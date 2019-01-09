@@ -50,7 +50,7 @@ class FirebaseNotification {
     }
 
     FirebaseNotification.instance.firebaseMessaging.getToken().then((token) {
-      print(token);
+      print('>>>>>>>>>>>>>>>>>>>>>>>>> $token');
     });
 
     FirebaseNotification.instance.firebaseMessaging.configure(

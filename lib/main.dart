@@ -16,13 +16,22 @@ import 'package:successhunter/ui/splash_page.dart';
 import 'package:successhunter/ui/main_page.dart';
 import 'package:successhunter/model/data_feeder.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(new IntroApp());
 
-class MyApp extends StatelessWidget {
+class IntroApp extends StatelessWidget {
+  Future<bool> checkAlreadyIntro() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isAlreadyIntro') ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+    checkAlreadyIntro().then((value) {
+      if (value) {
+        runApp(MainApp());
+      }
+    });
     return MaterialApp(
       title: 'Success Hunter',
       debugShowCheckedModeBanner: false,
@@ -30,42 +39,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         fontFamily: 'Roboto',
       ),
-      home: HomeApp(),
-    );
-  }
-}
-
-class HomeApp extends StatefulWidget {
-  _HomeAppState createState() => _HomeAppState();
-}
-
-class _HomeAppState extends State<HomeApp> {
-  Future<bool> checkAlreadyIntro() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isAlreadyIntro') ?? false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseNotification.instance.firebaseCloudMessagingListeners();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: checkAlreadyIntro(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SplashPage();
-        }
-
-        if (!snapshot.data) {
-          return _buildIntro(context);
-        } else {
-          return _handleCurrentScreen();
-        }
-      },
+      home: _buildIntro(context),
     );
   }
 
@@ -75,7 +49,7 @@ class _HomeAppState extends State<HomeApp> {
       onTapDoneButton: () {
         SharedPreferences.getInstance().then((SharedPreferences prefs) {
           prefs.setBool('isAlreadyIntro', true);
-          setState(() {});
+          runApp(MainApp());
         });
       },
       showSkipButton: false,
@@ -145,6 +119,22 @@ class _HomeAppState extends State<HomeApp> {
         ),
       ),
     ];
+  }
+}
+
+class MainApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    return MaterialApp(
+      title: 'Success Hunter',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        fontFamily: 'Roboto',
+      ),
+      home: _handleCurrentScreen(),
+    );
   }
 
   Widget _handleCurrentScreen() {
