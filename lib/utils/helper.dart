@@ -2,7 +2,6 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/user.dart';
-import 'package:tinycolor/tinycolor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -87,15 +86,15 @@ Widget buildHeaderBackground(BuildContext context,
             35000,
           ],
           heightPercentages: [
-            0.85,
             0.87,
-            0.90,
+            0.87,
+            0.87,
           ],
           blur: MaskFilter.blur(BlurStyle.solid, 10),
           gradientBegin: Alignment.topCenter,
           gradientEnd: Alignment.bottomCenter,
         ),
-        waveAmplitude: 2.0,
+        waveAmplitude: 8.0,
         backgroundColor: color,
         size: Size(
           width,
@@ -112,7 +111,7 @@ Widget buildHeaderBackground(BuildContext context,
                   image: image,
                   fit: BoxFit.contain,
                   colorFilter: ColorFilter.mode(
-                    color.withOpacity(0.4),
+                    color.withOpacity(0.1),
                     BlendMode.dstIn,
                   ),
                 ),
