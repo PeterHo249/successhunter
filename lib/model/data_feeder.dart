@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
@@ -269,4 +270,29 @@ class DataFeeder {
 
     await batch.commit().catchError((error) => print('error: $error'));
   }
+
+  // Coop Goal Section
+  Stream<DocumentSnapshot> getCoop(String documentId) {
+    Stream<DocumentSnapshot> snapshots =
+        Firestore.instance.collection('coops').document(documentId).snapshots();
+
+    return snapshots;
+  }
+
+  Stream<QuerySnapshot> getDoingCoopList() {}
+
+  Stream<QuerySnapshot> getCoopList() {}
+
+  void addNewCoop(CoopGoal item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef =
+        Firestore.instance.collection('coops').document();
+    batch.setData(docRef, json.decode(json.encode(item)));
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  void overwriteCoop(String documentId, CoopGoal item) async {}
+
+  void deleteCoop(String documentId) async {}
 }

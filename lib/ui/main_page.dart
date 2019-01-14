@@ -5,6 +5,7 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/notification.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/coop/coop_form.dart';
 import 'package:successhunter/ui/custom_ui/FAB_bottom_app_bar.dart';
 import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/coop/coop_page.dart';
@@ -69,8 +70,8 @@ class _MainPageState extends State<MainPage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // TODO: Implement co-op form here
-          print('add new co-op');
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => CoopForm()));
         },
         child: Icon(
           Icons.add,
@@ -120,7 +121,7 @@ class _MainPageState extends State<MainPage> {
           break;
         case 1:
           Navigator.push(this.context,
-              MaterialPageRoute(builder: (context) => HabitForm()));
+              MaterialPageRoute(builder: (context) => CoopForm()));
           break;
         case 2:
           Navigator.push(this.context,

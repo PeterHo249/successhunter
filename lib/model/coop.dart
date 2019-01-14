@@ -20,6 +20,7 @@ class CoopGoal {
   String ownerUid;
   List<String> participantUids;
   List<ParticipantState> states;
+  int mainState;
 
   CoopGoal({
     this.title,
@@ -34,6 +35,7 @@ class CoopGoal {
     this.states,
     this.doneDate,
     this.milestones,
+    this.mainState = 0,
   }) {
     if (description == null) description = '';
 

@@ -169,7 +169,7 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
                   initialValue: item == null ? null : item.type,
                   onChanged: (value) {
                     setState(() {
-                      color = color = TypeDecorationEnum
+                      color = TypeDecorationEnum
                           .typeDecorations[ActivityTypeEnum.getIndex(value)]
                           .backgroundColor;
                     });

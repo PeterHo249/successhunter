@@ -33,7 +33,8 @@ CoopGoal _$CoopGoalFromJson(Map<String, dynamic> json) {
           ?.map((e) => e == null
               ? null
               : CoopMilestone.fromJson(e as Map<String, dynamic>))
-          ?.toList())
+          ?.toList(),
+      mainState: json['mainState'] as int)
     ..ownerUid = json['ownerUid'] as String
     ..participantUids =
         (json['participantUids'] as List)?.map((e) => e as String)?.toList();
@@ -53,7 +54,8 @@ Map<String, dynamic> _$CoopGoalToJson(CoopGoal instance) => <String, dynamic>{
       'milestones': instance.milestones,
       'ownerUid': instance.ownerUid,
       'participantUids': instance.participantUids,
-      'states': instance.states
+      'states': instance.states,
+      'mainState': instance.mainState
     };
 
 CoopMilestone _$CoopMilestoneFromJson(Map<String, dynamic> json) {
