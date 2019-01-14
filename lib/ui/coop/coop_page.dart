@@ -284,4 +284,16 @@ class _CoopPageState extends State<CoopPage> {
       ),
     );
   }
+
+  Widget _buildCoopList(BuildContext context, List<CoopDocument> docs) {
+    return Container();
+  }
+
+  Widget _buildCoopSlidableList(BuildContext context, List<CoopDocument> docs) {
+    return Container();
+  }
+
+  Widget _buildCoopTile(BuildContext context, List<CoopDocument> docs) {
+    return Container();
+  }
 }
