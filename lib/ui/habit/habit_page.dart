@@ -166,13 +166,9 @@ class _HabitPageState extends State<HabitPage> {
   Widget _buildInfoSection(BuildContext context) {
     String infoString;
 
-    if (screenWidth > 768.0) {
-      infoString =
-          'Total habit: ${habits.length}\n\nYou have ${todayHabits.length} tasks today\n${attainedHabits.length} done tasks\n${failedHabits.length} failed tasks\nAnd ${notTodayHabits.length} tasks don\'t due today';
-    } else {
-      infoString =
-          'Total habit: ${habits.length}\n\n${todayHabits.length} tasks today\n${attainedHabits.length} done tasks\n${failedHabits.length} failed tasks';
-    }
+    infoString =
+        'Total habit: ${habits.length}\n\n${todayHabits.length} tasks today\n${attainedHabits.length} done tasks\n${failedHabits.length} failed tasks';
+
     return Container(
       width: screenWidth,
       child: Padding(

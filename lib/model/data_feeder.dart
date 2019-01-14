@@ -44,6 +44,7 @@ class DataFeeder {
             displayName: user.displayName,
             uid: user.uid,
             email: user.email,
+            photoUrl: user.photoUrl,
           );
           batch.setData(
               Firestore.instance.collection(mainCollectionId).document('info'),
@@ -279,9 +280,24 @@ class DataFeeder {
     return snapshots;
   }
 
-  Stream<QuerySnapshot> getDoingCoopList() {}
+  Stream<QuerySnapshot> getDoingCoopList() {
+    Stream<QuerySnapshot> snapshots = Firestore.instance
+        .collection('coops')
+        .where('mainState', isEqualTo: 0)
+        .where('participantUids', arrayContains: mainCollectionId)
+        .snapshots();
 
-  Stream<QuerySnapshot> getCoopList() {}
+    return snapshots;
+  }
+
+  Stream<QuerySnapshot> getCoopList() {
+    Stream<QuerySnapshot> snapshots = Firestore.instance
+        .collection('coops')
+        .where('participantUids', arrayContains: mainCollectionId)
+        .snapshots();
+
+    return snapshots;
+  }
 
   void addNewCoop(CoopGoal item) async {
     var batch = Firestore.instance.batch();
@@ -292,7 +308,21 @@ class DataFeeder {
     await batch.commit().catchError((error) => print('error: $error'));
   }
 
-  void overwriteCoop(String documentId, CoopGoal item) async {}
+  void overwriteCoop(String documentId, CoopGoal item) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef =
+        Firestore.instance.collection('coops').document(documentId);
+    batch.setData(docRef, json.decode(json.encode(item)));
 
-  void deleteCoop(String documentId) async {}
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
+
+  void deleteCoop(String documentId) async {
+    var batch = Firestore.instance.batch();
+    DocumentReference docRef =
+        Firestore.instance.collection('coops').document(documentId);
+    batch.delete(docRef);
+
+    await batch.commit().catchError((error) => print('error: $error'));
+  }
 }

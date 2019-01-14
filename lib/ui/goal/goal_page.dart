@@ -160,13 +160,9 @@ class _GoalPageState extends State<GoalPage> {
   Widget _buildInfoSection(BuildContext context) {
     String infoString;
 
-    if (screenWidth > 768.0) {
-      infoString =
-          'Total Goals: ${goals.length}\n\nYou have ${processGoals.length} goals in process\nAnd ${attainedGoals.length} attained goals\nBut ${failedGoals.length} failed goals.';
-    } else {
-      infoString =
-          'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
-    }
+    infoString =
+        'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
+
     return Container(
       width: screenWidth,
       child: Padding(

@@ -8,6 +8,7 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
   String displayName;
+  String photoUrl;
   String uid;
   int level;
   int experience;
@@ -33,6 +34,7 @@ class User {
     this.email = '',
     this.diaryPin = '',
     this.fcmToken,
+    this.photoUrl,
   }) {
     if (badges == null) {
       badges = List<String>();

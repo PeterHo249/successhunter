@@ -103,3 +103,10 @@ class ParticipantState {
 
   Map<String, dynamic> toJson() => _$ParticipantStateToJson(this);
 }
+
+class CoopDocument {
+  final String documentId;
+  final CoopGoal item;
+
+  CoopDocument({this.item, this.documentId});
+}

@@ -28,11 +28,13 @@ User _$UserFromJson(Map<String, dynamic> json) {
           ?.toList(),
       email: json['email'] as String,
       diaryPin: json['diaryPin'] as String,
-      fcmToken: (json['fcmToken'] as List)?.map((e) => e as String)?.toList());
+      fcmToken: (json['fcmToken'] as List)?.map((e) => e as String)?.toList(),
+      photoUrl: json['photoUrl'] as String);
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'displayName': instance.displayName,
+      'photoUrl': instance.photoUrl,
       'uid': instance.uid,
       'level': instance.level,
       'experience': instance.experience,
