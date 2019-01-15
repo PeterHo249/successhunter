@@ -61,7 +61,6 @@ flutter:
         - assets/img/person.png
         - assets/img/statistics.png
         - assets/img/target.png
-        - assets/img/loading.png
         # Image for intro
         - assets/img/diary_intro.png
         - assets/img/goal_intro.png
