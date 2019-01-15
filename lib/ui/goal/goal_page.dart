@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/chart/pie_chart.dart';
 
 import 'package:successhunter/utils/helper.dart' as Helper;

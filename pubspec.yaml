@@ -41,6 +41,7 @@ dependencies:
   intro_views_flutter: ^2.4.0
   material_search: ^0.2.8
   wave: ^0.0.8
+  cached_network_image: ^0.5.1
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,7 @@ flutter:
         - assets/img/person.png
         - assets/img/statistics.png
         - assets/img/target.png
+        - assets/img/loading.png
         # Image for intro
         - assets/img/diary_intro.png
         - assets/img/goal_intro.png

@@ -84,8 +84,13 @@ Map<String, dynamic> _$CoopMilestoneToJson(CoopMilestone instance) =>
 
 ParticipantState _$ParticipantStateFromJson(Map<String, dynamic> json) {
   return ParticipantState(
-      uid: json['uid'] as String, state: json['state'] as int);
+      uid: json['uid'] as String, state: json['state'] as int)
+    ..currentValue = json['currentValue'] as int;
 }
 
 Map<String, dynamic> _$ParticipantStateToJson(ParticipantState instance) =>
-    <String, dynamic>{'uid': instance.uid, 'state': instance.state};
+    <String, dynamic>{
+      'uid': instance.uid,
+      'currentValue': instance.currentValue,
+      'state': instance.state
+    };

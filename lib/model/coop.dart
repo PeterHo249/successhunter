@@ -53,12 +53,22 @@ class CoopGoal {
 
     if (states == null)
       states = [ParticipantState(uid: ownerUid, state: ActivityState.doing)];
+
+    if (milestones == null) milestones = <CoopMilestone>[];
   }
 
   factory CoopGoal.fromJson(Map<String, dynamic> json) =>
       _$CoopGoalFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoopGoalToJson(this);
+
+  double getDonePercent(String uid) {
+    return states
+            .firstWhere((ParticipantState state) => state.uid == uid)
+            .currentValue
+            .toDouble() /
+        targetValue.toDouble();
+  }
 }
 
 @JsonSerializable()
@@ -91,6 +101,7 @@ class CoopMilestone {
 @JsonSerializable()
 class ParticipantState {
   String uid;
+  int currentValue = 0;
   int state;
 
   ParticipantState({

@@ -22,13 +22,20 @@ class DataFeeder {
   }
 
   // Information section
-  Stream<DocumentSnapshot> getInfo() {
+  Stream<DocumentSnapshot> getInfo({String uid}) {
     Stream<DocumentSnapshot> snapshots = Firestore.instance
-        .collection(mainCollectionId)
+        .collection(uid ?? mainCollectionId)
         .document('info')
         .snapshots();
 
     return snapshots;
+  }
+
+  Future<DocumentSnapshot> getInfoFuture({String uid}) {
+    return Firestore.instance
+        .collection(uid ?? mainCollectionId)
+        .document('info')
+        .get();
   }
 
   initUserInfo(FirebaseUser user) async {

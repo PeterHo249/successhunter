@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/chart/pie_chart.dart';
@@ -250,6 +250,7 @@ class _CoopPageState extends State<CoopPage> {
 
   Widget _buildCoopSlidableTile(BuildContext context, CoopDocument document) {
     var item = document.item;
+    var _isOwner = document.item.ownerUid == gInfo.uid;
 
     return Slidable.builder(
       key: Key(item.title),
@@ -257,15 +258,17 @@ class _CoopPageState extends State<CoopPage> {
       controller: slidableController,
       actionExtentRatio: 0.25,
       child: _buildCoopTile(context, document),
-      slideToDismissDelegate: SlideToDismissDrawerDelegate(
-          dismissThresholds: <SlideActionType, double>{
-            SlideActionType.primary: 1.0,
-          },
-          onDismissed: (actionType) {
-            if (actionType == SlideActionType.secondary) {
-              DataFeeder.instance.deleteCoop(document.documentId);
-            }
-          }),
+      slideToDismissDelegate: !_isOwner
+          ? null
+          : SlideToDismissDrawerDelegate(
+              dismissThresholds: <SlideActionType, double>{
+                  SlideActionType.primary: 1.0,
+                },
+              onDismissed: (actionType) {
+                if (actionType == SlideActionType.secondary) {
+                  DataFeeder.instance.deleteCoop(document.documentId);
+                }
+              }),
       actionDelegate: SlideActionBuilderDelegate(
         builder: (context, index, animation, renderingMode) {
           return IconSlideAction(
@@ -282,7 +285,7 @@ class _CoopPageState extends State<CoopPage> {
                 ),
           );
         },
-        actionCount: 1,
+        actionCount: _isOwner ? 1 : 0,
       ),
       secondaryActionDelegate: SlideActionBuilderDelegate(
         builder: (context, index, animation, renderingMode) {
@@ -297,12 +300,19 @@ class _CoopPageState extends State<CoopPage> {
             },
           );
         },
-        actionCount: 1,
+        actionCount: _isOwner ? 1 : 0,
       ),
     );
   }
 
   Widget _buildCoopTile(BuildContext context, CoopDocument document) {
+    var _isOwner = document.item.ownerUid == gInfo.uid;
+    var state = _isOwner
+        ? document.item.mainState
+        : document.item.states
+            .firstWhere((ParticipantState state) => state.uid == gInfo.uid)
+            .state;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8.0,
@@ -323,7 +333,7 @@ class _CoopPageState extends State<CoopPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Container(
-                height: 100.0,
+                height: 200.0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -331,9 +341,9 @@ class _CoopPageState extends State<CoopPage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 5.0),
                       child: Container(
-                        height: 100.0,
+                        height: 200.0,
                         width: 4.0,
-                        color: Helper.getStateColor(document.item.mainState),
+                        color: Helper.getStateColor(state),
                       ),
                     ),
                     Hero(
@@ -371,7 +381,7 @@ class _CoopPageState extends State<CoopPage> {
       padding: const EdgeInsets.only(left: 10.0),
       child: Container(
         width: screenWidth - 110.0,
-        height: 130.0,
+        height: 200.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -411,11 +421,65 @@ class _CoopPageState extends State<CoopPage> {
                       ActivityTypeEnum.getIndex(document.item.type)]
                   .backgroundColor,
               backgroundColor: Colors.grey,
-              percent: document.item.currentValue.toDouble() /
-                  document.item.targetValue.toDouble(),
+              percent: document.item.getDonePercent(gInfo.uid),
             ),
+            _buildImageRow(context, document),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildImageRow(BuildContext context, CoopDocument document) {
+    var participantUids = document.item.participantUids;
+    var _hasMore = false;
+    if (participantUids.length > 4) {
+      participantUids = participantUids.sublist(0, 3);
+      _hasMore = true;
+    }
+
+    List<Widget> participantImages = <Widget>[];
+
+
+    for (int i = 0; i < participantUids.length; i++) {
+      var imageWidget = FutureBuilder(
+        future: DataFeeder.instance.getInfoFuture(uid: participantUids[i]),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              height: 40.0,
+              width: 40.0,
+              color: Colors.grey,
+            );
+          }
+          var info =
+              User.fromJson(json.decode(json.encode(snapshot.data.data)));
+          return Helper.buildCircularNetworkImage(
+            url: info.photoUrl,
+            size: 40,
+          );
+        },
+      );
+
+      participantImages.add(imageWidget);
+    }
+
+    if (_hasMore) {
+      participantImages.add(
+        Text(
+          '+${document.item.participantUids.length - 4} more',
+          style: Theme.contentStyle.copyWith(color: Colors.grey),
+        ),
+      );
+    }
+
+    // TODO: Inkwell here to show all participant
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: participantImages,
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 Color getStateColor(int state) {
   switch (state) {
@@ -151,6 +152,20 @@ Widget buildCircularIcon({
       data.icon,
       color: data.color,
       size: size * 0.4,
+    ),
+  );
+}
+
+Widget buildCircularNetworkImage({@required String url, double size = 100.0}) {
+  return Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      image: DecorationImage(
+        image: NetworkImage(url),
+        fit: BoxFit.fill,
+      ),
     ),
   );
 }

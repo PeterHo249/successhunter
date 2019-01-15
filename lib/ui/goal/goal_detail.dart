@@ -7,7 +7,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
-import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
