@@ -36,11 +36,6 @@ class _GoalDetailState extends State<GoalDetail> {
   // Business
   @override
   void initState() {
-    DataFeeder.instance.getInfo().listen(
-      (documentSnapshot) {
-        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      },
-    );
     super.initState();
   }
 
