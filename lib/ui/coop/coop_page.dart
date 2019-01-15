@@ -11,6 +11,7 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/chart/pie_chart.dart';
 import 'package:successhunter/ui/coop/coop_detail.dart';
 import 'package:successhunter/ui/coop/coop_form.dart';
+import 'package:successhunter/ui/coop/coop_participant.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/formatter.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -440,7 +441,6 @@ class _CoopPageState extends State<CoopPage> {
 
     List<Widget> participantImages = <Widget>[];
 
-
     for (int i = 0; i < participantUids.length; i++) {
       var imageWidget = FutureBuilder(
         future: DataFeeder.instance.getInfoFuture(uid: participantUids[i]),
@@ -474,12 +474,21 @@ class _CoopPageState extends State<CoopPage> {
       );
     }
 
-    // TODO: Inkwell here to show all participant
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: participantImages,
+    return InkWell(
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CoopParticipantList(
+                    document: document,
+                  ),
+            ),
+          ),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: participantImages,
+        ),
       ),
     );
   }

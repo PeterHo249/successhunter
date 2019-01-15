@@ -163,7 +163,7 @@ Widget buildCircularNetworkImage({@required String url, double size = 100.0}) {
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       image: DecorationImage(
-        image: NetworkImage(url),
+        image: CachedNetworkImageProvider(url),
         fit: BoxFit.fill,
       ),
     ),
