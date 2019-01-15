@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/notification.dart';
+import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/coop/coop_form.dart';
@@ -44,6 +47,11 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    DataFeeder.instance.getInfo().listen(
+      (documentSnapshot) {
+        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
+      },
+    );
     pageController = PageController();
     fabs = [
       FABWithIcons(

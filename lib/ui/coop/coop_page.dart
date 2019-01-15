@@ -8,7 +8,11 @@ import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/chart/pie_chart.dart';
+import 'package:successhunter/ui/coop/coop_detail.dart';
 import 'package:successhunter/ui/coop/coop_form.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/formatter.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
@@ -101,15 +105,51 @@ class _CoopPageState extends State<CoopPage> {
         attainedCoops.clear();
         failedCoops.clear();
 
-        // TODO: classify coop
+        for (int i = 0; i < coops.length; i++) {
+          var coop = coops[i];
+          if (coop.item.ownerUid == gInfo.uid) {
+            // Own the goal
+            switch (coop.item.mainState) {
+              case ActivityState.doing:
+                processCoops.add(coop);
+                break;
+              case ActivityState.done:
+                attainedCoops.add(coop);
+                break;
+              case ActivityState.failed:
+                failedCoops.add(coop);
+                break;
+              default:
+            }
+          } else {
+            var state = coop.item.states
+                .firstWhere((ParticipantState participantState) =>
+                    participantState.uid == gInfo.uid)
+                .state;
+            switch (state) {
+              case ActivityState.doing:
+                processCoops.add(coop);
+                break;
+              case ActivityState.done:
+                attainedCoops.add(coop);
+                break;
+              case ActivityState.failed:
+                failedCoops.add(coop);
+                break;
+              default:
+            }
+          }
+        }
 
         return CustomScrollView(
           slivers: <Widget>[
             _buildHeader(context, _buildInfoSection(context)),
             _buildSectionHeader(context, 'Goal on Process'),
+            _buildCoopList(context, processCoops),
             _buildSectionHeader(context, 'Attained Goal'),
+            _buildCoopList(context, attainedCoops),
             _buildSectionHeader(context, 'Failed Goal'),
-            SliverFillRemaining(),
+            _buildCoopList(context, failedCoops),
           ],
         );
       },
@@ -129,6 +169,9 @@ class _CoopPageState extends State<CoopPage> {
   }
 
   Widget _buildInfoSection(BuildContext context) {
+    String infoString =
+        'Total Goals: ${coops.length}\n\n${processCoops.length} goals in process\n${attainedCoops.length} attained goals\n${failedCoops.length} failed goals.';
+
     return Container(
       width: screenWidth,
       child: Padding(
@@ -136,128 +179,37 @@ class _CoopPageState extends State<CoopPage> {
             EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Container(
-                height: screenHeight * 0.3 - 100.0,
-                width: screenHeight * 0.3 - 100.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.grey,
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                infoString,
+                style: Theme.contentStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 20.0,
                 ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 15.0),
-                child: Container(
-                  height: screenHeight * 0.3 - 60.0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Lv: 50',
-                            style: Theme.contentStyle.copyWith(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Icon(
-                                  FontAwesomeIcons.coins,
-                                  color: Colors.yellow,
-                                ),
-                              ),
-                              Text(
-                                '3500',
-                                style: Theme.contentStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Experience:',
-                                  style: Theme.contentStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                                Text(
-                                  '230/1000',
-                                  style: Theme.contentStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          LinearPercentIndicator(
-                            width: screenWidth - screenHeight * 0.23,
-                            lineHeight: 10.0,
-                            percent: 0.5,
-                            progressColor: Colors.deepOrange,
-                            padding: const EdgeInsets.all(0.0),
-                            backgroundColor: Colors.blueGrey,
-                            linearStrokeCap: LinearStrokeCap.roundAll,
-                            animation: true,
-                            animationDuration: 700,
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
-                        spacing: 10.0,
-                        runSpacing: 5.0,
-                        runAlignment: WrapAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: 50.0,
-                            height: 50.0,
-                            color: Colors.green,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+            PieChart(
+              size: screenHeight * 0.2,
+              data: <ChartEntry>[
+                ChartEntry(
+                  value: processCoops.length.toDouble(),
+                  color: Helper.getStateColor(ActivityState.doing),
                 ),
-              ),
+                ChartEntry(
+                  value: attainedCoops.length.toDouble(),
+                  color: Helper.getStateColor(ActivityState.done),
+                ),
+                ChartEntry(
+                  value: failedCoops.length.toDouble(),
+                  color: Helper.getStateColor(ActivityState.failed),
+                ),
+              ],
             ),
           ],
         ),
@@ -286,14 +238,185 @@ class _CoopPageState extends State<CoopPage> {
   }
 
   Widget _buildCoopList(BuildContext context, List<CoopDocument> docs) {
-    return Container();
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return _buildCoopSlidableTile(context, docs[index]);
+        },
+        childCount: docs.length,
+      ),
+    );
   }
 
-  Widget _buildCoopSlidableList(BuildContext context, List<CoopDocument> docs) {
-    return Container();
+  Widget _buildCoopSlidableTile(BuildContext context, CoopDocument document) {
+    var item = document.item;
+
+    return Slidable.builder(
+      key: Key(item.title),
+      delegate: SlidableDrawerDelegate(),
+      controller: slidableController,
+      actionExtentRatio: 0.25,
+      child: _buildCoopTile(context, document),
+      slideToDismissDelegate: SlideToDismissDrawerDelegate(
+          dismissThresholds: <SlideActionType, double>{
+            SlideActionType.primary: 1.0,
+          },
+          onDismissed: (actionType) {
+            if (actionType == SlideActionType.secondary) {
+              DataFeeder.instance.deleteCoop(document.documentId);
+            }
+          }),
+      actionDelegate: SlideActionBuilderDelegate(
+        builder: (context, index, animation, renderingMode) {
+          return IconSlideAction(
+            caption: 'Edit',
+            color: Colors.blue,
+            icon: Icons.edit,
+            onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CoopForm(
+                          documentId: document.documentId,
+                        ),
+                  ),
+                ),
+          );
+        },
+        actionCount: 1,
+      ),
+      secondaryActionDelegate: SlideActionBuilderDelegate(
+        builder: (context, index, animation, renderingMode) {
+          return IconSlideAction(
+            caption: 'Delete',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () {
+              var state = Slidable.of(context);
+              state.dismiss();
+              DataFeeder.instance.deleteCoop(document.documentId);
+            },
+          );
+        },
+        actionCount: 1,
+      ),
+    );
   }
 
-  Widget _buildCoopTile(BuildContext context, List<CoopDocument> docs) {
-    return Container();
+  Widget _buildCoopTile(BuildContext context, CoopDocument document) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
+      child: InkWell(
+        onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CoopDetail(
+                      documentId: document.documentId,
+                    ),
+              ),
+            ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                height: 100.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5.0),
+                      child: Container(
+                        height: 100.0,
+                        width: 4.0,
+                        color: Helper.getStateColor(document.item.mainState),
+                      ),
+                    ),
+                    Hero(
+                      tag: document.documentId,
+                      child: Helper.buildCircularIcon(
+                        data: TypeDecorationEnum.typeDecorations[
+                            ActivityTypeEnum.getIndex(document.item.type)],
+                        size: 70.0,
+                      ),
+                    ),
+                    _buildCoopInfo(context, document),
+                  ],
+                ),
+              ),
+            ),
+            Divider(
+              color: Colors.blueGrey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCoopInfo(BuildContext context, CoopDocument document) {
+    int remainDay = document.item.targetDate
+        .toLocal()
+        .difference(DateTime.now().toLocal())
+        .inDays;
+    if (remainDay < 0) {
+      remainDay = 0;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0),
+      child: Container(
+        width: screenWidth - 110.0,
+        height: 130.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              document.item.title,
+              style: Theme.header2Style,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            Text(
+              'From ${Formatter.getDateString(document.item.startDate.toLocal())} to ${Formatter.getDateString(document.item.targetDate.toLocal())}',
+              style: Theme.contentStyle,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '$remainDay day(s) remain',
+                  style: Theme.contentStyle,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  'Target: ${document.item.targetValue} ${document.item.unit}',
+                  style: Theme.contentStyle,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            LinearPercentIndicator(
+              width: screenWidth - 110.0,
+              lineHeight: 10.0,
+              progressColor: TypeDecorationEnum
+                  .typeDecorations[
+                      ActivityTypeEnum.getIndex(document.item.type)]
+                  .backgroundColor,
+              backgroundColor: Colors.grey,
+              percent: document.item.currentValue.toDouble() /
+                  document.item.targetValue.toDouble(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -38,11 +38,6 @@ class _GoalPageState extends State<GoalPage> {
   // Business
   @override
   void initState() {
-    DataFeeder.instance.getInfo().listen(
-      (documentSnapshot) {
-        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      },
-    );
     super.initState();
   }
 
@@ -158,9 +153,7 @@ class _GoalPageState extends State<GoalPage> {
   }
 
   Widget _buildInfoSection(BuildContext context) {
-    String infoString;
-
-    infoString =
+    String infoString =
         'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
 
     return Container(
