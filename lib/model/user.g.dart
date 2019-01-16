@@ -47,3 +47,17 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'diaryPin': instance.diaryPin,
       'fcmToken': instance.fcmToken
     };
+
+CompactUser _$CompactUserFromJson(Map<String, dynamic> json) {
+  return CompactUser(
+      displayName: json['displayName'] as String,
+      photoUrl: json['photoUrl'] as String,
+      uid: json['uid'] as String);
+}
+
+Map<String, dynamic> _$CompactUserToJson(CompactUser instance) =>
+    <String, dynamic>{
+      'displayName': instance.displayName,
+      'photoUrl': instance.photoUrl,
+      'uid': instance.uid
+    };

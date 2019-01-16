@@ -280,3 +280,16 @@ class UserDocument {
 
   UserDocument({this.item, this.documentId});
 }
+
+@JsonSerializable()
+class CompactUser {
+  final String displayName;
+  final String photoUrl;
+  final String uid;
+
+  CompactUser({this.displayName, this.photoUrl, this.uid});
+
+  factory CompactUser.fromJson(Map<String, dynamic> json) => _$CompactUserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CompactUserToJson(this);
+}
