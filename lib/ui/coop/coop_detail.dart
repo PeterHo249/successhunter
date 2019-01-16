@@ -9,6 +9,7 @@ import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/coop/coop_add_participant.dart';
 import 'package:successhunter/ui/coop/coop_participant.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/coop/coop_form.dart';
@@ -76,6 +77,27 @@ class _CoopDetailState extends State<CoopDetail> {
           'I\'m try to attain goal ${item.title} before ${Formatter.getDateString(item.targetDate)}. Do you want take it with me?',
         );
         break;
+      case 4:
+        if (_isOwner) {
+          Navigator.push(
+            this.context,
+            MaterialPageRoute(
+              builder: (context) => CoopAddParticipant(
+                    document: CoopDocument(
+                      documentId: widget.documentId,
+                      item: item,
+                    ),
+                    color: color,
+                  ),
+            ),
+          );
+        } else {
+          Helper.showInSnackBar(
+            _scaffoldKey.currentState,
+            'Only owner can add participant.',
+          );
+        }
+        break;
       default:
     }
   }
@@ -128,6 +150,7 @@ class _CoopDetailState extends State<CoopDetail> {
                 Icons.check,
                 Icons.edit,
                 Icons.share,
+                Icons.person_add,
               ],
               foregroundColor: Colors.white,
               backgroundColor: color,
@@ -548,12 +571,17 @@ class _CoopDetailState extends State<CoopDetail> {
                     ),
                   ],
                 ),
-                _buildImageRow(
-                  context,
-                  CoopDocument(item: item, documentId: widget.documentId),
-                  maxCount: 6,
-                  uid: doneUids,
-                ),
+                doneUids.length == 0
+                    ? Text(
+                        'Nobody attained!',
+                        style: Theme.contentStyle,
+                      )
+                    : _buildImageRow(
+                        context,
+                        CoopDocument(item: item, documentId: widget.documentId),
+                        maxCount: 6,
+                        uid: doneUids,
+                      ),
               ],
             ),
           ),
@@ -682,8 +710,8 @@ class _CoopDetailState extends State<CoopDetail> {
         children: states.map((state) {
           return FutureBuilder(
             future: DataFeeder.instance.getInfoFuture(uid: state.uid),
-            builder:
-                (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return Container(
                   child: Column(
@@ -704,29 +732,26 @@ class _CoopDetailState extends State<CoopDetail> {
               return Container(
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: ListTile(
-                        leading: Helper.buildCircularNetworkImage(
-                          url: info.photoUrl,
-                          size: 50.0,
+                    ListTile(
+                      leading: Helper.buildCircularNetworkImage(
+                        url: info.photoUrl,
+                        size: 50.0,
+                      ),
+                      title: Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: Text(
+                          '${info.displayName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.header2Style,
                         ),
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          child: Text(
-                            '${info.displayName}',
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.header2Style,
-                          ),
+                      ),
+                      trailing: Helper.buildCircularIcon(
+                        data: TypeDecoration(
+                          icon: Helper.getStateIcon(state.state),
+                          color: Colors.white,
+                          backgroundColor: Helper.getStateColor(state.state),
                         ),
-                        trailing: Helper.buildCircularIcon(
-                          data: TypeDecoration(
-                            icon: Helper.getStateIcon(state.state),
-                            color: Colors.white,
-                            backgroundColor: Helper.getStateColor(state.state),
-                          ),
-                          size: 30.0,
-                        ),
+                        size: 30.0,
                       ),
                     ),
                     Divider(

@@ -23,7 +23,7 @@
       <file leaf-file-name="main_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
+            <state relative-caret-position="731">
               <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
             </state>
           </provider>
@@ -148,6 +148,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -182,7 +183,6 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
     </panes>
@@ -287,7 +287,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="0" width="1050" height="745" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32784185" />
@@ -325,7 +324,6 @@
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Dart Analysis" order="9" weight="0.3293919" />
       <window_info id="Build Variants" order="3" side_tool="true" />
-      <window_info id="Image Layers" order="7" />
       <window_info active="true" anchor="bottom" id="Run" order="5" sideWeight="0.49785867" visible="true" weight="0.33614865" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -337,20 +335,21 @@
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50214136" side_tool="true" weight="0.3293919" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3293919" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24919786" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" visible="true" weight="0.28963414" />
       <window_info anchor="right" id="Device File Explorer" order="5" side_tool="true" />
       <window_info anchor="right" id="Flutter Outline" order="6" weight="0.37860963" />
       <window_info anchor="bottom" id="Logcat" order="12" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.3293919" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3412162" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4983108" visible="true" weight="0.28963414" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.276771" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3293919" />
+      <window_info id="Image Layers" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="7" />
       <window_info id="Structure" order="1" sideWeight="0.5016892" side_tool="true" weight="0.17326203" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3293919" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
     </layout-to-restore>
@@ -667,7 +666,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/main_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
+        <state relative-caret-position="731">
           <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
         </state>
       </provider>
