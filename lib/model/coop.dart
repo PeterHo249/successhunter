@@ -101,7 +101,8 @@ class CoopGoal {
   }
 
   void completeCoop(String uid) {
-    var participantState = states.firstWhere((ParticipantState state) => state.uid == uid);
+    var participantState =
+        states.firstWhere((ParticipantState state) => state.uid == uid);
     participantState.state = ActivityState.done;
     participantState.currentValue = targetValue;
 
@@ -115,6 +116,19 @@ class CoopGoal {
     if (_isAllComplete) {
       mainState = ActivityState.done;
       doneDate = DateTime.now().toUtc();
+    }
+  }
+
+  void completeMilestone(int index, String uid) {
+    milestones[index]
+        .states
+        .firstWhere((ParticipantState state) => state.uid == uid)
+        .state = ActivityState.done;
+    var participantState =
+        states.firstWhere((ParticipantState state) => state.uid == uid);
+    participantState.currentValue += milestones[index].targetValue;
+    if (participantState.currentValue >= targetValue) {
+      participantState.state = ActivityState.done;
     }
   }
 }
@@ -136,8 +150,7 @@ class CoopMilestone {
   }) {
     if (description == null) description = '';
     if (targetDate == null) targetDate = DateTime.now().toUtc();
-    if (states == null)
-      states = [ParticipantState(uid: gInfo.uid, state: ActivityState.doing)];
+    if (states == null) states = <ParticipantState>[];
   }
 
   factory CoopMilestone.fromJson(Map<String, dynamic> json) =>

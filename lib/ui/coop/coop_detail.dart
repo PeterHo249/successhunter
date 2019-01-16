@@ -17,6 +17,7 @@ import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/utils/formatter.dart';
+import 'package:folding_cell/folding_cell.dart';
 
 class CoopDetail extends StatefulWidget {
   final String documentId;
@@ -110,8 +111,9 @@ class _CoopDetailState extends State<CoopDetail> {
         } else {
           item =
               CoopGoal.fromJson(json.decode(json.encode(snapshot.data.data)));
-          // TODO: Sort milestone
-
+          item.milestones.sort((CoopMilestone a, CoopMilestone b) {
+            return a.targetDate.compareTo(b.targetDate);
+          });
           color = TypeDecorationEnum
               .typeDecorations[ActivityTypeEnum.getIndex(item.type)]
               .backgroundColor;
@@ -211,14 +213,13 @@ class _CoopDetailState extends State<CoopDetail> {
                   ),
                   CircularPercentIndicator(
                     radius: screenHeight * 0.10,
-                    percent: item.currentValue.toDouble() /
-                        item.targetValue.toDouble(),
+                    percent: item.getDonePercent(gInfo.uid),
                     animation: true,
                     circularStrokeCap: CircularStrokeCap.round,
                     progressColor: Colors.white,
                     lineWidth: 10.0,
                     center: Text(
-                      '${(item.currentValue.toDouble() / item.targetValue.toDouble()) * 100.0}%',
+                      '${item.getDonePercent(gInfo.uid) * 100.0}%',
                       style: Theme.contentStyle.copyWith(
                         color: Colors.white,
                       ),
@@ -244,10 +245,12 @@ class _CoopDetailState extends State<CoopDetail> {
   }
 
   Widget _buildImageRow(BuildContext context, CoopDocument document,
-      {int maxCount = 4}) {
-    var participantUids = document.item.participantUids;
+      {int maxCount = 4, List<String> uid}) {
+    var participantUids = uid ?? document.item.participantUids;
     var _hasMore = false;
+    int _moreCount = 0;
     if (participantUids.length > maxCount) {
+      _moreCount = participantUids.length - maxCount;
       participantUids = participantUids.sublist(0, maxCount - 1);
       _hasMore = true;
     }
@@ -281,21 +284,23 @@ class _CoopDetailState extends State<CoopDetail> {
     if (_hasMore) {
       participantImages.add(
         Text(
-          '+${document.item.participantUids.length - maxCount} more',
+          '+$_moreCount more',
           style: Theme.contentStyle.copyWith(color: Colors.grey),
         ),
       );
     }
 
     return InkWell(
-      onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CoopParticipantList(
-                    document: document,
-                  ),
-            ),
-          ),
+      onTap: uid != null
+          ? null
+          : () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CoopParticipantList(
+                        document: document,
+                      ),
+                ),
+              ),
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -312,6 +317,10 @@ class _CoopDetailState extends State<CoopDetail> {
     List<Widget> milestoneTiles = <Widget>[];
 
     for (int i = milestones.length - 1; i >= 0; i--) {
+      var state = milestones[i]
+          .states
+          .firstWhere((ParticipantState state) => state.uid == gInfo.uid)
+          .state;
       Widget tile = Slidable.builder(
         key: Key(milestones[i].title),
         delegate: SlidableDrawerDelegate(),
@@ -324,7 +333,7 @@ class _CoopDetailState extends State<CoopDetail> {
           onDismissed: (actionType) {
             if (actionType == SlideActionType.secondary) {
               item.milestones.removeAt(i);
-              //DataFeeder.instance.overwriteGoal(widget.documentId, item);
+              DataFeeder.instance.overwriteCoop(widget.documentId, item);
             }
           },
         ),
@@ -335,15 +344,15 @@ class _CoopDetailState extends State<CoopDetail> {
               color: Colors.green,
               icon: Icons.check,
               onTap: () {
-                //item.completeMilestone(i);
+                item.completeMilestone(i, gInfo.uid);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
-                //DataFeeder.instance.overwriteGoal(widget.documentId, item);
+                DataFeeder.instance.overwriteCoop(widget.documentId, item);
                 setState(() {});
               },
             );
           },
-          actionCount: 1,
+          actionCount: state == ActivityState.doing ? 1 : 0,
         ),
         secondaryActionDelegate: SlideActionBuilderDelegate(
           builder: (context, index, animation, renderingMode) {
@@ -355,84 +364,41 @@ class _CoopDetailState extends State<CoopDetail> {
                 var state = Slidable.of(context);
                 state.dismiss();
                 item.milestones.removeAt(i);
-                //DataFeeder.instance.overwriteGoal(widget.documentId, item);
+                DataFeeder.instance.overwriteCoop(widget.documentId, item);
               },
             );
           },
-          actionCount: 1,
+          actionCount: state == ActivityState.doing ? 1 : 0,
         ),
-        child: Container(
-          height: 100.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 100.0,
-                child: Center(
-                  child: Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: <Widget>[
-                      Container(
-                        width: 5.0,
-                        color: Colors.grey,
-                      ),
-                      Container(
-                        width: 30.0,
-                        height: 30.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          //color: Helper.getStateColor(milestones[i].state),
-                        ),
-                        child: Icon(
-                          Icons.do_not_disturb,
-                          //Helper.getStateIcon(milestones[i].state),
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                width: screenWidth - 130.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      width: screenWidth - 130.0,
-                      child: Text(
-                        milestones[i].title,
-                        style: Theme.header4Style,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '${milestones[i].targetValue} ${item.unit}',
-                          style: Theme.contentStyle,
-                        ),
-                        Text(
-                          Formatter.getDateString(milestones[i].targetDate),
-                          style: Theme.contentStyle,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
+        child: SimpleFoldingCell(
+          padding: const EdgeInsets.all(0.0),
+          cellSize: Size(screenWidth, 150.0),
+          frontWidget: _buildFrontMilestoneTile(
+            context,
+            widget.documentId,
+            item,
+            i,
+          ),
+          innerTopWidget: _buildTopInnerMilestoneTile(
+            context,
+            widget.documentId,
+            item,
+            i,
+          ),
+          innerBottomWidget: _buildBottomInnerMilestoneTile(
+            context,
+            widget.documentId,
+            item,
+            i,
           ),
         ),
       );
+
       milestoneTiles.add(tile);
     }
 
     Widget startTile = Container(
+      color: Colors.white,
       height: 100.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -505,5 +471,273 @@ class _CoopDetailState extends State<CoopDetail> {
     milestoneTiles.add(startTile);
 
     return milestoneTiles;
+  }
+
+  Widget _buildFrontMilestoneTile(
+      BuildContext context, String documentId, CoopGoal item, int index) {
+    final List<CoopMilestone> milestones = item.milestones;
+    var state = milestones[index]
+        .states
+        .firstWhere((ParticipantState state) => state.uid == gInfo.uid)
+        .state;
+    List<String> doneUids = milestones[index]
+        .states
+        .where((ParticipantState state) => state.state == ActivityState.done)
+        .map((ParticipantState state) => state.uid)
+        .toList();
+
+    return Container(
+      color: Colors.white,
+      height: 150.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 100.0,
+            child: Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  Container(
+                    width: 5.0,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    width: 30.0,
+                    height: 30.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Helper.getStateColor(state),
+                    ),
+                    child: Icon(
+                      Helper.getStateIcon(state),
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: screenWidth - 130.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: screenWidth - 130.0,
+                  child: Text(
+                    milestones[index].title,
+                    style: Theme.header4Style,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${milestones[index].targetValue} ${item.unit}',
+                      style: Theme.contentStyle,
+                    ),
+                    Text(
+                      Formatter.getDateString(milestones[index].targetDate),
+                      style: Theme.contentStyle,
+                    ),
+                  ],
+                ),
+                _buildImageRow(
+                  context,
+                  CoopDocument(item: item, documentId: widget.documentId),
+                  maxCount: 6,
+                  uid: doneUids,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopInnerMilestoneTile(
+      BuildContext context, String documentId, CoopGoal item, int index) {
+    final List<CoopMilestone> milestones = item.milestones;
+    var state = milestones[index]
+        .states
+        .firstWhere((ParticipantState state) => state.uid == gInfo.uid)
+        .state;
+
+    return Container(
+      color: Colors.white,
+      height: 150.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 100.0,
+            child: Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  Container(
+                    width: 5.0,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    width: 30.0,
+                    height: 30.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Helper.getStateColor(state),
+                    ),
+                    child: Icon(
+                      Helper.getStateIcon(state),
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: screenWidth - 130.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: screenWidth - 130.0,
+                  child: Text(
+                    milestones[index].title,
+                    style: Theme.header4Style,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${milestones[index].targetValue} ${item.unit}',
+                      style: Theme.contentStyle,
+                    ),
+                    Text(
+                      Formatter.getDateString(milestones[index].targetDate),
+                      style: Theme.contentStyle,
+                    ),
+                  ],
+                ),
+                Text(
+                  'Participants:',
+                  style: Theme.contentStyle.copyWith(fontSize: 18.0),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomInnerMilestoneTile(
+      BuildContext context, String documentId, CoopGoal item, int index) {
+    final List<CoopMilestone> milestones = item.milestones;
+
+    return Container(
+      color: Colors.white,
+      height: 150.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 100.0,
+            child: Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  Container(
+                    width: 5.0,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          _buildDoneListView(context, milestones[index].states)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDoneListView(
+      BuildContext context, List<ParticipantState> states) {
+    return Container(
+      width: screenWidth - 130.0,
+      child: ListView(
+        children: states.map((state) {
+          return FutureBuilder(
+            future: DataFeeder.instance.getInfoFuture(uid: state.uid),
+            builder:
+                (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Helper.buildFlareLoading(),
+                      Divider(
+                        color: Colors.blueGrey,
+                      ),
+                    ],
+                  ),
+                );
+              }
+              var info =
+                  User.fromJson(json.decode(json.encode(snapshot.data.data)));
+
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: ListTile(
+                        leading: Helper.buildCircularNetworkImage(
+                          url: info.photoUrl,
+                          size: 50.0,
+                        ),
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Text(
+                            '${info.displayName}',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.header2Style,
+                          ),
+                        ),
+                        trailing: Helper.buildCircularIcon(
+                          data: TypeDecoration(
+                            icon: Helper.getStateIcon(state.state),
+                            color: Colors.white,
+                            backgroundColor: Helper.getStateColor(state.state),
+                          ),
+                          size: 30.0,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.blueGrey,
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }).toList(),
+      ),
+    );
   }
 }

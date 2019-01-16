@@ -46,6 +46,7 @@ class _GoalDetailState extends State<GoalDetail> {
           MaterialPageRoute(
             builder: (context) => MilestoneForm(
                   documentId: widget.documentId,
+                  color: color,
                 ),
           ),
         );

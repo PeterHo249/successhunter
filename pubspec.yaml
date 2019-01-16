@@ -42,6 +42,7 @@ dependencies:
   material_search: ^0.2.8
   wave: ^0.0.8
   cached_network_image: ^0.5.1
+  folding_cell: ^0.1.0
 
 dev_dependencies:
   flutter_test:

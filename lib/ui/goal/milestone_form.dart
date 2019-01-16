@@ -11,8 +11,9 @@ import 'package:successhunter/utils/helper.dart' as Helper;
 class MilestoneForm extends StatefulWidget {
   final String documentId;
   final int index;
+  final Color color;
 
-  MilestoneForm({this.documentId, this.index});
+  MilestoneForm({this.documentId, this.index, this.color});
 
   @override
   _MilestoneFormState createState() => _MilestoneFormState();
@@ -74,7 +75,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
       appBar: AppBar(
         title: Text('New Milestone'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.mainColor,
+        backgroundColor: widget.color,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,
@@ -87,10 +88,9 @@ class _MilestoneFormState extends State<MilestoneForm> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: Theme.Colors.primaryGradient,
-            ),
+          Helper.buildHeaderBackground(
+            context,
+            color: widget.color,
           ),
           Form(
             key: _milestoneFormKey,
@@ -134,9 +134,12 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 ),
                 CardSettingsDatePicker(
                   label: 'Date',
-                  initialValue:
-                      milestoneItem == null ? null : milestoneItem.targetDate.toLocal(),
-                  onSaved: (value) => milestoneItem.targetDate = updateJustTime(TimeOfDay(hour: 23, minute: 59), value).toUtc(),
+                  initialValue: milestoneItem == null
+                      ? null
+                      : milestoneItem.targetDate.toLocal(),
+                  onSaved: (value) => milestoneItem.targetDate =
+                      updateJustTime(TimeOfDay(hour: 23, minute: 59), value)
+                          .toUtc(),
                   autovalidate: true,
                   validator: (DateTime value) {
                     if (value.isBefore(goalItem.startDate.toLocal())) {

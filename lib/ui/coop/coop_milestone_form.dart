@@ -89,7 +89,10 @@ class _CoopMilestoneFormState extends State<CoopMilestoneForm> {
       ),
       body: Stack(
         children: <Widget>[
-          Helper.buildHeaderBackground(context, color: widget.color),
+          Helper.buildHeaderBackground(
+            context,
+            color: widget.color,
+          ),
           Form(
             key: _milestoneFormKey,
             child: CardSettings(
