@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
-import 'package:successhunter/style/theme.dart' as Theme;
 
 class CoopMilestoneForm extends StatefulWidget {
   final String documentId;

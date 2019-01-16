@@ -101,7 +101,9 @@ class CoopParticipantList extends StatelessWidget {
               },
               onDismissed: (actionType) {
                 if (actionType == SlideActionType.secondary) {
-                  // TODO: remove participant
+                  document.item.removeParticipant(uid);
+                  DataFeeder.instance
+                      .overwriteCoop(document.documentId, document.item);
                 }
               },
             ),
@@ -114,7 +116,9 @@ class CoopParticipantList extends StatelessWidget {
             onTap: () {
               var state = Slidable.of(context);
               state.dismiss();
-              // TODO: remove participant
+              document.item.removeParticipant(uid);
+              DataFeeder.instance
+                  .overwriteCoop(document.documentId, document.item);
             },
           );
         },
@@ -129,20 +133,20 @@ class CoopParticipantList extends StatelessWidget {
       future: DataFeeder.instance.getInfoFuture(uid: uid),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Helper.buildFlareLoading(),
-                  Divider(
-                    color: Colors.blueGrey,
-                  ),
-                ],
-              ),
-            );
-          }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Helper.buildFlareLoading(),
+                Divider(
+                  color: Colors.blueGrey,
+                ),
+              ],
+            ),
+          );
+        }
         var info = User.fromJson(json.decode(json.encode(snapshot.data.data)));
 
         return Container(

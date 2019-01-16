@@ -58,7 +58,8 @@ class _CoopDetailState extends State<CoopDetail> {
         }
         break;
       case 1:
-        // TODO: Complete coop
+        item.completeCoop(gInfo.uid);
+        DataFeeder.instance.overwriteCoop(widget.documentId, item);
         break;
       case 2:
         Navigator.push(
