@@ -7,7 +7,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/coop/coop_participant.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/coop/coop_form.dart';
 import 'package:successhunter/ui/coop/coop_milestone_form.dart';
@@ -30,29 +32,32 @@ class _CoopDetailState extends State<CoopDetail> {
   double screenWidth = 0.0;
   double screenHeight = 0.0;
   Color color;
+  bool _isOwner = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Business
   void _fabIconsPressed(int index) {
     switch (index) {
       case 0:
-        Navigator.push(
-          this.context,
-          MaterialPageRoute(
-            builder: (context) => CoopMilestoneForm(
-                  documentId: widget.documentId,
-                ),
-          ),
-        );
+        if (_isOwner) {
+          Navigator.push(
+            this.context,
+            MaterialPageRoute(
+              builder: (context) => CoopMilestoneForm(
+                    documentId: widget.documentId,
+                    color: color,
+                  ),
+            ),
+          );
+        } else {
+          Helper.showInSnackBar(
+            _scaffoldKey.currentState,
+            'Only owner can add milestone.',
+          );
+        }
         break;
       case 1:
-        if (item.mainState == ActivityState.doing) {
-          item.mainState = ActivityState.done;
-          item.currentValue = item.targetValue;
-          item.doneDate = DateTime.now().toUtc();
-          gInfo.addExperience(this.context, 50);
-          DataFeeder.instance.overwriteInfo(gInfo);
-          DataFeeder.instance.overwriteCoop(widget.documentId, item);
-        }
+        // TODO: Complete coop
         break;
       case 2:
         Navigator.push(
@@ -110,8 +115,10 @@ class _CoopDetailState extends State<CoopDetail> {
           color = TypeDecorationEnum
               .typeDecorations[ActivityTypeEnum.getIndex(item.type)]
               .backgroundColor;
+          _isOwner = gInfo.uid == item.ownerUid;
 
           return Scaffold(
+            key: _scaffoldKey,
             floatingActionButton: FABWithIcons(
               icons: [
                 Icons.outlined_flag,
@@ -203,7 +210,7 @@ class _CoopDetailState extends State<CoopDetail> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   CircularPercentIndicator(
-                    radius: screenHeight * 0.15,
+                    radius: screenHeight * 0.10,
                     percent: item.currentValue.toDouble() /
                         item.targetValue.toDouble(),
                     animation: true,
@@ -220,7 +227,80 @@ class _CoopDetailState extends State<CoopDetail> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: _buildImageRow(
+                context,
+                CoopDocument(
+                  item: item,
+                  documentId: widget.documentId,
+                ),
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageRow(BuildContext context, CoopDocument document,
+      {int maxCount = 4}) {
+    var participantUids = document.item.participantUids;
+    var _hasMore = false;
+    if (participantUids.length > maxCount) {
+      participantUids = participantUids.sublist(0, maxCount - 1);
+      _hasMore = true;
+    }
+
+    List<Widget> participantImages = <Widget>[];
+
+    for (int i = 0; i < participantUids.length; i++) {
+      var imageWidget = FutureBuilder(
+        future: DataFeeder.instance.getInfoFuture(uid: participantUids[i]),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              height: 40.0,
+              width: 40.0,
+              color: Colors.grey,
+            );
+          }
+          var info =
+              User.fromJson(json.decode(json.encode(snapshot.data.data)));
+          return Helper.buildCircularNetworkImage(
+            url: info.photoUrl,
+            size: 40,
+          );
+        },
+      );
+
+      participantImages.add(imageWidget);
+    }
+
+    if (_hasMore) {
+      participantImages.add(
+        Text(
+          '+${document.item.participantUids.length - maxCount} more',
+          style: Theme.contentStyle.copyWith(color: Colors.grey),
+        ),
+      );
+    }
+
+    return InkWell(
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CoopParticipantList(
+                    document: document,
+                  ),
+            ),
+          ),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: participantImages,
         ),
       ),
     );

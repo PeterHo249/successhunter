@@ -17,7 +17,6 @@ CoopGoal _$CoopGoalFromJson(Map<String, dynamic> json) {
           ? null
           : DateTime.parse(json['targetDate'] as String),
       startValue: json['startValue'] as int,
-      currentValue: json['currentValue'] as int,
       targetValue: json['targetValue'] as int,
       unit: json['unit'] as String,
       type: json['type'] as String,
@@ -35,6 +34,7 @@ CoopGoal _$CoopGoalFromJson(Map<String, dynamic> json) {
               : CoopMilestone.fromJson(e as Map<String, dynamic>))
           ?.toList(),
       mainState: json['mainState'] as int)
+    ..currentValue = json['currentValue'] as int
     ..ownerUid = json['ownerUid'] as String
     ..participantUids =
         (json['participantUids'] as List)?.map((e) => e as String)?.toList();
@@ -84,8 +84,9 @@ Map<String, dynamic> _$CoopMilestoneToJson(CoopMilestone instance) =>
 
 ParticipantState _$ParticipantStateFromJson(Map<String, dynamic> json) {
   return ParticipantState(
-      uid: json['uid'] as String, state: json['state'] as int)
-    ..currentValue = json['currentValue'] as int;
+      uid: json['uid'] as String,
+      state: json['state'] as int,
+      currentValue: json['currentValue'] as int);
 }
 
 Map<String, dynamic> _$ParticipantStateToJson(ParticipantState instance) =>

@@ -11,8 +11,9 @@ import 'package:successhunter/style/theme.dart' as Theme;
 class CoopMilestoneForm extends StatefulWidget {
   final String documentId;
   final int index;
+  final Color color;
 
-  CoopMilestoneForm({this.documentId, this.index});
+  CoopMilestoneForm({this.documentId, this.index, this.color});
 
   _CoopMilestoneFormState createState() => _CoopMilestoneFormState();
 }
@@ -30,11 +31,11 @@ class _CoopMilestoneFormState extends State<CoopMilestoneForm> {
     if (form.validate()) {
       form.save();
       if (widget.index == null) {
-        /// TODO: add new milestone
+        coopItem.addMilestone(milestoneItem);
       } else {
-        /// TODO: modify milestone
+        coopItem.milestones[widget.index] = milestoneItem;
       }
-
+      DataFeeder.instance.overwriteCoop(widget.documentId, coopItem);
       Navigator.pop(this.context);
     } else {
       _isAutoValidate = true;
@@ -75,7 +76,7 @@ class _CoopMilestoneFormState extends State<CoopMilestoneForm> {
       appBar: AppBar(
         title: Text('New Milestone'),
         elevation: 0.0,
-        backgroundColor: Theme.Colors.mainColor,
+        backgroundColor: widget.color,
         actions: <Widget>[
           IconButton(
             onPressed: _savePressed,
@@ -88,11 +89,7 @@ class _CoopMilestoneFormState extends State<CoopMilestoneForm> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: Theme.Colors.primaryGradient,
-            ),
-          ),
+          Helper.buildHeaderBackground(context, color: widget.color),
           Form(
             key: _milestoneFormKey,
             child: CardSettings(

@@ -28,7 +28,6 @@ class CoopGoal {
     this.startDate,
     this.targetDate,
     this.startValue = 0,
-    this.currentValue,
     this.targetValue = 100,
     this.unit = '%',
     this.type = ActivityTypeEnum.career,
@@ -69,6 +68,55 @@ class CoopGoal {
             .toDouble() /
         targetValue.toDouble();
   }
+
+  void addMilestone(CoopMilestone coopMilestone) {
+    for (int i = 0; i < participantUids.length; i++) {
+      coopMilestone.states.add(ParticipantState(uid: participantUids[i]));
+    }
+
+    milestones.add(coopMilestone);
+  }
+
+  void addParticipant(String uid) {
+    participantUids.add(uid);
+    var participantState = ParticipantState(uid: uid);
+    states.add(participantState);
+    for (int i = 0; i < milestones.length; i++) {
+      milestones[i].states.add(participantState);
+    }
+  }
+
+  void removeParticipant(String uid) {
+    if (uid == gInfo.uid) {
+      return;
+    }
+
+    participantUids.removeWhere((String testUid) => testUid == uid);
+    states.removeWhere((ParticipantState state) => state.uid == uid);
+    for (int i = 0; i < milestones.length; i++) {
+      milestones[i]
+          .states
+          .removeWhere((ParticipantState state) => state.uid == uid);
+    }
+  }
+
+  void completeCoop(String uid) {
+    var participantState = states.firstWhere((ParticipantState state) => state.uid == uid);
+    participantState.state = ActivityState.done;
+    participantState.currentValue = targetValue;
+
+    bool _isAllComplete = true;
+    for (int i = 0; i < states.length; i++) {
+      if (states[i].state != ActivityState.done) {
+        _isAllComplete = false;
+      }
+    }
+
+    if (_isAllComplete) {
+      mainState = ActivityState.done;
+      doneDate = DateTime.now().toUtc();
+    }
+  }
 }
 
 @JsonSerializable()
@@ -101,12 +149,13 @@ class CoopMilestone {
 @JsonSerializable()
 class ParticipantState {
   String uid;
-  int currentValue = 0;
+  int currentValue;
   int state;
 
   ParticipantState({
     @required this.uid,
     this.state = ActivityState.doing,
+    this.currentValue = 0,
   });
 
   factory ParticipantState.fromJson(Map<String, dynamic> json) =>
