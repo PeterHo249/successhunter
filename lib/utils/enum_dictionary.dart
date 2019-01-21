@@ -6,6 +6,19 @@ User gInfo = User();
 bool isLockPin = false;
 DateTime lockTime = DateTime.now();
 
+class InvitationStatusEnum {
+  static const String beInvited = 'beInvited';
+  static const String accepted = 'accepted';
+
+  static const List<String> statuses = <String>[
+    beInvited,
+    accepted,
+  ];
+
+  static int getIndex(String status) {
+    return statuses.indexOf(status);
+  }
+}
 class ActivityTypeEnum {
   static const String career = 'Career';
   static const String health = 'Health';

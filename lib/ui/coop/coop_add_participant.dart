@@ -198,8 +198,23 @@ class _CoopAddParticipantState extends State<CoopAddParticipant> {
               color: Colors.white,
             ),
             onPressed: () {
-              // TODO: send invite request
-              Navigator.pop(context);
+              if (selectedUsers.isEmpty) {
+                Navigator.pop(context);
+              } else {
+                var url =
+                    'https://us-central1-success-hunter-db.cloudfunctions.net/invite_participants';
+                Map<String, dynamic> reqBody = {
+                  "inviterUid": gInfo.uid,
+                  "coopId": widget.document.documentId,
+                  "invitedUids": selectedUsers.map((user) => user.uid).toList(),
+                };
+                http.post(
+                  url,
+                  headers: {"Content-Type": "application/json"},
+                  body: reqBody,
+                );
+                Navigator.pop(context);
+              }
             },
           ),
         ],

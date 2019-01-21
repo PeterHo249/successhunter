@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/ui/coop/coop_invitation.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -62,15 +63,58 @@ class FirebaseNotification {
 
   Future onMessageCallback(Map<String, dynamic> message) async {
     print('On message $message');
+    Map<String, dynamic> data = message['data'];
+    String category = data['category'];
+
+    switch (category) {
+      case 'Coop':
+        String status = data['status'];
+        String coopId = data['coopId'];
+        String inviterUid = data['inviterUid'];
+        switch (status) {
+          case InvitationStatusEnum.beInvited:
+            print('invitation from $inviterUid for $coopId');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CoopInvitation(
+                          coopId: coopId,
+                          inviterUid: inviterUid,
+                        )));
+            break;
+          default:
+        }
+        break;
+      default:
+    }
   }
 
   Future onResumeCallback(Map<String, dynamic> message) async {
     print('On Resume $message');
 
     String category = message['category'];
-    String documentId = message['documentId'];
+    String documentId;
     switch (category) {
+      case 'Coop':
+        String status = message['status'];
+        String coopId = message['coopId'];
+        String inviterUid = message['inviterUid'];
+        switch (status) {
+          case InvitationStatusEnum.beInvited:
+            print('invitation from $inviterUid for $coopId');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CoopInvitation(
+                          coopId: coopId,
+                          inviterUid: inviterUid,
+                        )));
+            break;
+          default:
+        }
+        break;
       case 'Goal':
+        documentId = message['documentId'];
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -79,6 +123,7 @@ class FirebaseNotification {
                     )));
         break;
       case 'Habit':
+        documentId = message['documentId'];
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return HabitDetail(
             documentId: documentId,
@@ -93,9 +138,28 @@ class FirebaseNotification {
     print('On Launch $message');
 
     String category = message['category'];
-    String documentId = message['documentId'];
+    String documentId;
     switch (category) {
+      case 'Coop':
+        String status = message['status'];
+        String coopId = message['coopId'];
+        String inviterUid = message['inviterUid'];
+        switch (status) {
+          case InvitationStatusEnum.beInvited:
+            print('invitation from $inviterUid for $coopId');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CoopInvitation(
+                          coopId: coopId,
+                          inviterUid: inviterUid,
+                        )));
+            break;
+          default:
+        }
+        break;
       case 'Goal':
+        documentId = message['documentId'];
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -104,6 +168,7 @@ class FirebaseNotification {
                     )));
         break;
       case 'Habit':
+        documentId = message['documentId'];
         Navigator.push(
             context,
             MaterialPageRoute(
