@@ -287,6 +287,10 @@ class DataFeeder {
     return snapshots;
   }
 
+  Future<DocumentSnapshot> getCoopFuture(String documentId) {
+    return Firestore.instance.collection('coops').document(documentId).get();
+  }
+
   Stream<QuerySnapshot> getDoingCoopList() {
     Stream<QuerySnapshot> snapshots = Firestore.instance
         .collection('coops')

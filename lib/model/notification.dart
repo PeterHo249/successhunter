@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/ui/coop/coop_invitation.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -63,6 +65,7 @@ class FirebaseNotification {
 
   Future onMessageCallback(Map<String, dynamic> message) async {
     print('On message $message');
+    Map<String, dynamic> notification = message['notification'];
     Map<String, dynamic> data = message['data'];
     String category = data['category'];
 
@@ -70,17 +73,12 @@ class FirebaseNotification {
       case 'Coop':
         String status = data['status'];
         String coopId = data['coopId'];
-        String inviterUid = data['inviterUid'];
+        String content = notification['body'];
+        print(coopId);
+        print(content);
         switch (status) {
           case InvitationStatusEnum.beInvited:
-            print('invitation from $inviterUid for $coopId');
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CoopInvitation(
-                          coopId: coopId,
-                          inviterUid: inviterUid,
-                        )));
+            showInvitationDialog(context, coopId, content);
             break;
           default:
         }
@@ -92,23 +90,17 @@ class FirebaseNotification {
   Future onResumeCallback(Map<String, dynamic> message) async {
     print('On Resume $message');
 
+    Map<String, dynamic> notification = message['notification'];
     String category = message['category'];
     String documentId;
     switch (category) {
       case 'Coop':
         String status = message['status'];
         String coopId = message['coopId'];
-        String inviterUid = message['inviterUid'];
+        String content = notification['body'];
         switch (status) {
           case InvitationStatusEnum.beInvited:
-            print('invitation from $inviterUid for $coopId');
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CoopInvitation(
-                          coopId: coopId,
-                          inviterUid: inviterUid,
-                        )));
+            showInvitationDialog(context, coopId, content);
             break;
           default:
         }
@@ -137,23 +129,17 @@ class FirebaseNotification {
   Future onLaunchCallback(Map<String, dynamic> message) async {
     print('On Launch $message');
 
+    Map<String, dynamic> notification = message['notification'];
     String category = message['category'];
     String documentId;
     switch (category) {
       case 'Coop':
         String status = message['status'];
         String coopId = message['coopId'];
-        String inviterUid = message['inviterUid'];
+        String content = notification['body'];
         switch (status) {
           case InvitationStatusEnum.beInvited:
-            print('invitation from $inviterUid for $coopId');
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CoopInvitation(
-                          coopId: coopId,
-                          inviterUid: inviterUid,
-                        )));
+            showInvitationDialog(context, coopId, content);
             break;
           default:
         }
@@ -178,5 +164,45 @@ class FirebaseNotification {
         break;
       default:
     }
+  }
+
+  showInvitationDialog(
+      BuildContext context, String coopId, String content) async {
+    var rawData = await DataFeeder.instance.getCoopFuture(coopId);
+    CoopGoal item = CoopGoal.fromJson(json.decode(json.encode(rawData.data)));
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Invitation', style: Theme.header2Style,),
+          content: Text(content, style: Theme.contentStyle,),
+          actions: <Widget>[
+            RaisedButton(
+              textColor: Colors.white,
+              child: Text(
+                'Yes',
+                style: Theme.header4Style,
+              ),
+              onPressed: () {
+                item.addParticipant(gInfo.uid);
+                DataFeeder.instance.overwriteCoop(coopId, item);
+                Navigator.pop(context);
+              },
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              child: Text(
+                'No',
+                style: Theme.header4Style,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      }
+    );
   }
 }

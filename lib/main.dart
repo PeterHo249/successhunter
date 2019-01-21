@@ -147,6 +147,7 @@ class MainApp extends StatelessWidget {
           if (snapshot.hasData) {
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
             DataFeeder.instance.initUserInfo(snapshot.data);
+            FirebaseNotification.instance.firebaseCloudMessagingListeners();
             final subscription = DataFeeder.instance.getInfo().listen(null);
             subscription.onData((DocumentSnapshot documentSnapshot) {
               gInfo = User.fromJson(
