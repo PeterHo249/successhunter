@@ -90,14 +90,17 @@ class FirebaseNotification {
   Future onResumeCallback(Map<String, dynamic> message) async {
     print('On Resume $message');
 
-    Map<String, dynamic> notification = message['notification'];
     String category = message['category'];
     String documentId;
     switch (category) {
       case 'Coop':
         String status = message['status'];
         String coopId = message['coopId'];
-        String content = notification['body'];
+        var inviterInfo =
+            await DataFeeder.instance.getInfoFuture(uid: message['inviterUid']);
+        var coopItem = await DataFeeder.instance.getCoopFuture(coopId);
+        var content =
+            'You are invited to attain goal ${coopItem.data['title']} with ${inviterInfo.data['displayName']}. Do you accept?';
         switch (status) {
           case InvitationStatusEnum.beInvited:
             showInvitationDialog(context, coopId, content);
@@ -129,16 +132,19 @@ class FirebaseNotification {
   Future onLaunchCallback(Map<String, dynamic> message) async {
     print('On Launch $message');
 
-    Map<String, dynamic> notification = message['notification'];
     String category = message['category'];
     String documentId;
     switch (category) {
       case 'Coop':
         String status = message['status'];
         String coopId = message['coopId'];
-        String content = notification['body'];
         switch (status) {
           case InvitationStatusEnum.beInvited:
+            var inviterInfo = await DataFeeder.instance
+                .getInfoFuture(uid: message['inviterUid']);
+            var coopItem = await DataFeeder.instance.getCoopFuture(coopId);
+            var content =
+                'You are invited to attain goal ${coopItem.data['title']} with ${inviterInfo.data['displayName']}. Do you accept?';
             showInvitationDialog(context, coopId, content);
             break;
           default:
@@ -172,37 +178,42 @@ class FirebaseNotification {
     CoopGoal item = CoopGoal.fromJson(json.decode(json.encode(rawData.data)));
 
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Invitation', style: Theme.header2Style,),
-          content: Text(content, style: Theme.contentStyle,),
-          actions: <Widget>[
-            RaisedButton(
-              textColor: Colors.white,
-              child: Text(
-                'Yes',
-                style: Theme.header4Style,
-              ),
-              onPressed: () {
-                item.addParticipant(gInfo.uid);
-                DataFeeder.instance.overwriteCoop(coopId, item);
-                Navigator.pop(context);
-              },
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Invitation',
+              style: Theme.header2Style,
             ),
-            RaisedButton(
-              textColor: Colors.white,
-              child: Text(
-                'No',
-                style: Theme.header4Style,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            content: Text(
+              content,
+              style: Theme.contentStyle,
             ),
-          ],
-        );
-      }
-    );
+            actions: <Widget>[
+              RaisedButton(
+                textColor: Colors.white,
+                child: Text(
+                  'Yes',
+                  style: Theme.header4Style,
+                ),
+                onPressed: () {
+                  item.addParticipant(gInfo.uid);
+                  DataFeeder.instance.overwriteCoop(coopId, item);
+                  Navigator.pop(context);
+                },
+              ),
+              RaisedButton(
+                textColor: Colors.white,
+                child: Text(
+                  'No',
+                  style: Theme.header4Style,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

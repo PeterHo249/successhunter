@@ -7,9 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44533baa-c0d9-4987-a8ec-c72dbf43e63e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/model/data_feeder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/data_feeder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/notification.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/notification.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/coop/coop_invitation.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
@@ -153,7 +151,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -189,6 +186,7 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -291,7 +289,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="0" width="1050" height="745" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32784185" />
