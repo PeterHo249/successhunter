@@ -48,7 +48,11 @@ class User {
       badges = List<String>();
     }
     if (availableAvatars == null) {
-      availableAvatars = <String>['kid_1.png', 'kid_4.png'];
+      Avatar.avatarNames.forEach((key, value) {
+        if (value == 1) {
+          availableAvatars.add(key);
+        }
+      });
     }
     if (goalCounts == null) {
       goalCounts = List<TaskCountPerDate>();
