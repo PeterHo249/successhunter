@@ -49,8 +49,8 @@ class IntroApp extends StatelessWidget {
       onTapDoneButton: () {
         SharedPreferences.getInstance().then((SharedPreferences prefs) {
           prefs.setBool('isAlreadyIntro', true);
-          runApp(MainApp());
         });
+        runApp(MainApp());
       },
       showSkipButton: false,
     );
