@@ -8,11 +8,11 @@ DateTime lockTime = DateTime.now();
 
 class InvitationStatusEnum {
   static const String beInvited = 'beInvited';
-  static const String accepted = 'accepted';
+  static const String notified = 'notified';
 
   static const List<String> statuses = <String>[
     beInvited,
-    accepted,
+    notified,
   ];
 
   static int getIndex(String status) {

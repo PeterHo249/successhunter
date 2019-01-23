@@ -5,6 +5,7 @@ import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/ui/coop/coop_detail.dart';
 import 'package:successhunter/ui/goal/goal_detail.dart';
 import 'package:successhunter/ui/habit/habit_detail.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
@@ -74,8 +75,6 @@ class FirebaseNotification {
         String status = data['status'];
         String coopId = data['coopId'];
         String content = notification['body'];
-        print(coopId);
-        print(content);
         switch (status) {
           case InvitationStatusEnum.beInvited:
             showInvitationDialog(context, coopId, content);
@@ -95,15 +94,24 @@ class FirebaseNotification {
     switch (category) {
       case 'Coop':
         String status = message['status'];
-        String coopId = message['coopId'];
-        var inviterInfo =
-            await DataFeeder.instance.getInfoFuture(uid: message['inviterUid']);
-        var coopItem = await DataFeeder.instance.getCoopFuture(coopId);
-        var content =
-            'You are invited to attain goal ${coopItem.data['title']} with ${inviterInfo.data['displayName']}. Do you accept?';
         switch (status) {
           case InvitationStatusEnum.beInvited:
+            String coopId = message['coopId'];
+            var inviterInfo = await DataFeeder.instance
+                .getInfoFuture(uid: message['inviterUid']);
+            var coopItem = await DataFeeder.instance.getCoopFuture(coopId);
+            var content =
+                'You are invited to attain goal ${coopItem.data['title']} with ${inviterInfo.data['displayName']}. Do you accept?';
             showInvitationDialog(context, coopId, content);
+            break;
+
+          case InvitationStatusEnum.notified:
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CoopDetail(
+                          documentId: message['documentId'],
+                        )));
             break;
           default:
         }
@@ -137,15 +145,23 @@ class FirebaseNotification {
     switch (category) {
       case 'Coop':
         String status = message['status'];
-        String coopId = message['coopId'];
         switch (status) {
           case InvitationStatusEnum.beInvited:
+            String coopId = message['coopId'];
             var inviterInfo = await DataFeeder.instance
                 .getInfoFuture(uid: message['inviterUid']);
             var coopItem = await DataFeeder.instance.getCoopFuture(coopId);
             var content =
                 'You are invited to attain goal ${coopItem.data['title']} with ${inviterInfo.data['displayName']}. Do you accept?';
             showInvitationDialog(context, coopId, content);
+            break;
+          case InvitationStatusEnum.notified:
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CoopDetail(
+                          documentId: message['documentId'],
+                        )));
             break;
           default:
         }
