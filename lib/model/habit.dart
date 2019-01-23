@@ -1,7 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/helper.dart' as Helper;
+import 'package:successhunter/model/badge_list.dart' as Badge;
 
 part 'habit.g.dart';
 
@@ -68,7 +71,8 @@ class Habit {
   Map<String, dynamic> toJson() => _$HabitToJson(this);
 
   Widget buildCircularIcon() {
-    var data = TypeDecorationEnum.typeDecorations[ActivityTypeEnum.getIndex(type)];
+    var data =
+        TypeDecorationEnum.typeDecorations[ActivityTypeEnum.getIndex(type)];
     return Container(
       height: 50.0,
       width: 50.0,
@@ -84,7 +88,7 @@ class Habit {
     );
   }
 
-  void completeToday() {
+  void completeToday(BuildContext context) {
     state = ActivityState.done;
     if (isInStreak) {
       streak.add(DateTime.now().toUtc());
@@ -100,6 +104,24 @@ class Habit {
       }
       isInStreak = true;
     }
+
+    var streakLenght = streak.length;
+    if (streakLenght == 5 ||
+        streakLenght == 10 ||
+        streakLenght == 50 ||
+        streakLenght == 100) {
+      var badgeName = 'streak_$streakLenght.png';
+      if (!gInfo.badges.contains(badgeName)) {
+        gInfo.badges.add(badgeName);
+        DataFeeder.instance.overwriteInfo(gInfo);
+        Helper.showLevelUpDialog(
+          context,
+          gInfo,
+          imagePaths: <String>['assets/badge/$badgeName'],
+          content: 'Congratulation!\n${Badge.badgeNames[badgeName]}',
+        );
+      }
+    }
   }
 }
 
@@ -107,5 +129,8 @@ class HabitDocument {
   final Habit item;
   final String documentId;
 
-  HabitDocument({@required this.item, this.documentId,});
+  HabitDocument({
+    @required this.item,
+    this.documentId,
+  });
 }

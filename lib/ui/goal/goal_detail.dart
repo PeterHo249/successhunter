@@ -57,6 +57,7 @@ class _GoalDetailState extends State<GoalDetail> {
           item.currentValue = item.targetValue;
           item.doneDate = DateTime.now().toUtc();
           gInfo.addExperience(this.context, 50);
+          gInfo.addGoalCount(context);
           DataFeeder.instance.overwriteInfo(gInfo);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
@@ -260,7 +261,7 @@ class _GoalDetailState extends State<GoalDetail> {
               color: Colors.green,
               icon: Icons.check,
               onTap: () {
-                item.completeMilestone(i);
+                item.completeMilestone(i, context: context);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);

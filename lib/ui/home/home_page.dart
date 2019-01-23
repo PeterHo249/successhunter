@@ -447,7 +447,7 @@ class _HomePageState extends State<HomePage> {
             ),
             InkWell(
               onTap: () {
-                document.item.completeToday();
+                document.item.completeToday(context);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance
@@ -515,7 +515,7 @@ class _HomePageState extends State<HomePage> {
               onChanged: (value) {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
-                  document.item.completeToday();
+                  document.item.completeToday(context);
                   gInfo.addExperience(context, 10);
                   DataFeeder.instance.overwriteInfo(gInfo);
                 }

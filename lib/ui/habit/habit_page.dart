@@ -407,8 +407,9 @@ class _HabitPageState extends State<HabitPage> {
       case ActivityState.doing:
         iconButton = InkWell(
           onTap: () {
-            document.item.completeToday();
+            document.item.completeToday(context);
             gInfo.addExperience(context, 10);
+            gInfo.addHabitCount(context);
             DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance
                 .overwriteHabit(document.documentId, document.item);
@@ -544,8 +545,9 @@ class _HabitPageState extends State<HabitPage> {
               onChanged: (value) {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
-                  document.item.completeToday();
+                  document.item.completeToday(context);
                   gInfo.addExperience(context, 10);
+                  gInfo.addHabitCount(context);
                   DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance

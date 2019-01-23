@@ -60,6 +60,9 @@ class _CoopDetailState extends State<CoopDetail> {
         break;
       case 1:
         item.completeCoop(gInfo.uid);
+        gInfo.addExperience(context, 10);
+        gInfo.addCoopCount(context);
+        DataFeeder.instance.overwriteInfo(gInfo);
         DataFeeder.instance.overwriteCoop(widget.documentId, item);
         break;
       case 2:
