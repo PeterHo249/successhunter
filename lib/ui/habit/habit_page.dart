@@ -61,7 +61,7 @@ class _HabitPageState extends State<HabitPage> {
               _buildHeader(context, Container()),
               SliverFillRemaining(
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Helper.buildFlareLoading(),
                 ),
               ),
             ],
