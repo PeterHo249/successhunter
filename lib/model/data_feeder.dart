@@ -39,32 +39,6 @@ class DataFeeder {
         .get();
   }
 
-  initUserInfo(FirebaseUser user) {
-    Firestore.instance
-        .collection(mainCollectionId)
-        .document('info')
-        .snapshots()
-        .listen(
-      (documentSnapshot) async {
-        if (!documentSnapshot.exists) {
-          var batch = Firestore.instance.batch();
-          User item = User(
-            displayName: user.displayName,
-            uid: user.uid,
-            email: user.email,
-            photoUrl: user.photoUrl,
-          );
-          gInfo = item;
-          batch.setData(
-            Firestore.instance.collection(mainCollectionId).document('info'),
-            json.decode(json.encode(item)),
-          );
-          await batch.commit().catchError((error) => print('error: $error'));
-        }
-      },
-    );
-  }
-
   overwriteInfo(User item) async {
     var batch = Firestore.instance.batch();
 
