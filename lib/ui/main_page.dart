@@ -47,11 +47,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    DataFeeder.instance.getInfo().listen(
-      (documentSnapshot) {
-        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      },
-    );
     pageController = PageController();
     fabs = [
       FABWithIcons(
@@ -292,7 +287,8 @@ class _MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Auth.instance.signOut();
-              int tokenIndex = gInfo.fcmToken.indexOf(FirebaseNotification.instance.token);
+              int tokenIndex =
+                  gInfo.fcmToken.indexOf(FirebaseNotification.instance.token);
               if (tokenIndex != -1) {
                 gInfo.fcmToken.removeAt(tokenIndex);
                 DataFeeder.instance.overwriteInfo(gInfo);

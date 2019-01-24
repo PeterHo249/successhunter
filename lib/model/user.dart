@@ -48,6 +48,7 @@ class User {
       badges = List<String>();
     }
     if (availableAvatars == null) {
+      availableAvatars = <String>[];
       Avatar.avatarNames.forEach((key, value) {
         if (value == 1) {
           availableAvatars.add(key);

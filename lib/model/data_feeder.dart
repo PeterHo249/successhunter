@@ -7,6 +7,7 @@ import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
 import 'package:successhunter/model/user.dart';
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class DataFeeder {
   String mainCollectionId = '';
@@ -38,7 +39,7 @@ class DataFeeder {
         .get();
   }
 
-  initUserInfo(FirebaseUser user) async {
+  initUserInfo(FirebaseUser user) {
     Firestore.instance
         .collection(mainCollectionId)
         .document('info')
@@ -53,9 +54,11 @@ class DataFeeder {
             email: user.email,
             photoUrl: user.photoUrl,
           );
+          gInfo = item;
           batch.setData(
-              Firestore.instance.collection(mainCollectionId).document('info'),
-              json.decode(json.encode(item)));
+            Firestore.instance.collection(mainCollectionId).document('info'),
+            json.decode(json.encode(item)),
+          );
           await batch.commit().catchError((error) => print('error: $error'));
         }
       },

@@ -146,15 +146,35 @@ class MainApp extends StatelessWidget {
         } else {
           if (snapshot.hasData) {
             DataFeeder.instance.setCollectionId(snapshot.data.uid);
-            DataFeeder.instance.initUserInfo(snapshot.data);
+            Firestore.instance
+                .collection(DataFeeder.instance.mainCollectionId)
+                .document('info')
+                .snapshots()
+                .listen(
+              (documentSnapshot) async {
+                if (!documentSnapshot.exists) {
+                  var batch = Firestore.instance.batch();
+                  User item = User(
+                    displayName: snapshot.data.displayName,
+                    uid: snapshot.data.uid,
+                    email: snapshot.data.email,
+                    photoUrl: snapshot.data.photoUrl,
+                  );
+                  gInfo = item;
+                  batch.setData(
+                    Firestore.instance
+                        .collection(DataFeeder.instance.mainCollectionId)
+                        .document('info'),
+                    json.decode(json.encode(item)),
+                  );
+                  await batch
+                      .commit()
+                      .catchError((error) => print('error: $error'));
+                }
+              },
+            );
             FirebaseNotification.instance.firebaseCloudMessagingListeners();
-            final subscription = DataFeeder.instance.getInfo().listen(null);
-            subscription.onData((DocumentSnapshot documentSnapshot) {
-              gInfo = User.fromJson(
-                  json.decode(json.encode(documentSnapshot.data)));
-              FirebaseNotification.instance.addFCMToken();
-              subscription.cancel();
-            });
+
             return MainPage(
               user: snapshot.data,
             );
