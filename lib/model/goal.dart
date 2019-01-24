@@ -1,7 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:successhunter/utils/formatter.dart';
 
 part 'goal.g.dart';
 
@@ -61,10 +64,24 @@ class Goal {
         ? targetValue
         : currentValue + milestones[index].targetValue;
     if (currentValue == targetValue) {
-      state = ActivityState.done;
-      gInfo.addGoalCount(context);
-      doneDate = DateTime.now().toUtc();
+      completeGoal(context: context);
     }
+  }
+
+  void completeGoal({BuildContext context}) {
+    state = ActivityState.done;
+    currentValue = targetValue;
+    doneDate = DateTime.now().toUtc();
+    gInfo.addExperience(context, 50);
+    gInfo.addGoalCount(context);
+    DataFeeder.instance.overwriteInfo(gInfo);
+    var diary = Diary(
+      title: 'Complete goal $title',
+      content:
+          'I\'ve just attained goal $title today. This goal started from ${Formatter.getDateString(startDate.toLocal())} and the target was $targetValue $unit.',
+      automated: true,
+    );
+    DataFeeder.instance.addNewDiary(diary);
   }
 }
 
@@ -92,7 +109,6 @@ class Milestone {
 
   Map<String, dynamic> toJson() => _$MilestoneToJson(this);
 }
-
 
 class GoalDocument {
   final Goal item;

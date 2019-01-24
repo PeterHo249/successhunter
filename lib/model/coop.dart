@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:successhunter/model/data_feeder.dart';
+import 'package:successhunter/model/diary.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/utils/formatter.dart';
 
 part 'coop.g.dart';
 
@@ -106,6 +109,16 @@ class CoopGoal {
     participantState.state = ActivityState.done;
     participantState.currentValue = targetValue;
 
+    if (uid == gInfo.uid) {
+      var diary = Diary(
+        title: 'Complete coop goal $title',
+        content:
+            'I\'ve just attained goal $title today with my friends. This goal started from ${Formatter.getDateString(startDate.toLocal())} and the target was $targetValue $unit.',
+        automated: true,
+      );
+      DataFeeder.instance.addNewDiary(diary);
+    }
+
     bool _isAllComplete = true;
     for (int i = 0; i < states.length; i++) {
       if (states[i].state != ActivityState.done) {
@@ -128,7 +141,7 @@ class CoopGoal {
         states.firstWhere((ParticipantState state) => state.uid == uid);
     participantState.currentValue += milestones[index].targetValue;
     if (participantState.currentValue >= targetValue) {
-      participantState.state = ActivityState.done;
+      completeCoop(uid);
     }
   }
 }

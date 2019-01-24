@@ -53,12 +53,7 @@ class _GoalDetailState extends State<GoalDetail> {
         break;
       case 1:
         if (item.state == ActivityState.doing) {
-          item.state = ActivityState.done;
-          item.currentValue = item.targetValue;
-          item.doneDate = DateTime.now().toUtc();
-          gInfo.addExperience(this.context, 50);
-          gInfo.addGoalCount(context);
-          DataFeeder.instance.overwriteInfo(gInfo);
+          item.completeGoal(context: context);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
         break;

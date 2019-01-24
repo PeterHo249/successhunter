@@ -10,7 +10,7 @@ class Diary {
   bool positive;
   bool automated;
 
-  Diary({this.title, this.content, this.date, this.positive = true, this.automated = false}) {
+  Diary({this.title = '', this.content = '', this.date, this.positive = true, this.automated = false}) {
     if (date == null) {
       date = DateTime.now().toUtc();
     }
