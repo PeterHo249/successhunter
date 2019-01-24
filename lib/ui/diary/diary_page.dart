@@ -193,13 +193,8 @@ class _DiaryPageState extends State<DiaryPage> {
 
     String infoString;
 
-    if (screenWidth > 768.0) {
-      infoString =
-          'You have ${manualDiaries.length} notes\nand ${automatedDiaries.length} automated notes.';
-    } else {
-      infoString =
-          '${manualDiaries.length} notes\n${automatedDiaries.length} automated notes.';
-    }
+    infoString =
+        '${manualDiaries.length} notes\n${automatedDiaries.length} automated notes.';
 
     return Container(
       width: screenWidth,

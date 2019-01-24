@@ -7,6 +7,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/model/habit.dart';
+import 'package:successhunter/model/notification.dart';
 import 'package:successhunter/model/user.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
       stream: DataFeeder.instance.getInfo(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData || snapshot.data.data == null) {
           return CustomSliverAppBar(
             backgroundColor: Theme.Colors.mainColor,
             foregroundColor: Colors.white,
@@ -74,6 +75,7 @@ class _HomePageState extends State<HomePage> {
         }
 
         gInfo = User.fromJson(json.decode(json.encode(snapshot.data.data)));
+        FirebaseNotification.instance.addFCMToken();
 
         return CustomSliverAppBar(
           backgroundColor: Theme.Colors.mainColor,
@@ -447,7 +449,7 @@ class _HomePageState extends State<HomePage> {
             ),
             InkWell(
               onTap: () {
-                document.item.completeToday();
+                document.item.completeToday(context);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance
@@ -515,7 +517,7 @@ class _HomePageState extends State<HomePage> {
               onChanged: (value) {
                 document.item.currentValue = value.toInt();
                 if (document.item.currentValue == document.item.targetValue) {
-                  document.item.completeToday();
+                  document.item.completeToday(context);
                   gInfo.addExperience(context, 10);
                   DataFeeder.instance.overwriteInfo(gInfo);
                 }

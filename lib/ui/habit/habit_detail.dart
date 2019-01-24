@@ -48,8 +48,9 @@ class _HabitDetailState extends State<HabitDetail> {
         if (item.state != ActivityState.doing) {
           break;
         }
-        item.completeToday();
+        item.completeToday(context);
         gInfo.addExperience(this.context, 10);
+        gInfo.addHabitCount(context);
         DataFeeder.instance.overwriteInfo(gInfo);
         DataFeeder.instance.overwriteHabit(widget.documentId, item);
         break;
@@ -301,8 +302,9 @@ class _HabitDetailState extends State<HabitDetail> {
               onChanged: (value) {
                 item.currentValue = value.toInt();
                 if (item.currentValue == item.targetValue) {
-                  item.completeToday();
+                  item.completeToday(context);
                   gInfo.addExperience(context, 10);
+                  gInfo.addHabitCount(context);
                   DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance.overwriteHabit(widget.documentId, item);
@@ -324,8 +326,9 @@ class _HabitDetailState extends State<HabitDetail> {
       case ActivityState.doing:
         return InkWell(
           onTap: () {
-            item.completeToday();
+            item.completeToday(context);
             gInfo.addExperience(context, 10);
+            gInfo.addHabitCount(context);
             DataFeeder.instance.overwriteInfo(gInfo);
             DataFeeder.instance.overwriteHabit(widget.documentId, item);
           },

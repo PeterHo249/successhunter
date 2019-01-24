@@ -55,13 +55,14 @@ class Goal {
 
   Map<String, dynamic> toJson() => _$GoalToJson(this);
 
-  void completeMilestone(int index) {
+  void completeMilestone(int index, {BuildContext context}) {
     milestones[index].state = ActivityState.done;
     currentValue = currentValue + milestones[index].targetValue > targetValue
         ? targetValue
         : currentValue + milestones[index].targetValue;
     if (currentValue == targetValue) {
       state = ActivityState.done;
+      gInfo.addGoalCount(context);
       doneDate = DateTime.now().toUtc();
     }
   }

@@ -7,7 +7,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/goal.dart';
-import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/goal/goal_form.dart';
@@ -36,11 +35,6 @@ class _GoalDetailState extends State<GoalDetail> {
   // Business
   @override
   void initState() {
-    DataFeeder.instance.getInfo().listen(
-      (documentSnapshot) {
-        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      },
-    );
     super.initState();
   }
 
@@ -52,6 +46,7 @@ class _GoalDetailState extends State<GoalDetail> {
           MaterialPageRoute(
             builder: (context) => MilestoneForm(
                   documentId: widget.documentId,
+                  color: color,
                 ),
           ),
         );
@@ -62,6 +57,7 @@ class _GoalDetailState extends State<GoalDetail> {
           item.currentValue = item.targetValue;
           item.doneDate = DateTime.now().toUtc();
           gInfo.addExperience(this.context, 50);
+          gInfo.addGoalCount(context);
           DataFeeder.instance.overwriteInfo(gInfo);
           DataFeeder.instance.overwriteGoal(widget.documentId, item);
         }
@@ -265,7 +261,7 @@ class _GoalDetailState extends State<GoalDetail> {
               color: Colors.green,
               icon: Icons.check,
               onTap: () {
-                item.completeMilestone(i);
+                item.completeMilestone(i, context: context);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance.overwriteGoal(widget.documentId, item);

@@ -81,8 +81,10 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
                   image: widget.image,
                 ),
               ),
-              Center(
-                child: widget.flexibleChild,
+              Container(
+                child: Center(
+                  child: widget.flexibleChild,
+                ),
               ),
             ],
           ),

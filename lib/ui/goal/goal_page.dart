@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/model/user.dart';
 import 'package:successhunter/ui/chart/pie_chart.dart';
 
 import 'package:successhunter/utils/helper.dart' as Helper;
@@ -38,11 +37,6 @@ class _GoalPageState extends State<GoalPage> {
   // Business
   @override
   void initState() {
-    DataFeeder.instance.getInfo().listen(
-      (documentSnapshot) {
-        gInfo = User.fromJson(json.decode(json.encode(documentSnapshot.data)));
-      },
-    );
     super.initState();
   }
 
@@ -158,15 +152,9 @@ class _GoalPageState extends State<GoalPage> {
   }
 
   Widget _buildInfoSection(BuildContext context) {
-    String infoString;
+    String infoString =
+        'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
 
-    if (screenWidth > 768.0) {
-      infoString =
-          'Total Goals: ${goals.length}\n\nYou have ${processGoals.length} goals in process\nAnd ${attainedGoals.length} attained goals\nBut ${failedGoals.length} failed goals.';
-    } else {
-      infoString =
-          'Total Goals: ${goals.length}\n\n${processGoals.length} goals in process\n${attainedGoals.length} attained goals\n${failedGoals.length} failed goals.';
-    }
     return Container(
       width: screenWidth,
       child: Padding(

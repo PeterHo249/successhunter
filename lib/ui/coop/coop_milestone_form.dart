@@ -1,67 +1,68 @@
 import 'dart:convert';
 
+import 'package:card_settings/card_settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:card_settings/card_settings.dart';
+import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
-import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 
-class MilestoneForm extends StatefulWidget {
+class CoopMilestoneForm extends StatefulWidget {
   final String documentId;
   final int index;
   final Color color;
 
-  MilestoneForm({this.documentId, this.index, this.color});
+  CoopMilestoneForm({this.documentId, this.index, this.color});
 
-  @override
-  _MilestoneFormState createState() => _MilestoneFormState();
+  _CoopMilestoneFormState createState() => _CoopMilestoneFormState();
 }
 
-class _MilestoneFormState extends State<MilestoneForm> {
-  /// Variable
+class _CoopMilestoneFormState extends State<CoopMilestoneForm> {
+  // Variable
   final GlobalKey<FormState> _milestoneFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
-  Goal goalItem;
-  Milestone milestoneItem;
+  CoopGoal coopItem;
+  CoopMilestone milestoneItem;
 
-  /// Business process
+  // Bussiness
   Future _savePressed() async {
     final form = _milestoneFormKey.currentState;
     if (form.validate()) {
       form.save();
       if (widget.index == null) {
-        goalItem.milestones.add(milestoneItem);
+        coopItem.addMilestone(milestoneItem);
       } else {
-        goalItem.milestones[widget.index] = milestoneItem;
+        coopItem.milestones[widget.index] = milestoneItem;
       }
-      DataFeeder.instance.overwriteGoal(widget.documentId, goalItem);
+      DataFeeder.instance.overwriteCoop(widget.documentId, coopItem);
       Navigator.pop(this.context);
     } else {
       _isAutoValidate = true;
     }
   }
 
-  /// Build layout
+  // Layout
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: DataFeeder.instance.getGoal(widget.documentId),
+      stream: DataFeeder.instance.getCoop(widget.documentId),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return Container(
             child: Center(
               child: Helper.buildFlareLoading(),
             ),
           );
+        }
 
-        goalItem = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+        coopItem =
+            CoopGoal.fromJson(json.decode(json.encode(snapshot.data.data)));
 
         if (widget.index == null) {
-          milestoneItem = Milestone();
+          milestoneItem = CoopMilestone();
         } else {
-          milestoneItem = goalItem.milestones[widget.index];
+          milestoneItem = coopItem.milestones[widget.index];
         }
 
         return _buildForm();
@@ -82,7 +83,7 @@ class _MilestoneFormState extends State<MilestoneForm> {
               Icons.save,
               color: Colors.white,
             ),
-          )
+          ),
         ],
       ),
       body: Stack(
@@ -106,11 +107,14 @@ class _MilestoneFormState extends State<MilestoneForm> {
                       milestoneItem == null ? null : milestoneItem.title,
                   requiredIndicator: Text(
                     '*',
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'Title of milestone is required.';
+                    }
 
                     return null;
                   },
@@ -128,24 +132,23 @@ class _MilestoneFormState extends State<MilestoneForm> {
                 CardSettingsInt(
                   label: 'Value',
                   initialValue:
-                      milestoneItem == null ? 0 : milestoneItem.targetValue,
+                      milestoneItem == null ? null : milestoneItem.targetValue,
                   onSaved: (value) => milestoneItem.targetValue = value,
                 ),
                 CardSettingsDatePicker(
                   label: 'Date',
-                  initialValue: milestoneItem == null
-                      ? null
-                      : milestoneItem.targetDate.toLocal(),
+                  initialValue:
+                      milestoneItem == null ? null : milestoneItem.targetDate,
                   onSaved: (value) => milestoneItem.targetDate =
                       updateJustTime(TimeOfDay(hour: 23, minute: 59), value)
                           .toUtc(),
                   autovalidate: true,
                   validator: (DateTime value) {
-                    if (value.isBefore(goalItem.startDate.toLocal())) {
+                    if (value.isBefore(coopItem.startDate.toLocal())) {
                       return 'This has to be greater than goal\'s start date.';
                     }
 
-                    if (value.isAfter(goalItem.targetDate.toLocal())) {
+                    if (value.isAfter(coopItem.targetDate.toLocal())) {
                       return 'This has to be less than goal\'s target date.';
                     }
 

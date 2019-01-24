@@ -1,90 +1,82 @@
 import 'dart:convert';
 
+import 'package:card_settings/card_settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:card_settings/card_settings.dart';
+import 'package:successhunter/model/coop.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
-import 'package:successhunter/model/goal.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 
-class GoalForm extends StatefulWidget {
+class CoopForm extends StatefulWidget {
   final String documentId;
 
-  GoalForm({this.documentId});
+  CoopForm({this.documentId});
 
-  @override
-  _GoalFormState createState() => _GoalFormState();
+  _CoopFormState createState() => _CoopFormState();
 }
 
-class _GoalFormState extends State<GoalForm> {
-  /// Variable
-  Goal item;
+class _CoopFormState extends State<CoopForm> {
+  // Variable
+  CoopGoal item;
 
-  /// Business process
+  // Business
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  /// Build layout
+  // Layout
   @override
   Widget build(BuildContext context) {
     if (widget.documentId == null) {
-      item = Goal();
-      return GoalFormWidget(
+      item = CoopGoal();
+      return CoopFormWidget(
         item: item,
       );
     } else {
       return StreamBuilder(
-        stream: DataFeeder.instance.getGoal(widget.documentId),
+        stream: DataFeeder.instance.getCoop(widget.documentId),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (!snapshot.hasData)
+          if (!snapshot.hasData) {
             return Container(
               child: Center(
                 child: Helper.buildFlareLoading(),
               ),
             );
+          }
 
-          item = Goal.fromJson(json.decode(json.encode(snapshot.data.data)));
+          item =
+              CoopGoal.fromJson(json.decode(json.encode(snapshot.data.data)));
 
-          return GoalFormWidget(
-            item: item,
-            documentId: widget.documentId,
-          );
+          return CoopFormWidget(item: item, documentId: widget.documentId);
         },
       );
     }
   }
 }
 
-class GoalFormWidget extends StatefulWidget {
-  final Goal item;
+class CoopFormWidget extends StatefulWidget {
+  final CoopGoal item;
   final String documentId;
 
-  GoalFormWidget({this.item, this.documentId});
+  CoopFormWidget({this.item, this.documentId});
 
-  @override
-  _GoalFormWidgetState createState() => _GoalFormWidgetState();
+  _CoopFormWidgetState createState() => _CoopFormWidgetState();
 }
 
-class _GoalFormWidgetState extends State<GoalFormWidget> {
+class _CoopFormWidgetState extends State<CoopFormWidget> {
   // Variable
-  final GlobalKey<FormState> _goalFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _coopFormKey = GlobalKey<FormState>();
   bool _isAutoValidate = false;
   Color color;
 
   // Business
   Future _savePressed() async {
-    final form = _goalFormKey.currentState;
+    final form = _coopFormKey.currentState;
     if (form.validate()) {
       form.save();
       if (widget.documentId == null) {
-        DataFeeder.instance.addNewGoal(widget.item);
+        DataFeeder.instance.addNewCoop(widget.item);
       } else {
-        DataFeeder.instance.overwriteGoal(widget.documentId, widget.item);
+        DataFeeder.instance.overwriteCoop(widget.documentId, widget.item);
       }
       Navigator.pop(this.context);
     } else {
@@ -100,16 +92,15 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
         .backgroundColor;
   }
 
-  // Layout
   @override
   Widget build(BuildContext context) {
     return _buildForm(widget.item);
   }
 
-  Widget _buildForm(Goal item) {
+  Widget _buildForm(CoopGoal item) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Goal'),
+        title: Text('Coop Goal'),
         elevation: 0.0,
         backgroundColor: color,
         actions: <Widget>[
@@ -119,20 +110,20 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
               Icons.save,
               color: Colors.white,
             ),
-          )
+          ),
         ],
       ),
       body: Stack(
         children: <Widget>[
           Hero(
-            tag: widget.documentId ?? 'HeroTag',
+            tag: widget.documentId ?? 'HeroTagCoop',
             child: Helper.buildHeaderBackground(
               context,
               color: color,
             ),
           ),
           Form(
-            key: _goalFormKey,
+            key: _coopFormKey,
             child: CardSettings(
               children: <Widget>[
                 CardSettingsHeader(
@@ -148,15 +139,16 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
                     style: TextStyle(color: Colors.red),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Title of goal is required.';
+                    if (value == null || value.isEmpty) {
+                      return 'Title of coop goal is required.';
+                    }
 
                     return null;
                   },
                   onSaved: (value) => item.title = value,
                 ),
                 CardSettingsParagraph(
-                  label: 'Description',
+                  label: 'Desciption',
                   initialValue: item == null ? null : item.description,
                   onSaved: (value) => item.description = value,
                 ),
@@ -203,7 +195,7 @@ class _GoalFormWidgetState extends State<GoalFormWidget> {
                   hintText: 'Enter your goal unit',
                   initialValue: item == null ? null : item.unit,
                   onSaved: (value) => item.unit = value,
-                )
+                ),
               ],
             ),
           ),

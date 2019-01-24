@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.2.0"
+  cached_network_image:
+    dependency: "direct main"
+    description:
+      name: cached_network_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.1"
   card_settings:
     dependency: "direct main"
     description:
@@ -216,6 +223,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_cache_manager:
+    dependency: transitive
+    description:
+      name: flutter_cache_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+1"
   flutter_calendar_carousel:
     dependency: "direct main"
     description:
@@ -270,6 +284,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  folding_cell:
+    dependency: "direct main"
+    description:
+      name: folding_cell
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -466,6 +487,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.2"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   pedantic:
     dependency: transitive
     description:
@@ -639,6 +667,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.3+2"
   term_glyph:
     dependency: transitive
     description:
@@ -695,6 +730,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0+5"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   vector_math:
     dependency: transitive
     description:
@@ -716,6 +758,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.7+10"
+  wave:
+    dependency: "direct main"
+    description:
+      name: wave
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.8"
   web_socket_channel:
     dependency: transitive
     description:

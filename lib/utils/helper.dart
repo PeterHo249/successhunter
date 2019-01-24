@@ -2,10 +2,12 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:successhunter/model/user.dart';
-import 'package:tinycolor/tinycolor.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 Color getStateColor(int state) {
   switch (state) {
@@ -72,10 +74,33 @@ Widget buildHeaderBackground(BuildContext context,
   return Stack(
     alignment: Alignment.topCenter,
     children: <Widget>[
-      Container(
-        color: Colors.white,
-        height: height,
-        width: width,
+      WaveWidget(
+        config: CustomConfig(
+          gradients: [
+            [Colors.white10, Colors.white70],
+            [Colors.white12, Colors.white70],
+            [Colors.white30, Colors.white70],
+          ],
+          durations: [
+            30000,
+            20000,
+            25000,
+          ],
+          heightPercentages: [
+            0.85,
+            0.85,
+            0.85,
+          ],
+          blur: MaskFilter.blur(BlurStyle.solid, 10),
+          gradientBegin: Alignment.topCenter,
+          gradientEnd: Alignment.bottomCenter,
+        ),
+        waveAmplitude: 8.0,
+        backgroundColor: color,
+        size: Size(
+          width,
+          height,
+        ),
       ),
       Container(
         height: height,
@@ -87,45 +112,10 @@ Widget buildHeaderBackground(BuildContext context,
                   image: image,
                   fit: BoxFit.contain,
                   colorFilter: ColorFilter.mode(
-                    color.withOpacity(0.4),
+                    color.withOpacity(0.1),
                     BlendMode.dstIn,
-                  )),
-          gradient: LinearGradient(
-            colors: [
-              color,
-              TinyColor(color).lighten(30).color,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.5, 1.0],
-            tileMode: TileMode.clamp,
-          ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(50.0),
-            bottomRight: Radius.circular(50.0),
-          ),
-        ),
-      ),
-      Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: color.withAlpha(180),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(180.0),
-            bottomRight: Radius.circular(180.0),
-          ),
-        ),
-      ),
-      Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: color.withAlpha(80),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(100.0),
-            bottomRight: Radius.circular(100.0),
-          ),
+                  ),
+                ),
         ),
       ),
     ],
@@ -162,6 +152,20 @@ Widget buildCircularIcon({
       data.icon,
       color: data.color,
       size: size * 0.4,
+    ),
+  );
+}
+
+Widget buildCircularNetworkImage({@required String url, double size = 100.0}) {
+  return Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      image: DecorationImage(
+        image: CachedNetworkImageProvider(url),
+        fit: BoxFit.fill,
+      ),
     ),
   );
 }

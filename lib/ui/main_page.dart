@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/notification.dart';
+import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/coop/coop_form.dart';
 import 'package:successhunter/ui/custom_ui/FAB_bottom_app_bar.dart';
 import 'package:successhunter/ui/custom_ui/FAB_with_icon.dart';
 import 'package:successhunter/ui/coop/coop_page.dart';
@@ -69,8 +73,8 @@ class _MainPageState extends State<MainPage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // TODO: Implement co-op form here
-          print('add new co-op');
+          Navigator.push(this.context,
+              MaterialPageRoute(builder: (context) => CoopForm()));
         },
         child: Icon(
           Icons.add,
@@ -120,7 +124,7 @@ class _MainPageState extends State<MainPage> {
           break;
         case 1:
           Navigator.push(this.context,
-              MaterialPageRoute(builder: (context) => HabitForm()));
+              MaterialPageRoute(builder: (context) => CoopForm()));
           break;
         case 2:
           Navigator.push(this.context,
@@ -283,7 +287,8 @@ class _MainPageState extends State<MainPage> {
             ),
             onTap: () {
               Auth.instance.signOut();
-              int tokenIndex = gInfo.fcmToken.indexOf(FirebaseNotification.instance.token);
+              int tokenIndex =
+                  gInfo.fcmToken.indexOf(FirebaseNotification.instance.token);
               if (tokenIndex != -1) {
                 gInfo.fcmToken.removeAt(tokenIndex);
                 DataFeeder.instance.overwriteInfo(gInfo);

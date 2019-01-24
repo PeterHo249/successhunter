@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/ui/custom_ui/hero_dialog_route.dart';
-import 'package:successhunter/utils/enum_dictionary.dart';
+import 'package:successhunter/model/badge_list.dart' as Badge;
 import 'package:successhunter/utils/helper.dart' as Helper;
+import 'package:successhunter/model/avatar_list.dart' as Avatar;
 
 class Gallery extends StatelessWidget {
   double screenHeight = 0.0;
@@ -85,7 +86,7 @@ class Gallery extends StatelessWidget {
   }
 
   Widget _buildAvatarSection(BuildContext context) {
-    var avatars = avatarNames.keys.toList();
+    var avatars = Avatar.avatarNames.keys.toList();
     return SliverGrid.count(
       crossAxisCount: 3,
       children: avatars.map((avatar) {
@@ -120,7 +121,7 @@ class Gallery extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'You will receive this avatar when reach level ${avatarNames[avatar]}',
+                              'You will receive this avatar when reach level ${Avatar.avatarNames[avatar]}',
                               style: Theme.contentStyle,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
@@ -168,7 +169,7 @@ class Gallery extends StatelessWidget {
                     color: Color(0xAA444444),
                     child: Center(
                       child: Text(
-                        'Lv. ${avatarNames[avatar]}',
+                        'Lv. ${Avatar.avatarNames[avatar]}',
                         style: Theme.contentStyle.copyWith(
                           color: Colors.white,
                         ),
@@ -187,7 +188,7 @@ class Gallery extends StatelessWidget {
   }
 
   Widget _buildAchivementSection(BuildContext context) {
-    var badges = badgeNames.keys.toList();
+    var badges = Badge.badgeNames.keys.toList();
     return SliverGrid.count(
       crossAxisCount: 3,
       children: badges.map((badge) {
@@ -222,7 +223,7 @@ class Gallery extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              badgeNames[badge],
+                              Badge.badgeNames[badge],
                               style: Theme.contentStyle,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,

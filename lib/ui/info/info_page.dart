@@ -14,6 +14,7 @@ import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
 import 'package:successhunter/ui/chart/stacked_area_chart.dart';
+import 'package:successhunter/model/badge_list.dart' as Badge;
 
 class InfoPage extends StatefulWidget {
   @override
@@ -382,7 +383,7 @@ class _InfoPageState extends State<InfoPage> {
                               ),
                             ),
                             Text(
-                              badgeNames[badge],
+                              Badge.badgeNames[badge],
                               style: Theme.contentStyle,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
