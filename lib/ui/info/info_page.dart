@@ -8,12 +8,13 @@ import 'package:successhunter/model/data_feeder.dart';
 import 'package:successhunter/model/user.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
+import 'package:successhunter/ui/chart/line_chart.dart';
 import 'package:successhunter/ui/custom_ui/hero_dialog_route.dart';
 import 'package:successhunter/utils/helper.dart' as Helper;
 import 'package:successhunter/ui/custom_ui/custom_sliver_app_bar.dart';
 import 'package:successhunter/ui/custom_ui/custom_sliver_persistent_header_delegate.dart';
 import 'package:successhunter/utils/enum_dictionary.dart';
-import 'package:successhunter/ui/chart/stacked_area_chart.dart';
+
 import 'package:successhunter/model/badge_list.dart' as Badge;
 
 class InfoPage extends StatefulWidget {
@@ -434,7 +435,7 @@ class _InfoPageState extends State<InfoPage> {
   Widget _buildGoalChart(context) {
     var data = gInfo.goalCounts ?? List<TaskCountPerDate>();
     var currentDate = DateTime.now();
-
+    
     while (data.length < 10) {
       data.insert(
         0,
@@ -450,11 +451,10 @@ class _InfoPageState extends State<InfoPage> {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          StackedAreaChart(
+          CustomLineChart(
             data: data,
-            animate: true,
             height: 200.0,
-            width: 250.0,
+            width: screenWidth,
           ),
         ],
       ),
@@ -480,11 +480,10 @@ class _InfoPageState extends State<InfoPage> {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          StackedAreaChart(
+          CustomLineChart(
             data: data,
-            animate: true,
             height: 200.0,
-            width: 250.0,
+            width: screenWidth,
           ),
         ],
       ),
