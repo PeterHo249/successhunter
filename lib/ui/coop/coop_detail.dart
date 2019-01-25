@@ -395,7 +395,7 @@ class _CoopDetailState extends State<CoopDetail> {
               },
             );
           },
-          actionCount: state == ActivityState.doing ? 1 : 0,
+          actionCount: state == ActivityState.doing && _isOwner ? 1 : 0,
         ),
         child: SimpleFoldingCell(
           padding: const EdgeInsets.all(0.0),

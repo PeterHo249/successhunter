@@ -53,10 +53,6 @@ class FirebaseNotification {
       FirebaseNotification.instance.iOSPermission();
     }
 
-    FirebaseNotification.instance.firebaseMessaging.getToken().then((token) {
-      print('>>>>>>>>>>>>>>>>>>>>>>>>> $token');
-    });
-
     FirebaseNotification.instance.firebaseMessaging.configure(
       onMessage: onMessageCallback,
       onResume: onResumeCallback,
@@ -66,20 +62,27 @@ class FirebaseNotification {
 
   Future onMessageCallback(Map<String, dynamic> message) async {
     print('On message $message');
-    Map<String, dynamic> notification = message['notification'];
-    Map<String, dynamic> data = message['data'];
-    String category = data['category'];
+    String category = message['data']['category'];
+    print(category);
 
     switch (category) {
       case 'Coop':
-        String status = data['status'];
-        String coopId = data['coopId'];
-        String content = notification['body'];
-        switch (status) {
-          case InvitationStatusEnum.beInvited:
-            showInvitationDialog(context, coopId, content);
-            break;
-          default:
+        {
+          String status = message['data']['status'];
+          print(status);
+          switch (status) {
+            case InvitationStatusEnum.beInvited:
+              {
+                String coopId = message['data']['coopId'];
+                print(coopId);
+                String content = message['notification']['body'];
+                print(content);
+                print('in invitation message');
+                showInvitationDialog(context, coopId, content);
+              }
+              break;
+            default:
+          }
         }
         break;
       default:

@@ -211,7 +211,7 @@ class _CoopAddParticipantState extends State<CoopAddParticipant> {
                 http.post(
                   url,
                   headers: {"Content-Type": "application/json"},
-                  body: reqBody,
+                  body: json.encode(reqBody),
                 );
                 Navigator.pop(context);
               }
