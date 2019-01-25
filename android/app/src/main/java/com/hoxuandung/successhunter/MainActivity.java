@@ -1,4 +1,4 @@
-package com.peterho.successhunter;
+package com.hoxuandung.successhunter;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
