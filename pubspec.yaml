@@ -53,6 +53,19 @@ flutter:
 
   uses-material-design: true
 
+  fonts:
+      - family: RobotoBold
+        fonts:
+          - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+
+      - family: RobotoMedium
+        fonts:
+          - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+
+      - family: RobotoRegular
+        fonts:
+          - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+
   assets:
         # background for header
         - assets/img/book.png
@@ -65,6 +78,7 @@ flutter:
         - assets/img/diary_intro.png
         - assets/img/goal_intro.png
         - assets/img/habit_intro.png
+        - assets/img/coop_intro.png
         # avatar
         - assets/avatar/boss_1.png
         - assets/avatar/boss_2.png
@@ -124,16 +138,3 @@ flutter:
         - assets/flare/firework.flr
         # avatar background
         - assets/background/background_1.jpg
-
-  fonts:
-      - family: RobotoBold
-        fonts:
-          - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-
-      - family: RobotoMedium
-        fonts:
-          - asset: assets/fonts/Roboto/Roboto-Medium.ttf
-
-      - family: RobotoRegular
-        fonts:
-          - asset: assets/fonts/Roboto/Roboto-Regular.ttf

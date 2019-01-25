@@ -92,7 +92,7 @@ class IntroApp extends StatelessWidget {
         pageColor: Colors.red,
         title: Text('Co-operative Goals'),
         mainImage: Image.asset(
-          'assets/avatar/boss_1.png',
+          'assets/img/coop_intro.png',
           height: 250.0,
           width: 250.0,
           alignment: Alignment.center,
