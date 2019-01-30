@@ -15,6 +15,7 @@ import 'ui/login_page.dart';
 import 'package:successhunter/ui/splash_page.dart';
 import 'package:successhunter/ui/main_page.dart';
 import 'package:successhunter/model/data_feeder.dart';
+import 'dart:async';
 
 void main() => runApp(new IntroApp());
 
