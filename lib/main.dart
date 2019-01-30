@@ -58,14 +58,15 @@ class IntroApp extends StatelessWidget {
   }
 
   List<PageViewModel> _buildPageViewModel(BuildContext context) {
+    double size = 200.0;
     return <PageViewModel>[
       PageViewModel(
         pageColor: Colors.amber,
         title: Text('Habits'),
         mainImage: Image.asset(
           'assets/img/habit_intro.png',
-          height: 250.0,
-          width: 250.0,
+          height: size,
+          width: size,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
@@ -79,8 +80,8 @@ class IntroApp extends StatelessWidget {
         title: Text('Goals'),
         mainImage: Image.asset(
           'assets/img/goal_intro.png',
-          height: 300.0,
-          width: 250.0,
+          height: size,
+          width: size,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
@@ -91,11 +92,14 @@ class IntroApp extends StatelessWidget {
       ),
       PageViewModel(
         pageColor: Colors.red,
-        title: Text('Co-operative Goals'),
+        title: Text('Coop Goals'),
+        textStyle: TextStyle(
+          fontSize: 40.0,
+        ),
         mainImage: Image.asset(
           'assets/img/coop_intro.png',
-          height: 250.0,
-          width: 250.0,
+          height: size,
+          width: size,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
@@ -109,8 +113,8 @@ class IntroApp extends StatelessWidget {
         title: Text('Diaries'),
         mainImage: Image.asset(
           'assets/img/diary_intro.png',
-          height: 250.0,
-          width: 250.0,
+          height: size,
+          width: size,
           alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
@@ -127,6 +131,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    FirebaseNotification.instance.firebaseCloudMessagingListeners();
     return MaterialApp(
       title: 'Success Hunter',
       debugShowCheckedModeBanner: false,
@@ -174,7 +179,6 @@ class MainApp extends StatelessWidget {
                 }
               },
             );
-            FirebaseNotification.instance.firebaseCloudMessagingListeners();
 
             return MainPage(
               user: snapshot.data,
