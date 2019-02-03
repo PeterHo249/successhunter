@@ -164,7 +164,7 @@ class MainApp extends StatelessWidget {
                     displayName: snapshot.data.displayName,
                     uid: snapshot.data.uid,
                     email: snapshot.data.email,
-                    photoUrl: snapshot.data.photoUrl,
+                    photoUrl: snapshot.data.photoUrl ?? 'https://lh5.googleusercontent.com/-tio6TOwKjEo/AAAAAAAAAAI/AAAAAAAAAAA/ABtNlbAnR5HoPb-HUM4Ue1VLE60JSrJYEg/s96-c/photo.jpg',
                   );
                   gInfo = item;
                   batch.setData(
