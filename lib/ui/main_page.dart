@@ -198,10 +198,12 @@ class _MainPageState extends State<MainPage> {
                       height: 100.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage(widget.user.photoUrl),
-                          fit: BoxFit.fill,
-                        ),
+                        image: widget.user.photoUrl != null
+                            ? DecorationImage(
+                                image: NetworkImage(widget.user.photoUrl),
+                                fit: BoxFit.fill,
+                              )
+                            : null,
                       ),
                     ),
                   ),
