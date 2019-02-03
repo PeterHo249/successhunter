@@ -39,7 +39,7 @@ class User {
     this.email = '',
     this.diaryPin = '',
     this.fcmToken,
-    this.photoUrl,
+    this.photoUrl = 'https://lh5.googleusercontent.com/-tio6TOwKjEo/AAAAAAAAAAI/AAAAAAAAAAA/ABtNlbAnR5HoPb-HUM4Ue1VLE60JSrJYEg/s96-c/photo.jpg',
     this.habitCompletedCount = 0,
     this.goalCompleteCount = 0,
     this.coopCompleteCount = 0,
