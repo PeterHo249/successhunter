@@ -5,6 +5,7 @@ import 'package:successhunter/model/user.dart';
 User gInfo = User();
 bool isLockPin = false;
 DateTime lockTime = DateTime.now();
+String gDisplayName = "";
 
 class InvitationStatusEnum {
   static const String beInvited = 'beInvited';

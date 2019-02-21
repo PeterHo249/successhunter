@@ -210,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                   SizedBox(
                     width: 150.0,
                     child: Text(
-                      widget.user.displayName,
+                      widget.user.displayName ?? gDisplayName,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.header1Style.copyWith(
                         color: Colors.white,

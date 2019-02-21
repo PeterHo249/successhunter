@@ -161,7 +161,7 @@ class MainApp extends StatelessWidget {
                 if (!documentSnapshot.exists) {
                   var batch = Firestore.instance.batch();
                   User item = User(
-                    displayName: snapshot.data.displayName,
+                    displayName: snapshot.data.displayName ?? gDisplayName,
                     uid: snapshot.data.uid,
                     email: snapshot.data.email,
                     photoUrl: snapshot.data.photoUrl ?? 'https://lh5.googleusercontent.com/-tio6TOwKjEo/AAAAAAAAAAI/AAAAAAAAAAA/ABtNlbAnR5HoPb-HUM4Ue1VLE60JSrJYEg/s96-c/photo.jpg',

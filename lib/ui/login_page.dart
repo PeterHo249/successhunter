@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:successhunter/style/theme.dart' as Theme;
 import 'package:successhunter/utils/helper.dart' as Helper;
+import 'package:successhunter/utils/enum_dictionary.dart';
 
 class LoginPage extends StatefulWidget {
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
@@ -110,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
     final FormState formState = _signupFormKey.currentState;
 
     if (formState.validate()) {
+      gDisplayName = _signupUsernameController.text;
       Auth.instance
           .createNewUser(
             email: _signupEmailController.text,

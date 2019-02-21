@@ -36,17 +36,26 @@ class Auth {
     }
   }
 
-  Future<FirebaseUser> createNewUser({@required String email, @required String password, @required String displayName}) async {
-    final FirebaseUser user = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = displayName;
-    await user.updateProfile(userUpdateInfo);
-    user.sendEmailVerification();
+  Future<FirebaseUser> createNewUser({
+    @required String email,
+    @required String password,
+    @required String displayName,
+  }) async {
+    final FirebaseUser user = await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((user) async {
+      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = displayName;
+      await user.updateProfile(userUpdateInfo);
+    });
+
     return user;
   }
 
-  Future<FirebaseUser> signInWithEmail({@required String email, @required String password}) async {
-    final FirebaseUser user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+  Future<FirebaseUser> signInWithEmail(
+      {@required String email, @required String password}) async {
+    final FirebaseUser user = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
 
     return user;
   }
