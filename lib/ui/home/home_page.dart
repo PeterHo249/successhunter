@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             LinearPercentIndicator(
-                              width: screenWidth - screenHeight * 0.23,
+                              width: screenWidth - (screenHeight * 0.3 - 100.0) - 50.0,
                               lineHeight: 10.0,
                               percent: info.experience.toDouble() /
                                   (info.level * 50).toDouble(),
