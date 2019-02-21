@@ -40,7 +40,7 @@ class Auth {
     final FirebaseUser user = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = displayName;
-    user.updateProfile(userUpdateInfo);
+    await user.updateProfile(userUpdateInfo);
     user.sendEmailVerification();
     return user;
   }
