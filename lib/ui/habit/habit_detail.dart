@@ -396,7 +396,7 @@ class _HabitDetailState extends State<HabitDetail> {
       child: Container(
         child: CalendarCarousel(
           daysHaveCircularBorder: true,
-          height: 450.0,
+          height: screenHeight * 0.7,
           markedDates: item.streak,
           markedDateWidget: Container(
             decoration: BoxDecoration(
