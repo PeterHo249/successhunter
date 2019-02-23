@@ -103,13 +103,14 @@ class CoopGoal {
     }
   }
 
-  void completeCoop(String uid) {
+  void completeCoop(String uid, BuildContext context) {
     var participantState =
         states.firstWhere((ParticipantState state) => state.uid == uid);
     participantState.state = ActivityState.done;
     participantState.currentValue = targetValue;
 
     if (uid == gInfo.uid) {
+      gInfo.addCoopCount(context);
       var diary = Diary(
         title: 'Complete coop goal $title',
         content:
@@ -132,7 +133,7 @@ class CoopGoal {
     }
   }
 
-  void completeMilestone(int index, String uid) {
+  void completeMilestone(int index, String uid, BuildContext context) {
     milestones[index]
         .states
         .firstWhere((ParticipantState state) => state.uid == uid)
@@ -141,7 +142,7 @@ class CoopGoal {
         states.firstWhere((ParticipantState state) => state.uid == uid);
     participantState.currentValue += milestones[index].targetValue;
     if (participantState.currentValue >= targetValue) {
-      completeCoop(uid);
+      completeCoop(uid, context);
     }
   }
 }

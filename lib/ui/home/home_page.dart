@@ -451,6 +451,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 document.item.completeToday(context);
                 gInfo.addExperience(context, 10);
+                gInfo.addHabitCount(context);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance
                     .overwriteHabit(document.documentId, document.item);
@@ -519,6 +520,7 @@ class _HomePageState extends State<HomePage> {
                 if (document.item.currentValue == document.item.targetValue) {
                   document.item.completeToday(context);
                   gInfo.addExperience(context, 10);
+                  gInfo.addHabitCount(context);
                   DataFeeder.instance.overwriteInfo(gInfo);
                 }
                 DataFeeder.instance

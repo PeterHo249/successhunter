@@ -312,37 +312,37 @@ class User {
         switch (level) {
           case 2:
             badges.add('level_1.png');
-            imagePaths.add('assest/badge/level_1.png');
+            imagePaths.add('assets/badge/level_1.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;
           case 10:
             badges.add('level_10.png');
-            imagePaths.add('assest/badge/level_10.png');
+            imagePaths.add('assets/badge/level_10.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;
           case 20:
             badges.add('level_20.png');
-            imagePaths.add('assest/badge/level_20.png');
+            imagePaths.add('assets/badge/level_20.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;
           case 30:
             badges.add('level_30.png');
-            imagePaths.add('assest/badge/level_30.png');
+            imagePaths.add('assets/badge/level_30.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;
           case 40:
             badges.add('level_40.png');
-            imagePaths.add('assest/badge/level_40.png');
+            imagePaths.add('assets/badge/level_40.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;
           case 50:
             badges.add('level_50.png');
-            imagePaths.add('assest/badge/level_50.png');
+            imagePaths.add('assets/badge/level_50.png');
             content =
                 'Congratulation! You\'ve just reached level $level and got some new avatars, badge.';
             break;

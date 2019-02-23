@@ -59,7 +59,7 @@ class _CoopDetailState extends State<CoopDetail> {
         }
         break;
       case 1:
-        item.completeCoop(gInfo.uid);
+        item.completeCoop(gInfo.uid, this.context);
         gInfo.addExperience(context, 10);
         gInfo.addCoopCount(context);
         DataFeeder.instance.overwriteInfo(gInfo);
@@ -371,7 +371,7 @@ class _CoopDetailState extends State<CoopDetail> {
               color: Colors.green,
               icon: Icons.check,
               onTap: () {
-                item.completeMilestone(i, gInfo.uid);
+                item.completeMilestone(i, gInfo.uid, context);
                 gInfo.addExperience(context, 10);
                 DataFeeder.instance.overwriteInfo(gInfo);
                 DataFeeder.instance.overwriteCoop(widget.documentId, item);
