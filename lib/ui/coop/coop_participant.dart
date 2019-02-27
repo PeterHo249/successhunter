@@ -177,7 +177,7 @@ class CoopParticipantList extends StatelessWidget {
                     backgroundColor: Colors.grey,
                     percent: document.item.getDonePercent(uid),
                     trailing: Text(
-                      '${document.item.getDonePercent(uid).toInt()}%',
+                      '${(document.item.getDonePercent(uid) * 100).toInt()}%',
                       style: Theme.contentStyle,
                     ),
                   ),
