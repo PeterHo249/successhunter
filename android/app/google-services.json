@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "844637961414-o2um31h4qcuhl573f7epr3kflmggdag5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hoxuandung.successhunter",
+            "certificate_hash": "e90b5e7cd86b6a3df7982b5ebbeedb49d46ebaca"
+          }
+        },
+        {
+          "client_id": "844637961414-p1qkitn2248fevk20vnmu2tp0d85225h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hoxuandung.successhunter",
+            "certificate_hash": "47c650507a24fd9a1f86b84bce56ebf4a815d178"
+          }
+        },
+        {
           "client_id": "844637961414-9mjs7avr9qbvk2putvmv83gj2n5npn06.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -42,6 +58,13 @@
             {
               "client_id": "844637961414-9mjs7avr9qbvk2putvmv83gj2n5npn06.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "844637961414-3n9h7njc5n9a3oge1cvko7nsure0icr0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hoxuandung.successhunter"
+              }
             }
           ]
         },

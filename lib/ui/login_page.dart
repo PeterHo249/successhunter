@@ -341,6 +341,7 @@ class _LoginPageState extends State<LoginPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return SimpleDialog(
+                            backgroundColor: Colors.transparent,
                             children: [
                               Container(
                                 height: 30.0,
@@ -353,7 +354,9 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           );
                         });
-                    Auth.instance.signInWithGoogle().catchError(
+                    Auth.instance.signInWithGoogle().then((user) {
+                      Navigator.of(context).pop();
+                    }).catchError(
                       (e) {
                         Navigator.of(context).pop();
                         Helper.showInSnackBar(
@@ -381,6 +384,7 @@ class _LoginPageState extends State<LoginPage> {
                         context: context,
                         builder: (BuildContext context) {
                           return SimpleDialog(
+                            backgroundColor: Colors.transparent,
                             children: [
                               Container(
                                 height: 30.0,
@@ -393,7 +397,9 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           );
                         });
-                    Auth.instance.signInWithFacebook().catchError(
+                    Auth.instance.signInWithFacebook().then((user) {
+                      Navigator.of(context).pop();
+                    }).catchError(
                       (e) {
                         Navigator.of(context).pop();
                         Helper.showInSnackBar(
