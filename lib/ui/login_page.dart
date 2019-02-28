@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -336,12 +337,31 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () {
-                    Auth.instance.signInWithGoogle().catchError(
-                          (e) => Helper.showInSnackBar(
-                                _loginScreenKey.currentState,
-                                e.message,
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 170.0,
+                                child: FlareActor(
+                                  'assets/flare/loading.flr',
+                                  animation: 'loading',
+                                ),
                               ),
+                            ],
+                          );
+                        });
+                    Auth.instance.signInWithGoogle().catchError(
+                      (e) {
+                        Navigator.of(context).pop();
+                        Helper.showInSnackBar(
+                          _loginScreenKey.currentState,
+                          e.message,
                         );
+                      },
+                    );
                   },
                 ),
                 RaisedButton(
@@ -357,12 +377,31 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () {
-                    Auth.instance.signInWithFacebook().catchError(
-                          (e) => Helper.showInSnackBar(
-                                _loginScreenKey.currentState,
-                                e.message,
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 170.0,
+                                child: FlareActor(
+                                  'assets/flare/loading.flr',
+                                  animation: 'loading',
+                                ),
                               ),
+                            ],
+                          );
+                        });
+                    Auth.instance.signInWithFacebook().catchError(
+                      (e) {
+                        Navigator.of(context).pop();
+                        Helper.showInSnackBar(
+                          _loginScreenKey.currentState,
+                          e.message,
                         );
+                      },
+                    );
                   },
                 ),
               ],
